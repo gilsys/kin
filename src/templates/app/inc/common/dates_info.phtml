@@ -1,0 +1,33 @@
+<div class="card card-custom card-sticky">
+    <div class="card-header">
+        <div class="card-title">
+            <h3><?php echo __('app.common.dates_info') ?></h3>
+        </div>            
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="col-form-label"><?php echo __('app.common.date_created') ?></label>
+                <div>
+                    <input class="form-control mt-date-created" disabled type="text">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="col-form-label"><?php echo __('app.common.date_updated') ?></label>
+                <div>
+                    <input class="form-control mt-date-updated" disabled type="text">
+                </div>
+            </div>
+            <?php if (!empty($fields)) : ?>
+                <?php foreach ($fields as $fieldName => $fieldLabel) : ?>
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo $fieldLabel ?></label>
+                        <div>
+                            <input class="form-control <?php echo $fieldName ?>" disabled type="text">
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

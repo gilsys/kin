@@ -1,0 +1,41 @@
+<form id="mt-static-list-form" class="d-none data-form" data-js="StaticListForm" data-list="<?php echo $data['list'] ?>" action="/app/static_list/save/<?php echo $data['list'] ?>/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" >
+    <?php $this->insert("inc/common/subheader",
+            [
+                'btnBack' => '/app/static_lists/' . $data['list'],
+                'btnSave' => true,
+                'entity' => $entity,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb,
+                'submenus' => !empty($data['section']) ? $data['section'] : '',
+            ]);
+    ?>
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>"/>
+    <?php endif; ?>
+    <div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">
+                <h3><?php echo __('app.common.main_information') ?></h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" placeholder="<?php echo __('app.common.name') ?>" name="name" required maxlength="100" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="col-form-label required"><?php echo __('app.common.color') ?></label>
+                    <div>
+                        <input type="text" required  class="form-control jscolor color-btn-text" name="color">
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>    
+    <?php if (!empty($data['id'])): ?>        
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+</form>

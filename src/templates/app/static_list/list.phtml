@@ -1,0 +1,16 @@
+<?php //!empty($data['section']) ? $submenus = $data['section'] : ''       ?>
+<?php //$this->insert("inc/common/breadcumb", compact("menu", "breadcumb", "submenus"));       ?>    
+
+<?php $this->start('columns') ?>
+<!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive --> 
+<th data-priority="1"><?php echo __('app.common.id') ?></th>
+<th data-priority="1"><?php echo __('app.common.name') ?></th>
+<th data-priority="2"><?php echo __('app.common.order') ?></th>
+<th data-priority="1" class="text-center"></th>
+<th class="text-center"></th>
+    <?php $this->stop() ?>
+
+
+<?php $this->insert("inc/common/subheader", ['entity' => $entity, 'btnExport' => 'mt-static-list', 'btnAdd' => '/app/static_list/form/' . $list, 'menu' => $menu, 'breadcumb' => $breadcumb, 'submenus' => !empty($data['section']) ? $data['section'] : '']); ?>
+<?php $this->insert('inc/common/datatable', ['entity' => 'staticList', 'columns' => $this->section('columns'), 'filters' => $this->section('filters'), 'attributes' => 'data-list="' . $list . '"']); ?>

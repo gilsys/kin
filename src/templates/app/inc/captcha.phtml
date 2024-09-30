@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    var captchaItems = {};
+    var CaptchaCallback = function () {
+        var currentCaptchaItems = document.querySelectorAll('.recaptcha-field > div');
+        for (var i = 0; i < currentCaptchaItems.length; i++) {
+            captchaItems[currentCaptchaItems[i].id] = grecaptcha.render(currentCaptchaItems[i].id, {'sitekey': '<?php echo $params['RECAPTCHA_PUBLIC_KEY'] ?>'});
+        }
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>

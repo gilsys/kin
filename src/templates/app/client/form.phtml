@@ -1,0 +1,89 @@
+<form id="mt-client-form" class="d-none data-form" data-js="ClientForm" action="/app/client/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" data-information-prefix="">
+    <?php
+    $this->insert("inc/common/subheader",
+            [
+                'entity' => 'client',
+                'btnBack' => '/app/clients',
+                'btnSave' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+    ]);
+    ?>    
+    <?php if (!empty($data['id'])): ?>          
+        <?php $this->insert("client/inc/header_info", ['menuClient' => $menuClient, 'client' => empty($data['client']) ? null : $data['client'], 'entity' => $entity]); ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>"/>
+    <?php endif; ?>    
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>            
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col md-6">
+                    <label class="col-form-label required"><?php echo __('app.client.entity') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.client.entity') ?>" name="information[entity]" maxlength="100" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.type') ?></label>
+                    <div>
+                        <select name="client_type_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_type') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_type') ?> </option>
+                            <?php foreach ($data['clientTypes'] as $clientType): ?>
+                                <option value="<?php echo $clientType['id'] ?>">
+                                    <?php echo $clientType['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h3><?php echo __('app.client.contacts_data') ?></h3>
+            </div>            
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label"><?php echo __('app.client.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" placeholder="<?php echo __('app.client.name') ?>" name="information[name]" maxlength="100" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label"><?php echo __('app.client.surnames') ?></label>                
+                    <div>
+                        <input type="text" class="form-control" placeholder="<?php echo __('app.client.surnames') ?>" name="information[surnames]" maxlength="100" />
+                    </div>         
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-4">                    
+                    <?php $this->insert("inc/common/emailphone"); ?>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h3><?php echo __('app.user.localization') ?></h3>
+            </div>            
+        </div>
+        <div class="card-body">
+            <?php $this->insert("inc/common/localization_manual", ['countries' => $data['countries']]); ?>
+        </div>
+    </div>
+    <?php if (!empty($data['id'])): ?>        
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+</div>
+</form>

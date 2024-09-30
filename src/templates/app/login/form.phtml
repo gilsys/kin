@@ -1,0 +1,102 @@
+<!--begin::Signin-->
+<div class="login-form login-signin">
+    <div class="text-center text-dark mb-10">
+        <a href="/"><img src="/app/img/logo.png?v=2" class="img-fluid mw-200px mw-sm-300px"></a>
+        <h3 class="text-dark fs-1 fw-bold mt-10"><?php echo __('app.login.login') ?></h3>
+        <div class="text-dark fs-7 fw-lighter px-10"><?php echo __('app.login.login_text') ?></div>
+    </div>
+    <!--begin::Form-->
+    <form method="POST" class="form" id="login-form" action="/app/public/login" data-js="LoginForm">
+        <?php $this->insert("inc/security/csrf_input", compact('csrf')); ?>
+
+        <div class="fv-row mb-10">
+            <label class="form-label fs-6 fw-bold text-dark"><?php echo __('app.login.user') ?></label>
+            <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="text" name="login" required autocomplete="off" tabindex="1" />
+        </div>
+
+        <div class="fv-row mb-10">
+            <div class="d-flex flex-stack mb-2">
+                <label class="form-label fw-bold text-dark fs-6 mb-0"><?php echo __('app.login.password') ?></label>
+                <a href="javascript:;" class="link-primary fs-7 fw-lighter text-dark" id="kt_login_forgot"><?php echo __('app.login.forgot') ?></a>
+            </div>
+
+            <div class="input-icon-container">
+                <a href="javascript:;" class="input-icon show-password"><i class="ki-outline ki-eye text-dark show-icon"></i><i class="ki-outline ki-eye-slash text-dark hide-icon d-none"></i></a>
+                <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="password" name="password" required autocomplete="off" tabindex="2" />
+            </div>
+        </div>
+
+        <!--begin::Action-->
+        <div>
+            <button type="submit" id="kt_login_signin_submit" class="btn btn-primary w-100 rounded"><?php echo __('app.login.access') ?></button>
+        </div>
+        <!--end::Action-->
+    </form>
+    <!--end::Form-->
+</div>
+<!--end::Signin-->
+
+<!--begin::Forgot-->
+<div class="login-form login-forgot d-none">
+    <div class="text-center text-dark mb-10">
+        <a href="/"><img src="/app/img/logo.png?v=2" class="img-fluid mw-200px mw-sm-300px"></a>
+        <h3 class="text-dark fs-1 fw-bold mt-10"><?php echo __('app.login.forgot') ?></h3>
+        <div class="text-dark fs-7 fw-lighter px-10 forgot-step login-step"><?php echo __('app.login.forgot_text') ?></div>
+        <div class="text-dark fs-7 fw-lighter px-10 forgot-step pin-step"><?php echo __('app.login.forgot_pin_text') ?></div>
+        <div class="text-dark fs-7 fw-lighter px-10 forgot-step password-step"><?php echo __('app.login.forgot_password_text') ?></div>
+    </div>
+    <!--begin::Form-->
+    <form method="POST" class="form" id="login-forgot">
+        <div class="forgot-step login-step">
+            <div class="fv-row mb-10">
+                <label class="form-label fs-6 fw-bold text-dark"><?php echo __('app.login.user') ?></label>
+                <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="login" name="login" required autocomplete="off" />
+            </div>
+
+            <?php if (!empty($params['RECAPTCHA_PUBLIC_KEY'])): ?>
+                <div class="fv-row mb-10 recaptcha-field">
+                    <div id="recaptcha-forgot" class="d-flex justify-content-center align-items-center"></div>
+                </div>
+            <?php endif; ?>
+
+            <button type="submit" class="btn btn-primary w-100 rounded mb-3"><?php echo __('app.login.forgot_send') ?></button>
+        </div>
+
+        <div class="forgot-step pin-step">
+            <div class="fv-row mb-10">
+                <label class="form-label fs-6 fw-bold text-dark"><?php echo __('app.login.pin') ?></label>
+                <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="text" name="pin" required autocomplete="off" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 rounded mb-3"><?php echo __('app.login.pin_send') ?></button>
+        </div>
+
+        <div class="forgot-step password-step">
+            <div class="fv-row mb-10">
+                <label class="form-label fw-bold text-dark fs-6"><?php echo __('app.login.password') ?></label>
+
+                <div class="input-icon-container">
+                    <a href="javascript:;" class="input-icon show-password"><i class="las la-eye text-dark show-icon"></i><i class="las la-eye-slash text-dark hide-icon d-none"></i></a>
+                    <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="password" name="password" required autocomplete="off" tabindex="1" />
+                </div>
+            </div>
+
+            <div class="fv-row mb-10">
+                <label class="form-label fw-bold text-dark fs-6"><?php echo __('app.login.repeat_password') ?></label>
+
+                <div class="input-icon-container">
+                    <a href="javascript:;" class="input-icon show-password"><i class="las la-eye text-dark show-icon"></i><i class="las la-eye-slash text-dark hide-icon d-none"></i></a>
+                    <input class="form-control form-control-lg form-control-solid bg-white border-primary rounded" type="password" name="password2" required autocomplete="off" tabindex="2" />
+                </div>
+            </div>
+
+            <button type="submit" id="kt_login_forogt_submit" class="btn btn-primary w-100 rounded mb-3"><?php echo __('app.login.password_send') ?></button>
+        </div>
+
+        <div>
+            <button type="button" id="kt_login_forgot_cancel" class="btn btn-outline btn-outline-primary w-100 rounded"><?php echo __('app.login.access_my_user') ?></button>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
+<!--end::Forgot-->

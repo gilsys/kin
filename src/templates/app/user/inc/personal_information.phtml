@@ -1,0 +1,90 @@
+<div class="col-md-6">
+    <label class="col-form-label"><?php echo __('app.user.avatar') ?></label>
+    <div>
+        <div class="image-input image-input-outline" id="avatar-image-holder" data-kt-image-input="true">
+            <div class="image-input-wrapper w-125px h-125px"></div>
+            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="<?php echo __('app.common.form.select_image') ?>">
+                <i class="bi bi-pencil-fill fs-7"></i>
+                <input type="file" name="avatar" accept="image/*" />
+            </label>
+            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="<?php echo __('app.common.form.remove_image') ?>">
+                <i class="bi bi-x fs-2"></i>
+            </span>
+        </div>
+        <div class="form-text"><?php echo __('app.common.media_formats') ?></div>
+    </div>
+</div>
+<?php if (!empty($showAdminFields) && empty($data['id'])) : ?>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col">
+                <label class="col-form-label required"><?php echo __('app.user.nickname') ?></label>
+                <div>
+                    <input type="text" class="form-control" placeholder="<?php echo __('app.user.nickname') ?>" name="nickname" required maxlength="45" autocomplete="off" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="col-form-label" for="send_email_password"><?php echo __('app.user.email_password') ?></label>
+                <div class="d-flex align-items-center">
+                    <div class="form-check form-check-solid form-switch">
+                        <input class="form-check-input w-45px h-30px" type="checkbox" id="send_email_password" name="send_email_password" value="<?php echo App\Constant\UserStatus::Validated ?>" />
+                    </div>
+                    <?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('app.user.email_password_text')]); ?>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="col-form-label required"><?php echo __('app.user.password') ?></label>
+                <div class="input-icon-container">
+                    <a href="javascript:;" class="input-icon show-password"><i class="las la-eye text-white show-icon text-secondary"></i><i class="las la-eye-slash text-white hide-icon d-none text-secondary"></i></a>
+                    <input type="password" class="form-control" placeholder="<?php echo __('app.user.password') ?>" name="password" autocomplete="off" required maxlength="100" />
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-lg-6">
+        <label class="col-form-label required"><?php echo __('app.user.name') ?></label>
+        <div>
+            <input type="text" class="form-control" placeholder="<?php echo __('app.user.name') ?>" name="personal_information[name]" required maxlength="100" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <label class="col-form-label required"><?php echo __('app.user.surnames') ?></label>
+        <div>
+            <input type="text" class="form-control" placeholder="<?php echo __('app.user.surnames') ?>" name="personal_information[surnames]" required maxlength="100" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <label class="col-form-label required"><?php echo __('app.user.email') ?></label>
+        <div>
+            <input type="email" class="form-control" placeholder="<?php echo __('app.user.email') ?>" name="personal_information[email]" required maxlength="100" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <label class="col-form-label required"><?php echo __('app.user.phone1') ?></label>
+        <div>
+            <input type="number" class="form-control" placeholder="<?php echo __('app.user.phone1') ?>" name="personal_information[phone1]" required minlength="6" maxlength="20" />
+        </div>
+    </div>
+    <?php if (!empty($showAdminFields)) : ?>
+        <div class="col-lg-6">
+            <label class="col-form-label" for="user_status_id"><?php echo __('app.common.status') ?></label>
+            <div class="d-flex align-items-center">
+                <div class="form-check form-check-solid form-switch">
+                    <input class="form-check-input w-45px h-30px" type="checkbox" id="user_status_id" name="user_status_id" value="<?php echo App\Constant\UserStatus::Validated ?>" />
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    <div class="col-lg-6">
+        <label class="col-form-label required"><?php echo __('app.common.color') ?></label>
+        <div>
+            <input type="text" required class="form-control jscolor color-btn-text" name="color">
+        </div>
+    </div>
+</div>

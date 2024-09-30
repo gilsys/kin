@@ -1,0 +1,154 @@
+<div class="d-none form-container">
+    <form id="mt-user-form" class="data-form" data-js="UserForm" action="/app/<?php echo $entity ?>/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" enctype="multipart/form-data">
+        <?php
+        $this->insert(
+            "inc/common/subheader",
+            [
+                'entity' => $entity,
+                'btnBack' => '/app/' . $entity . 's',
+                'btnSave' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+            ]
+        );
+        ?>
+        <?php if (!empty($data['id'])) : ?>
+            <?php $this->insert("user/inc/header_info", ['userId' => $data['id'], 'menu' => $menu, 'entity' => $entity]); ?>
+            <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+        <?php endif; ?>
+
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo __('app.common.main_information') ?></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <?php $this->insert("user/inc/personal_information", ['showAdminFields' => true, 'data' => $data]); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo __('app.user.profile') ?></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="col-form-label required"><?php echo __('app.user.profile') ?></label>
+                        <div>
+                            <select name="user_profile_id" data-control="select2" data-placeholder="<?php __ss('app.user.select_profile') ?>" class="form-select kt-select2" required>
+                                <?php foreach ($data['userProfiles'] as $profile) : ?>
+                                    <option value="<?php echo $profile['id'] ?>" data-profile-color="<?php echo $profile['color'] ?>">
+                                        <?php echo __('table.user_profile.' . $profile['id']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php if (!empty($data['id'])) : ?>
+            <?php $this->insert("inc/common/dates_info", ['fields' => ['date-last-login' => __('app.user.last_access')]]) ?>
+        <?php endif; ?>
+    </form>
+    <?php if (!empty($data['id'])) : ?>
+        <form id="mt-user-auth-form" class="d-none data-form" action="/app/<?php echo $entity ?>/update-auth" method="post" autocomplete="off">
+            <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+            <div class="card card-custom card-sticky">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3><?php echo __('app.user.auth_data') ?></h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label class="col-form-label required"><?php echo __('app.user.nickname') ?></label>
+                            <div>
+                                <input type="text" disabled class="form-control" placeholder="<?php echo __('app.user.nickname') ?>" name="nickname" required maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 change-password-fields d-none">
+                            <label class="col-form-label required"><?php echo __('app.user.password_new') ?></label>
+                            <div class="input-icon-container">
+                                <a href="javascript:;" class="input-icon show-password"><i class="las la-eye text-white show-icon text-secondary"></i><i class="las la-eye-slash text-white hide-icon d-none text-secondary"></i></a>
+                                <input type="password" class="form-control" placeholder="<?php echo __('app.user.password_new') ?>" name="password" autocomplete="off" required maxlength="100" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end px-0 mt-10">
+                        <button class="btn btn-secondary btn-sm send-email-password me-2 d-none" type="button" data-text="<?php echo __('app.user.email_password_text') ?>"><?php echo __('app.user.email_password') ?></button>
+                        <button id="auth-data-change" class="btn btn-primary btn-sm" type="button"><?php echo __('app.user.auth_data_change') ?></button>
+                        <button class="btn btn-primary btn-sm change-password-fields d-none" type="submit"><?php echo __('app.save.save') ?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form id="mt-user-delete-form" class="d-none data-form" action="/app/<?php echo $entity ?>/status/<?php echo $data['id'] ?>/<?php echo App\Constant\UserStatus::Deleted ?>" method="post" autocomplete="off">
+            <div class="card card-custom card-sticky">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3><?php echo __('app.user.delete') ?></h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="my-4">
+                            <div class="text-muted"><?php echo __('app.user.delete_confirm_text', [__('table.user_status.' . App\Constant\UserStatus::Deleted)]) ?></div>
+                        </div>
+                        <div class="my-4">
+                            <div class="form-item">
+                                <label class="form-check form-check-primary form-check-custom">
+                                    <input class="form-check-input border-secondary" type="checkbox" value="" name="delete_confirm" required />
+                                    <span class="form-check-label fw-bolder">
+                                        <?php echo __('app.user.delete_confirm') ?>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end px-0 mt-10">
+                        <button class="btn btn-danger btn-sm" type="submit"><?php echo __('app.user.delete_change') ?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form id="mt-user-restore-form" class="d-none data-form" action="/app/<?php echo $entity ?>/status/<?php echo $data['id'] ?>/<?php echo App\Constant\UserStatus::Disabled ?>" method="post" autocomplete="off">
+            <div class="card card-custom card-sticky">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3><?php echo __('app.user.restore') ?></h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="my-4">
+                            <div class="text-muted"><?php echo __('app.user.restore_confirm_text', [__('table.user_status.' . App\Constant\UserStatus::Deleted), __('table.user_status.' . App\Constant\UserStatus::Disabled)]) ?></div>
+                        </div>
+                        <div class="my-4">
+                            <div class="form-item">
+                                <label class="form-check form-check-primary form-check-custom">
+                                    <input class="form-check-input border-secondary" type="checkbox" value="" name="restore_confirm" required />
+                                    <span class="form-check-label fw-bolder">
+                                        <?php echo __('app.user.restore_confirm') ?>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end px-0 mt-10">
+                        <button class="btn btn-success btn-sm" type="submit"><?php echo __('app.user.restore_change') ?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <?php endif; ?>
+</div>

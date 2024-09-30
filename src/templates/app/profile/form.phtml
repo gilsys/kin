@@ -1,0 +1,62 @@
+<form id="mt-profile-form" class="d-none data-form" data-js="ProfileForm" action="/app/profile/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" enctype="multipart/form-data">
+    
+    <?php
+    $this->insert("inc/common/subheader",
+            [             
+                'btnSaveSimple' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+    ]);
+    ?>
+    <input type="hidden" name="id" value="<?php echo $data['id'] ?>"/>
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.user.personal_information') ?></h2>
+            </div>            
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <?php $this->insert("user/inc/personal_information", ['showAdminFields' => false, 'data' => $data]); ?>
+            </div>
+        </div>
+    </div>       
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title m-0">
+                <h3><?php echo __('app.user.auth_data') ?></h3>
+            </div>            
+        </div>
+      
+        <div class="card-body">
+            <div class="row">
+                <label class="col-form-label required"><?php echo __('app.user.nickname') ?></label>                
+                <div>
+                    <input type="text" disabled class="form-control" placeholder="<?php echo __('app.user.nickname') ?>" name="nickname" required maxlength="100" />
+                </div>                            
+            </div>
+            <div class="row">
+                <label class="col-form-label required"><?php echo __('app.user.password_current') ?></label>                
+                <div class="change-password-fields">
+                    <div class="input-icon-container">
+                        <a href="javascript:;" class="change-password-fields input-icon show-password d-none"><i class="ki-outline ki-eye show-icon text-secondary"></i><i class="ki-outline ki-eye-slash text-white hide-icon d-none text-secondary"></i></a>
+                        <input type="password" disabled class="form-control" placeholder="<?php echo __('app.user.password_current') ?>" name="password_current" autocomplete="off" required maxlength="100" />
+                    </div>
+                </div>
+                <div class="change-password-fields d-none">
+                    <label class="col-form-label required"><?php echo __('app.user.password_new') ?></label>                
+                    <div>
+                        <div class="input-icon-container">
+                            <a href="javascript:;" class="input-icon show-password"><i class="las la-eye text-white show-icon text-secondary"></i><i class="las la-eye-slash text-white hide-icon d-none text-secondary"></i></a>
+                            <input type="password" class="form-control" placeholder="<?php echo __('app.user.password_new') ?>" name="password" autocomplete="off" required maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            <div class="card-footer d-flex justify-content-end px-0 mt-10">
+                <button id="auth-data-change" class="btn btn-primary btn rounded" type="button" ><?php echo __('app.user.auth_data_change') ?></button>
+            </div>
+        </div>
+    </div>
+</form>

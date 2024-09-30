@@ -1,0 +1,25 @@
+<?php if (!empty($messages)) : ?>
+    <!-- BEGIN FLASH MESSAGES -->
+    <?php /* ?>
+    <?php foreach ($messages as $type => $submessages) : ?>
+        <div class="mt-2 mb-5 alert alert-<?php echo $type ?> alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php foreach ($submessages as $submessage) : ?>
+                <?php echo $submessage ?>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+    <?php */ ?>
+
+    <script defer type="text/javascript">
+        window.addEventListener("DOMContentLoaded", function () {
+    <?php foreach ($messages as $type => $submessages) : ?>
+        <?php foreach ($submessages as $submessage) : ?>
+                    window.show<?php echo ucfirst(strtolower($type)) ?>(``, `<?php echo $submessage ?>`);
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+        });
+    </script>
+
+    <!-- END FLASH MESSAGES -->
+<?php endif; ?>

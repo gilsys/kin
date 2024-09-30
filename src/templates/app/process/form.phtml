@@ -1,0 +1,138 @@
+<div class="d-none form-container">
+    <form id="mt-process-form" class="data-form" data-js="ProcessForm" action="/app/process/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" <?php echo isset($data['clientId']) ? 'data-client-id = ' . $data['clientId'] : '' ?> method="post" autocomplete="off" data-information-prefix="">
+        <?php
+        $this->insert(
+            "inc/common/subheader",
+            [
+                'entity' => 'process',
+                'btnBack' => '/app/processes',
+                'btnSave' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+            ]
+        );
+        ?>
+        <?php if (!empty($data['id'])) : ?>
+            <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+        <?php endif; ?>
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2><?php echo __('app.common.main_information') ?></h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col md-6">
+                        <label class="col-form-label required"><?php echo __('app.process.concept') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.process.concept') ?>" name="name" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.type') ?></label>
+                        <div>
+                            <select name="process_type_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_type') ?>" class="form-select kt-select2 select2-badge" required>
+                                <option disabled selected value> <?php echo __('app.common.select_type') ?> </option>
+                                <?php foreach ($data['processTypes'] as $processType) : ?>
+                                    <option data-badge-color="<?php echo $processType['color'] ?>" value="<?php echo $processType['id'] ?>">
+                                        <?php echo $processType['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.status') ?></label>
+                        <div>
+                            <select name="process_status_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_status') ?>" class="form-select kt-select2 select2-badge" required>
+                                <option disabled selected value> <?php echo __('app.common.select_status') ?> </option>
+                                <?php foreach ($data['processStatuses'] as $processStatus) : ?>
+                                    <option data-badge-color="<?php echo $processStatus['color'] ?>" value="<?php echo $processStatus['id'] ?>">
+                                        <?php echo $processStatus['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.client') ?></label>
+                        <div>
+                            <select name="client_id" data-placeholder="<?php __ss('app.client') ?>" class="form-select kt-select2" required>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label"><?php echo __('app.common.description') ?></label>
+                        <div>
+                            <textarea class="form-control" name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.date_start.short') ?></label>
+                        <div>
+                            <input type="text" class="form-control custom-datetimepicker custom-icon" readonly name="date_start" placeholder="<?php echo __('app.common.date_start.short') ?>" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.date_end.short') ?></label>
+                        <div>
+                            <input type="text" class="form-control custom-datetimepicker custom-icon" readonly name="date_end" placeholder="<?php echo __('app.common.date_end.short') ?>" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <?php if (!empty($data['id'])) : ?>
+        <?php $this->insert("task/list", ['data' => $data, 'processId' => $processId]) ?>
+
+        <div class="card card-custom card-stretch form-extra-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3>
+                        <?php echo __('app.common.files') ?>
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div id="file-uploader" class="col"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-extra-card">
+            <?php $this->insert("inc/common/dates_info") ?>
+        </div>
+
+        <div class="card card-custom card-sticky form-extra-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo __('app.common.creator') ?></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.author') ?></label>
+                        <div>
+                            <input type="text" class="form-control" disabled placeholder="<?php echo __('app.common.author') ?>" name="fullname" required maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php $this->insert("inc/common/logs", ['entity' => 'process', 'entityId' => $data['id']]) ?>
+    <?php endif; ?>
+</div>

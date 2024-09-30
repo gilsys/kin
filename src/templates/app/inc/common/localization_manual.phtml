@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-6">
+        <label class="col-form-label"><?php echo __('app.common.address') ?></label>
+        <div>
+            <input name="information[address]" type="text" class="form-control" placeholder="<?php echo __('app.common.address') ?>" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label class="col-form-label"><?php echo __('app.common.city') ?></label>
+        <div>
+            <input name="information[city]" type="text" placeholder="<?php echo __('app.common.city') ?>" class="form-control" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label class="col-form-label"><?php echo __('app.common.province') ?></label>
+        <div>
+            <input name="information[province]" type="text" class="form-control" placeholder="<?php echo __('app.common.province') ?>" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label class="col-form-label"><?php echo __('app.common.postalcode') ?></label>
+        <div>
+            <input name="information[postalcode]" type="number" class="form-control" maxlength="12" placeholder="<?php echo __('app.common.postalcode') ?>" />
+        </div>
+    </div>
+
+    <!-- Se fuerza el selector de paises a ES y se oculta-->
+    <div class="col-md-6 d-none">
+        <label class="col-form-label required"><?php echo __('app.common.country') ?></label>
+        <div>
+            <select name="information[country_id]" data-control="select2" data-placeholder="<?php __ss('app.common.select_country') ?>" class="form-select kt-select2" required>
+                <option selected value="<?php echo $countries[0]['id'] ?>"> <?php echo $countries[0]['name'] ?> </option>
+                <!--
+                <?php /*foreach ($countries as $country) : ?>
+                    <option value="<?php echo $country['id'] ?>">
+                        <?php echo $country['name'] ?>
+                    </option>
+                    <?php endforeach; */ ?>>
+                -->
+            </select>
+        </div>
+    </div>
+</div>

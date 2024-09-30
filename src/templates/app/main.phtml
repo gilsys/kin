@@ -1,0 +1,78 @@
+<?php $this->insert("inc/header/head", get_defined_vars()); ?>
+
+<body id="kt_app_body" class="app-default profile-<?php echo $_SESSION['user']['user_profile_id'] ?>" data-profile-id="<?php echo $_SESSION['user']['user_profile_id'] ?>" data-user-id="<?php echo $_SESSION['user']['id'] ?>" data- data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-sidebar-stacked="true" data-kt-app-sidebar-secondary-enabled="true">
+    <!--begin::Main-->
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <!--begin::Page-->
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <!--begin::Header-->
+            <div id="kt_app_header" class="app-header">
+                <!--begin::Header container-->
+                <div class="app-container container-fluid d-flex align-items-stretch justify-content-between" id="kt_app_header_container">
+                    <!--begin::Header logo-->
+                    <div class="app-header-logo d-flex align-items-center me-lg-10">
+                        <!--begin::Mobile toggle-->
+                        <div class="btn btn-icon btn-color-gray-500 btn-active-color-primary w-35px h-35px ms-n2 me-2 d-flex d-lg-none" id="kt_app_sidebar_mobile_toggle">
+                            <i class="ki-outline ki-abstract-14 fs-1"></i>
+                        </div>
+                        <!--end::Mobile toggle-->
+                        <!--begin::Logo image-->
+                        <a href="#">
+                            <img alt="Logo asc" src="/app/img/logo.png" class=" ms-lg-n3 me-lg-2 w-80px" />
+                        </a>
+                        <!--end::Logo image-->
+                    </div>
+                    <!--end::Header logo-->
+                    <!--begin::Header wrapper-->
+                    <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+                        <!--begin::Menu wrapper-->
+                        <div class="d-flex align-items-stretch" id="kt_app_header_menu_wrapper">
+                            <?php if ($_SESSION['user']['user_profile_id'] == \App\Constant\UserProfile::Administrator) : ?>
+                                <?php $this->insert("inc/header/menu", compact('menu')); ?>
+                            <?php endif; ?>
+                        </div>
+                        <!--end::Menu wrapper-->
+                        <?php $this->insert("inc/header/navbar", compact('menu')); ?>
+                    </div>
+                    <!--end::Header wrapper-->
+                </div>
+                <!--end::Header container-->
+            </div>
+            <!--end::Header-->
+            <!--begin::Wrapper-->
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <?php $this->insert("inc/header/sidebar", compact('menu')); ?>
+                <!--begin::Main-->
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <!--begin::Content wrapper-->
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <!--begin::Content-->
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="app-container container-fluid">
+                                <?php $this->insert("inc/common/messages", compact('messages')); ?>
+                                <?php if (!empty($messageInline)) : ?>
+                                    <?php $this->insert("inc/common/messages_inline", compact('messageInline')); ?>
+                                <?php endif; ?>
+                                <?php $this->insert($view, get_defined_vars()); ?>
+                            </div>
+                            <!--end::Content container-->
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Footer-->
+                        <?php $this->insert("inc/footer/footer_menu"); ?>
+                        <!--end::Footer-->
+                    </div>
+                    <!--end::Content Wrapper-->
+                </div>
+                <!--end::Main-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::Root-->
+    <?php $this->insert("inc/footer/scroll_top"); ?>
+    <?php $this->insert("inc/common/media_viewer"); ?>
+    <?php $this->insert("inc/footer/footer", get_defined_vars()); ?>

@@ -1,0 +1,37 @@
+<h2><?= ucfirst($this->e(end($breadcumb))) ?></h2>        
+<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0">
+    <li class="breadcrumb-item text-muted">
+        <a href="/" class="text-muted text-hover-primary"><?php __ss('app.home'); ?></a>
+    </li>
+    <li class="breadcrumb-item px-2">
+        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+    </li>
+    <?php if (!empty($submenus)): ?>        
+        <div class="section-dropdown dropdown project-dropdown border-1 border-primary mx-2" >
+            <button class="btn btn-sm btn-light-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <?= ucfirst($this->e(array_shift($breadcumb))) ?> 
+                <i class="la la-angle-down ms-1"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end p-3">         
+                <?php foreach ($submenus as $submenu) : ?>
+                    <li><a class="dropdown-item py-3 <?php App\Util\CommonUtils::checkActive($menu, $submenu['section'], 'active') ?>" href="<?php echo $submenu['url'] ?>"><?= ucfirst($this->e($submenu['title'])) ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <li class="breadcrumb-item px-2">
+            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+        </li>
+    <?php endif; ?>
+</li>
+<?php while (count($breadcumb) > 1): ?>     
+    <li class="breadcrumb-item text-muted px-0"><?= ucfirst($this->e(array_shift($breadcumb))) ?></li>
+    <li class="breadcrumb-item px-2">
+        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+    </li>
+<?php endwhile; ?>
+<li class="breadcrumb-item text-dark px-0"><?= ucfirst($this->e(array_shift($breadcumb))) ?></li>
+<li class="breadcrumb-item px-2 d-none">
+    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+</li>
+<li id="breadcumb-name" class="breadcrumb-item text-dark px-0 d-none"></li>
+</ul>

@@ -1,0 +1,9 @@
+<?php 
+//unset($_SESSION['i18n']['missing_translations']);
+if (!empty($_SESSION['i18n']['backoffice']['missing_translations'])): ?>
+    <script>
+    <?php foreach ($_SESSION['i18n']['backoffice']['missing_translations'] as $key => $value) : ?>
+            console.error('Missing translation: <?php echo addslashes($key) ?> - <?php echo addslashes($value) ?>');
+    <?php endforeach; ?>
+    </script>
+<?php endif; ?>

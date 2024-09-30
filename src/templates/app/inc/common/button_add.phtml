@@ -1,0 +1,6 @@
+<?php if (isset($btnAdd) && $btnAdd !== false) : ?>
+    <a href="/app/<?= $entity ?>/form<?php echo (!empty($btnAddParam)) ? '/' . $btnAddParam : '' ?>" class="btn btn-primary ms-3 btn-add">
+        <i class="ki-outline ki-plus fs-2"></i>
+        <?= $this->e(__('app.common.form.add', lcfirst(__('app.entity.' . App\Util\CommonUtils::camelCaseToUnderscore($entity))))) ?>
+    </a>
+<?php endif; ?>

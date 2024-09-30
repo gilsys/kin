@@ -1,0 +1,22 @@
+<?php $this->start('filters') ?>
+<div class="col-md-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.date_created') ?></label>
+    <div class="custom-datepicker input-daterange input-group">
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter mr-0 kt-input border-radius-right-0" id="datapicker-range-from" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_created" />
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter ml-0 kt-input border-radius-left-0" id="datapicker-range-to" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_created" />
+    </div>
+</div>
+<?php $this->stop() ?>
+
+
+<?php $this->start('columns') ?>
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
+<th data-priority="1"><?php echo __('app.common.log.message') ?></th>
+<th data-priority="1"><?php echo __('app.common.log.user') ?></th>
+<th data-priority="2"><?php echo __('app.common.date') ?></th>
+<th></th>
+<?php $this->stop() ?>
+
+<div id="mt-log-form" data-entity="<?php echo $entity ?>" data-entity-id="<?php echo $entityId ?>">
+    <?php $this->insert('/inc/common/datatable', ['entity' => 'log', 'title' => __('app.log.history'), 'filters' => $this->section('filters'), 'columns' => $this->section('columns')]) ?>
+</div>

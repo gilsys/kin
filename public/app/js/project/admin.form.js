@@ -1,0 +1,3 @@
+class AdminForm extends UserForm {
+
+}

@@ -1,0 +1,57 @@
+<form id="mt-process_type-form" class="d-none data-form" data-js="ProcessTypeForm" action="/app/process_type/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" data-information-prefix="">
+    <?php
+    $this->insert(
+        "inc/common/subheader",
+        [
+            'entity' => 'process_type',
+            'btnBack' => '/app/process_types',
+            'btnSave' => true,
+            'menu' => $menu,
+            'breadcumb' => $breadcumb
+        ]
+    );
+    ?>
+    <?php if (!empty($data['id'])) : ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php endif; ?>
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.color') ?></label>
+                    <div>
+                        <input type="text" required class="form-control jscolor color-btn-text" name="color">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.process_type.process_tasks') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div>
+                    <?php $this->insert("process_type/inc/task_repeater", ['taskTypes' => $data['taskTypes']]); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php if (!empty($data['id'])) : ?>
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+</form>
