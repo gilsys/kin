@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="../">        
+        <meta charset="utf-8" />
+        <title>Error <?php echo $exception->getCode(); ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">	
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
+        <link href="/app/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />        
+        <link href="/app/css/project/error.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="d-flex flex-column flex-root">
+            <div class="d-flex flex-column flex-column-fluid">
+                <div class="d-flex flex-column flex-column-fluid text-center p-10 py-lg-15">
+                    <a href="/" class="mb-10 pt-lg-10">
+                        <img src="/app/img/logo.png" class="img-fluid h-200px">
+                    </a>
+                    <div class="pt-lg-10 mb-10">
+                        <h1 class="fw-bolder fs-2qx text-gray-800 mb-10"><?php echo $exception->getCode(); ?></h1>
+                        <div class="fw-bold fs-3 text-muted mb-15">
+                            <?php if ($displayErrorDetails): ?>
+                                <?php echo $exception->getMessage(); ?> 
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($displayErrorDetails): ?>                                
+                            <div class="fw-bold fs-3 text-muted mb-15">
+                                <?php echo $exception->getFile() ?>@<?php echo $exception->getLine() ?><br>
+                                    <pre class="mt-5 text-left"><?php echo $exception->getTraceAsString(); ?></pre>
+                            </div>
+                        <?php endif; ?>
+                        <div class="text-center">
+                            <a href="/" class="btn btn-primary btn-lg ms-3"><?php echo __('app.common.go_home') ?></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</html>

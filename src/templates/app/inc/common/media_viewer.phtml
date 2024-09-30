@@ -1,0 +1,17 @@
+<div class="modal fade" id="media-viewer" aria-hidden="true" aria-labelledby="media-viewer" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-fullscreen-md-down2 modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-none d-sm-flex">
+                <h5 class="modal-title" id="media-viewer-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" class="img-fluid" id="media-viewer-image">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm rounded-pill" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="la la-angle-left"></i><?php echo __('app.common.close') ?></button>
+                <button class="btn btn-primary btn-sm rounded-pill" id="media-viewer-download"><?php echo __('app.common.download') ?></button>
+            </div>
+        </div>
+    </div>
+</div>

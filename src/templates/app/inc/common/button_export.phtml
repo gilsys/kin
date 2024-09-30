@@ -1,0 +1,15 @@
+<div class="dropdown project-dropdown" data-export-datatable="<?= $datatableId ?>">
+    <button class="btn btn-light-primary btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="ki-outline ki-exit-up fs-2"></i>
+        <?php echo __('app.common.export') ?>
+        <i class="ki-outline ki-down fs-2 ms-1"></i>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end border-1 border-secondary p-3">
+        <li><span class="dropdown-item py-3 text-muted bg-white"><?php echo __('app.common.options') ?>:</span></li>
+        <li><a class="dropdown-item py-3" href="javascript:;" data-export-type="print"><i class="ki-outline ki-printer pe-1"></i> <?php echo __('app.common.export_print') ?></a></li>
+        <li><a class="dropdown-item py-3" href="javascript:;" data-export-type="copy"><i class="ki-outline ki-copy pe-1"></i> <?php echo __('app.common.export_copy') ?></a></li>
+        <li><a class="dropdown-item py-3" href="javascript:;" data-export-type="excel"><i class="las la-file-excel pe-1"></i> <?php echo __('app.common.export_excel') ?></a></li>
+        <li><a class="dropdown-item py-3" href="javascript:;" data-export-type="csv"><i class="ki-outline ki-file-sheet pe-1"></i> <?php echo __('app.common.export_csv') ?></a></li>
+    </ul>
+</div>

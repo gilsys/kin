@@ -1,0 +1,143 @@
+<div class="d-none form-container">
+    <form id="mt-task-form" class="data-form" data-js="TaskForm" action="/app/task/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" <?php echo isset($data['processId']) ? 'data-process-id = ' . $data['processId'] : '' ?> method="post" autocomplete="off" data-information-prefix="">
+        <?php
+        $this->insert(
+            "inc/common/subheader",
+            [
+                'entity' => 'task',
+                'btnBack' => '/app/tasks',
+                'btnSave' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+            ]
+        );
+        ?>
+        <?php if (!empty($data['id'])) : ?>
+            <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+        <?php endif; ?>
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h2><?php echo __('app.common.main_information') ?></h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col md-6">
+                        <label class="col-form-label required"><?php echo __('app.tags') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.tags') ?>" name="tags" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.type') ?></label>
+                        <div>
+                            <select name="task_type_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_type') ?>" class="form-select kt-select2 select2-badge" required>
+                                <option disabled selected value> <?php echo __('app.common.select_type') ?> </option>
+                                <?php foreach ($data['taskTypes'] as $taskType) : ?>
+                                    <option data-badge-color="<?php echo $taskType['color'] ?>" value="<?php echo $taskType['id'] ?>">
+                                        <?php echo $taskType['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.status') ?></label>
+                        <div>
+                            <select name="task_status_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_status') ?>" class="form-select kt-select2 select2-badge" required>
+                                <option disabled selected value> <?php echo __('app.common.select_status') ?> </option>
+                                <?php foreach ($data['taskStatuses'] as $taskStatus) : ?>
+                                    <option data-badge-color="<?php echo $taskStatus['color'] ?>" value="<?php echo $taskStatus['id'] ?>">
+                                        <?php echo $taskStatus['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.process') ?></label>
+                        <div>
+                            <select name="process_id" data-control="select2" data-placeholder="<?php __ss('app.process') ?>" class="form-select kt-select2" required>
+                                <option disabled selected value> <?php echo __('app.process.select_process') ?> </option>
+                                <?php foreach ($data['processes'] as $process) : ?>
+                                    <option value="<?php echo $process['id'] ?>">
+                                        <?php echo $process['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row profile-allow profile-A">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.extra') ?></label>
+                        <div class="form-check form-check-solid form-switch">
+                            <input class="form-check-input w-45px h-30px" type="checkbox" name="task_is_extra" value="1" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 payment-container d-none">
+                        <label class="col-form-label payment-label"><?php echo __('app.task.payment_status') ?></label>
+                        <div>
+                            <select name="payment_status_id" data-control="select2" data-placeholder="<?php __ss('app.common.select_status') ?>" class="form-select kt-select2 select2-badge">
+                                <option disabled selected value> <?php echo __('app.common.select_status') ?> </option>
+                                <?php foreach ($data['taskPaymentStatuses'] as $taskPaymentStatus) : ?>
+                                    <option data-badge-color="<?php echo $taskPaymentStatus['color'] ?>" value="<?php echo $taskPaymentStatus['id'] ?>">
+                                        <?php echo $taskPaymentStatus['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.task.date_task.short') ?></label>
+                        <div>
+                            <input type="text" class="form-control custom-datetimepicker custom-icon" name="date_task" placeholder="<?php echo __('app.task.date_task.short') ?>" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.hours') ?></label>
+                        <div>
+                            <input type="number" class="form-control" placeholder="<?php echo __('app.common.hours') ?>" name="hours" maxlength="2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="col-form-label"><?php echo __('app.common.details') ?></label>
+                        <div>
+                            <textarea class="form-control" name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php if (!empty($data['id'])) : ?>
+            <?php $this->insert("inc/common/dates_info") ?>
+            <div class="card card-custom card-sticky">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3><?php echo __('app.common.creator') ?></h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-form-label"><?php echo __('app.common.author') ?></label>
+                            <div>
+                                <input type="text" class="form-control" disabled placeholder="<?php echo __('app.common.author') ?>" name="fullname" required maxlength="100" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+    </form>
+    <?php if (!empty($data['id'])) : ?>
+        <?php $this->insert("inc/common/logs", ['entity' => 'task', 'entityId' => $data['id']]) ?>
+    <?php endif; ?>
+</div>

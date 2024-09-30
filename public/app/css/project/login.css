@@ -1,0 +1,42 @@
+.login.login-1 .login-form{
+    width: 100%;
+    max-width: 450px;
+}
+
+@media (max-width: 991px) {
+    .login-aside {
+        display: none !important;
+    }
+}
+
+@media (min-width:992px) {
+    .login.login-1 .login-aside {
+        width: 100%;
+        max-width: 600px
+    }
+    .login.login-1 .login-form {
+        width: 100%;
+        max-width: 400px
+    }
+}
+
+@media (min-width:992px) and (max-width:1399.98px) {
+    .login.login-1 .login-aside {
+        width: 100%;
+        max-width: 400px
+    }
+}
+
+@media (max-width:991.98px) {
+    .login.login-1 .login-form {
+        width: 100%;
+        max-width: 350px
+    }
+}
+
+@media (max-width:575.98px) {
+    .login.login-1 .login-form {
+        width: 100%;
+        max-width: 100%
+    }
+}

@@ -1,0 +1,56 @@
+<div class="phone-repeater generic-repeater mb-10">
+    <div class="form-group">
+        <div data-repeater-list="information[phone]">
+            <div data-repeater-item>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.phone') ?></label>                
+                        <div class="pe-lg-10">
+                            <input type="text" data-rule-digits class="form-control mb-3 mb-lg-0" placeholder="<?php echo __('app.common.phone') ?>" name="phone" minlength="6" maxlength="20" />
+                        </div>  
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.concept') ?></label>                
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control mb-3 mb-lg-0" placeholder="<?php echo __('app.common.name') ?>" name="name" />
+                            </div> 
+                            <div class="col-lg-2 text-end">
+                                <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-1"><i class="la la-trash-o"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" data-repeater-create class="btn btn-sm btn-light-primary"><i class="la la-plus"></i><?php echo __('app.common.phone') ?></a>
+    </div>
+</div>
+<div class="email-repeater generic-repeater">
+    <div class="form-group">
+        <div data-repeater-list="information[email]">
+            <div data-repeater-item>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.email') ?></label>                
+                        <div class="pe-lg-10">
+                            <input type="email" class="form-control mb-3 mb-lg-0" placeholder="<?php echo __('app.common.email') ?>" name="email" maxlength="100" />
+                        </div> 
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label"><?php echo __('app.common.concept') ?></label>                
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control mb-3 mb-lg-0" placeholder="<?php echo __('app.common.name') ?>" name="name" />
+                            </div>                        
+                            <div class="col-lg-2 text-end">
+                                <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-1"><i class="la la-trash-o"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" data-repeater-create class="btn btn-sm btn-light-primary"><i class="la la-plus"></i><?php echo __('app.common.email') ?></a>
+    </div>                        
+</div>

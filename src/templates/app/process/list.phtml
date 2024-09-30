@@ -1,0 +1,86 @@
+<?php $this->start('filters') ?>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.client') ?></label>
+    <select data-placeholder="<?php __ss('app.client') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2 kt-input" data-col-name="client_id" data-datatable-select-ajax="/app/client/selector">
+        <option value=""></option>
+    </select>
+</div>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.author') ?></label>
+    <select data-placeholder="<?php __ss('app.common.author') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="creator_user_id">
+        <option value=""></option>
+        <?php foreach ($data['processCreator'] as $creator) : ?>
+            <option value="<?= $creator['id'] ?>">
+                <?= $creator['fullname'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.type') ?></label>
+    <select data-placeholder="<?php __ss('app.common.type') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="process_type_id">
+        <option value=""></option>
+        <?php foreach ($data['processTypes'] as $type) : ?>
+            <option value="<?= $type['id'] ?>">
+                <?= $type['name'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.status') ?></label>
+    <select data-placeholder="<?php __ss('app.common.status') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="process_status_id">
+        <option value=""></option>
+        <?php foreach ($data['processStatuses'] as $status) : ?>
+            <option value="<?= $status['id'] ?>">
+                <?= $status['name'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div class="col-md-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.date_start') ?></label>
+    <div class="custom-datepicker input-daterange input-group">
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter mr-0 kt-input border-radius-right-0" id="datapicker-range-from" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_start" />
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter ml-0 kt-input border-radius-left-0" id="datapicker-range-to" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_start" />
+    </div>
+</div>
+<div class="col-md-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.date_end') ?></label>
+    <div class="custom-datepicker input-daterange input-group">
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter mr-0 kt-input border-radius-right-0" id="datapicker-range-from" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_end" />
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter ml-0 kt-input border-radius-left-0" id="datapicker-range-to" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_end" />
+    </div>
+</div>
+<div class="col-md-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.date_created') ?></label>
+    <div class="custom-datepicker input-daterange input-group">
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter mr-0 kt-input border-radius-right-0" id="datapicker-range-from" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_created" />
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter ml-0 kt-input border-radius-left-0" id="datapicker-range-to" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_created" />
+    </div>
+</div>
+
+
+<?php $this->stop() ?>
+
+
+<?php $this->start('columns') ?>
+<!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
+<th data-priority="1"><?php echo __('app.common.id') ?></th>
+<th data-priority="1"><?= __ss('app.common.name') ?></th>
+<th data-priority="2"><?= __ss('app.client.entity') ?></th>
+<th data-priority="4"><?= __ss('app.common.type') ?></th>
+<th data-priority="3"><?= __ss('app.common.status') ?></th>
+<th data-priority="3"><?= __ss('app.common.tasks') ?></th>
+<th data-priority="5"><?= __ss('app.common.author') ?></th>
+<th data-priority="4"><?= __ss('app.common.date_start.short') ?></th>
+<th data-priority="4"><?= __ss('app.common.date_end.short') ?></th>
+<th data-priority="6"><?= __ss('app.common.date_created.short') ?></th>
+
+<th></th>
+<th data-priority="1" class="text-center"></th>
+<?php $this->stop() ?>
+
+<?php $this->insert("inc/common/subheader", ['entity' => 'process', 'btnExport' => true, 'btnAdd' => ($_SESSION)['user']['user_profile_id'] == App\Constant\UserProfile::Administrator, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
+<?php $this->insert('inc/common/datatable', ['entity' => 'process', 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>

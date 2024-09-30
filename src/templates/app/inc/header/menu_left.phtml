@@ -1,0 +1,28 @@
+<div class="menu menu-column menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500 fw-bold pt-6" id="#kt_aside_menu" data-kt-menu="true">
+    <?php if ($_SESSION['user']['user_profile_id'] == \App\Constant\UserProfile::Administrator): ?>
+        <div class="profile-allow profile-A menu-item py-2">
+            <a class="menu-link menu-center <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuClients, 'active'); ?>" href="/app/clients" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                <span class="menu-icon me-0">
+                    <i class="las la-user"></i>
+                </span>
+                <span class="menu-title"><?php echo __('app.menu.clients') ?></span>
+            </a>
+        </div>
+        <div class="menu-item py-2">
+            <a class="menu-link menu-center <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuClientType, 'active'); ?>" href="/app/static_lists/<?php echo App\Constant\StaticListTable::ClientType ?>" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                <span class="menu-icon me-0">
+                    <i class="las la-user-cog"></i>
+                </span>
+                <span class="menu-title"><?php echo __('app.common.type') ?></span>
+            </a>
+        </div>
+    <div class="menu-item py-2">
+        <a class="menu-link menu-center <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUsers, 'active'); ?>" href="/app/users" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                <span class="menu-icon me-0">
+                    <i class="las la-user-circle"></i>
+                </span>
+                <span class="menu-title"><?php echo __('app.menu.users') ?></span>
+            </a>
+        </div>
+    <?php endif; ?>
+</div>

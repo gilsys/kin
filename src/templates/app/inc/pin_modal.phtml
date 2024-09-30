@@ -1,0 +1,27 @@
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <form id="mt-pin-form" action="" autocomplete="off">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pin-title"></h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="my-4">
+                        <div class="mb-3 pin-text"></div>
+                        <input type="text" class="form-control mb-3 mb-lg-0 rounded-pill border-secondary" name="pin" required autocomplete="off" />
+                    </div>
+                </div>
+                <div class="modal-footer">                                  
+                    <a href="javascript:;" class="btn btn-secondary btn-sm rounded-pill me-2 mb-2" data-bs-dismiss="modal">
+                        <span>
+                            <i class="la la-angle-left"></i>
+                            <span><?php echo __('app.common.back'); ?></span>
+                        </span>
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill"><?php echo __('app.save.send') ?></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

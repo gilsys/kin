@@ -1,0 +1,85 @@
+<!--begin::Menu holder-->
+<div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'250px', '250px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_menu_wrapper'}">
+    <!--begin::Menu-->
+    <div class="menu menu-rounded menu-column menu-lg-row menu-active-bg menu-title-gray-600 menu-state-dark menu-arrow-gray-400 fw-semibold fw-semibold fs-6 align-items-stretch my-5 my-lg-0 px-2 px-lg-0" id="#kt_app_header_menu" data-kt-menu="true">
+        <!--begin:Menu item-->
+        <div class="menu-item me-0 me-lg-2">
+            <!--begin:Menu link-->
+            <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUsers, 'active'); ?>" href="/app/users">
+                <span class="menu-icon "><i class="menu-title fa-solid fa-users fs-2 me-2"></i></span>
+                <span class="menu-title"><?php echo __('app.common.users') ?></span>
+            </a>
+        </div>
+
+        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuSettings, 'here'); ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+            <!--begin:Menu link-->
+            <span class="menu-link">
+                <span class="menu-icon"><i class="menu-icon fa-solid fa-sliders fs-2"></i></span>
+                <span class="menu-title"><?php echo __('app.common.parameters') ?></span>
+                <span class="menu-arrow"></span>
+            </span>
+            <!--end:Menu link-->
+            <!--begin:Menu sub-->
+            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-250px">
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuClientType, 'active'); ?>" href="/app/static_lists/CT" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.client_types') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuProcessType, 'active'); ?>" href="/app/process_types" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.process_types') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuProcessStatus, 'active'); ?>" href="/app/static_lists/PS" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.process_statuses') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuTaskType, 'active'); ?>" href="/app/static_lists/TT" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.task_types') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuTaskStatus, 'active'); ?>" href="/app/static_lists/TS" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.task_statuses') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuTaskPaymentStatus, 'active'); ?>" href="/app/static_lists/TPS" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.task_payment_statuses') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+            </div>
+            <!--end:Menu sub-->
+        </div>
+        <!--end:Menu item-->
+    </div>
+    <!--end::Menu-->
+</div>
+<!--end::Menu holder-->

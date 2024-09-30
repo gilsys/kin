@@ -1,0 +1,40 @@
+<?php $this->start('buttons') ?>
+<?php if (!empty($btnBack)) : ?>
+    <a href="<?= $btnBack ?>" class="btn btn-secondary btn rounded btn-back">
+        <i class="ki-outline ki-left fs-2"></i><?php echo __('app.common.exit') ?>
+    </a>
+<?php endif; ?>
+<?php if (!empty($btnSave)) : ?>
+    <?php $this->insert("inc/common/button_save"); ?>
+<?php endif; ?>
+<?php if (isset($btnSaveSimple)) : ?>
+    <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" class="btn btn-primary btn rounded"><?php echo __('app.save.save') ?></a>
+<?php endif; ?>
+<?php if (!empty($btnExport)) : ?>
+
+    <?php $datatableId = ($btnExport === true) ? "mt-" . App\Util\CommonUtils::camelCaseToUnderscore($entity, '-') : $btnExport; ?>
+
+    <?php $this->insert('/inc/common/button_export', compact('datatableId')) ?>
+<?php endif; ?>
+<?php if (isset($btnAdd) && $btnAdd !== false) : ?>
+    <a href="<?php if (isset($btnAddUrl)) : ?><?php echo $btnAddUrl ?><?php elseif ($btnAdd === true) : ?>/app/<?= $entity ?>/form<?php else : ?><?= $btnAdd ?><?php endif; ?>" class="btn btn-primary ms-3">
+        <i class="ki-outline ki-plus fs-2"></i>
+        <?= $this->e(__('app.common.form.add', lcfirst(__('app.entity.' . App\Util\CommonUtils::camelCaseToUnderscore($entity))))) ?>
+    </a>
+<?php endif; ?>
+<?php $this->stop() ?>
+
+<div class="app-toolbar pb-4 pb-lg-8 sticky-card">
+    <div id="kt_app_toolbar_container" class="container-fluid d-flex flex-stack flex-wrap">
+        <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100 justify-content-between">
+            <div class="page-title d-flex flex-column justify-content-center gap-1 me-3">
+                <?= $this->insert("inc/common/breadcumb", compact("menu", "breadcumb")); ?>
+            </div>
+            <?php if (!empty($this->section('buttons'))) : ?>
+                <div class="d-flex align-items-center gap-2 gap-lg-3 ms-auto">
+                    <?= $this->section('buttons') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

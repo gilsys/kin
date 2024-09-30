@@ -1,0 +1,37 @@
+<div class="card mb-5 mb-xl-10" id="client-header" data-client-id="<?php echo $client['id'] ?>">
+    <div class="card-body pt-9 pb-0">
+        <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="d-flex align-items-center fs-2 fw-500 me-1" id="client-fullname">                                 
+                                <?php echo $client['entity'] ?>
+                            </span>                            
+                        </div>
+
+                        <div class="d-flex flex-wrap fs-6 mb-0 pe-2">                            
+                            <div class="d-flex align-items-center text-muted me-5 mb-2">                                
+                                <i class="las la-map-marker me-2 fs-3 text-primary"></i> <span id="client-location"><?php echo $client['city'] . ' (' . $client['country_name'] . ')' ?></span>
+                            </div>
+                            <?php if (!empty($client['email'])): ?>
+                                <?php foreach ($client['email'] as $email): ?>
+                                    <div class="d-flex align-items-center mb-2 me-5 client-email">
+                                        <i class="las la-envelope me-2 fs-3 text-primary"></i> <a class="text-muted text-hover-primary" href="mailto:<?php echo $email['email'] ?>" title="<?php __s($email['name']) ?>"><?php echo $email['email'] ?></a>
+                                    </div>         
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if (!empty($client['phone'])): ?>
+                                <?php foreach ($client['phone'] as $phone): ?>
+                                    <div class="d-flex align-items-center mb-2 me-5 client-phone">
+                                        <i class="las la-phone me-2 fs-3 text-primary"></i> <a class="text-muted text-hover-primary" href="tel:<?php echo $phone['phone'] ?>" title="<?php __s($phone['name']) ?>"><?php echo $phone['phone'] ?></a>
+                                    </div>                            
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

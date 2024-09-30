@@ -1,0 +1,17 @@
+<?php $this->start('filters') ?>
+<?php $this->stop() ?>
+
+
+<?php $this->start('columns') ?>
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
+<th data-priority="1"><?php echo __('app.common.id') ?></th>
+<th data-priority="1"><?= __ss('app.common.name') ?></th>
+<th data-priority="6"><?= __ss('app.common.date_created') ?></th>
+<th data-priority="6"><?= __ss('app.common.date_updated') ?></th>
+<th data-priority="2"><?php echo __('app.common.order') ?></th>
+<th data-priority="1" class="text-center"></th>
+<?php $this->stop() ?>
+
+
+<?php $this->insert("inc/common/subheader", ['entity' => 'processType', 'btnExport' => true, 'btnAdd' => true, 'btnAddUrl' => '/app/process_type/form', 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
+<?php $this->insert('inc/common/datatable', ['entity' => 'processType', 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>

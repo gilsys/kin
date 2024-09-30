@@ -1,0 +1,30 @@
+<div class="dropdown project-dropdown">
+    <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" class="btn btn-primary btn rounded btn-rounded-grouped pe-2"><?php echo __('app.save.save') ?></a><a href="javascript:;" class="btn btn-primary btn ms-0 ps-2 rounded btn-rounded-grouped dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="ki-outline ki-down fs-3 ms-1"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end border-1 border-primary p-3">
+        <li><span class="dropdown-item py-3 text-primary bg-white"><?php echo __('app.common.options') ?>:</span></li>
+        <li>
+            <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" class="save-and-continue dropdown-item py-3">
+                <i class="nav-icon la la-edit"></i>
+                <span class="nav-text"><?php echo __('app.save.save_edit') ?></span>
+            </a>
+        </li>
+        <?php if (empty($disableSaveAndNew)): ?>
+            <li>
+                <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndNew ?>" class="submit-form-button dropdown-item py-3">
+                    <i class="nav-icon la la-plus"></i>
+                    <span class="nav-text"><?php echo __('app.save.save_add') ?></span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if (empty($disableSaveAndBack)): ?>
+            <li>
+                <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndBack ?>" class="dropdown-item py-3">
+                    <i class="nav-icon la la-angle-left"></i>
+                    <span class="nav-text"><?php echo __('app.save.save_close') ?></span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

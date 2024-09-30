@@ -1,0 +1,53 @@
+<?php $this->start('filters1') ?>
+<div class="col-md-6 col-lg-4 col-xl-3 mt-5">
+    <div class="custom-datepicker input-daterange input-group">                                    
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_created"/>
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_created"/>
+    </div>
+</div>
+<?php $this->stop() ?>
+
+
+<?php $this->start('columns1') ?>
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive --> 
+<th data-priority="1"><?php echo __('app.user.log.message') ?></th>
+<th data-priority="1"><?php echo __('app.user.log.action') ?></th>
+<th data-priority="3"><?php echo __('app.user.log.ip') ?></th>
+<th data-priority="4"><?php echo __('app.user.log.device') ?></th>
+<th data-priority="5"><?php echo __('app.user.log.user_agent') ?></th>
+<th data-priority="2"><?php echo __('app.user.log.date') ?></th>                            
+<th></th>  
+<?php $this->stop() ?>
+
+<?php $this->start('filters2') ?>
+<div class="col-md-6 col-lg-4 col-xl-3 mt-5">
+    <div class="custom-datepicker input-daterange input-group">                                    
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter" name="start" placeholder="<?php echo __('app.common.from') ?>" data-col-name="date_created"/>
+        <input type="text" class="form-control form-control-sm datatables-column-search-filter" name="end" placeholder="<?php echo __('app.common.to') ?>" data-col-name="date_created"/>
+    </div>
+</div>
+<?php $this->stop() ?>
+
+<?php $this->start('columns2') ?>
+<th data-priority="1"><?php echo __('app.user.log.message') ?></th>
+<th data-priority="2"><?php echo __('app.user.log.date') ?></th>
+<th></th> 
+<?php $this->stop() ?>
+
+
+<div id="mt-user-form" class="d-none user-logs" data-user-id="<?php echo $data['userId'] ?>">
+    <?php
+    $this->insert("inc/common/subheader",
+            [
+                'entity' => $entity,
+                'btnBack' => '/app/' . $entity . 's',
+                'btnSave' => true,
+                'menu' => $menu,
+                'breadcumb' => $breadcumb
+    ]);
+    ?>
+
+    <?php $this->insert("user/inc/header_info", ['userId' => $data['userId'], 'menu' => $menu, 'entity' => $entity]); ?>
+    <?php $this->insert('/inc/common/datatable', ['entity' => 'UserLogsAuth', 'title' => __('app.user.logs_auth.title'), 'filters' => $this->section('filters1'), 'columns' => $this->section('columns1')]) ?>    
+    <?php $this->insert('/inc/common/datatable', ['entity' => 'UserLogs', 'title' => __('app.log.history'), 'filters' => $this->section('filters2'), 'columns' => $this->section('columns2')]) ?>
+</div>
