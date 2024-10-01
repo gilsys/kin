@@ -8,7 +8,6 @@ class UserProfile {
 
     const Administrator = 'A';
     const User = 'B';
-    const ClientManager = 'C';
 
 }
 

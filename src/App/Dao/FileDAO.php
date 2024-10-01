@@ -22,14 +22,6 @@ class FileDAO extends BaseDAO
         return $this->getLastInsertId();
     }
 
-    public function getByProcessId($id)
-    {
-        $sql = "SELECT f.*
-                FROM `" . $this->getTable() . "` f
-                INNER JOIN st_file_process fp ON fp.file_id = f.id AND fp.process_id = :id";
-        return $this->fetchRecord($sql, compact('id'));
-    }
-
     public function deleteById($id, $hasCustomOrder = false, $deleteFiles = true)
     {
         if ($deleteFiles) {

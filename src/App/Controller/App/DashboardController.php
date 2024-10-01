@@ -19,11 +19,7 @@ class DashboardController extends BaseController {
     const MENU = MenuSection::MenuDashboard;
 
     public function dashboard(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
-        return $response->withStatus(302)->withHeader('Location','/app/clients');
-        /*
-        $data = $this->preparePage(__('app.common.dashboard'), 'dashboard/dashboard');
-        return $this->get('renderer')->render($response, "main.phtml", $data);
-        */
+        return $response->withStatus(302)->withHeader('Location','/app/users');        
     }
 
 }
