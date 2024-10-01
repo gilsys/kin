@@ -17,7 +17,7 @@ class AdminController extends BaseController {
     }
 
     public function index(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-        return $response->withStatus(302)->withHeader('Location', '/app/clients');
+        return $response->withStatus(302)->withHeader('Location', '/app/users');
     }
 
 }

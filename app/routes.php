@@ -4,17 +4,12 @@ namespace App;
 
 use App\Constant\UserProfile;
 use App\Controller\App\AdminController;
-use App\Controller\App\ClientController;
 use App\Controller\App\DashboardController;
 use App\Controller\App\FileController;
 use App\Controller\App\i18nController;
 use App\Controller\App\LoginController;
 use App\Controller\App\PageController;
-use App\Controller\App\PinController;
 use App\Controller\App\ProfileController;
-use App\Controller\App\ProcessController;
-use App\Controller\App\ProcessTypeController;
-use App\Controller\App\TaskController;
 use App\Controller\App\StaticListController;
 use App\Controller\App\UserController;
 use App\Middleware\ProfileMiddleware;
@@ -70,12 +65,6 @@ return function (App $app) {
         $app->get('/{token}', [FileController::class, 'token']);
     })->add(new ProfileMiddleware());
 
-    // Pin
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->post('/app/pin_request', [PinController::class, 'send']);
-        $app->post('/app/pin_validate', [PinController::class, 'check']);
-    })->add(new ProfileMiddleware())->add('csrf');
-
     // Profile
     $app->group('/app/profile', function (RouteCollectorProxy $app) {
         $app->get('', [ProfileController::class, 'form']);
@@ -128,74 +117,4 @@ return function (App $app) {
         $app->post('/check_nickname[/{id:[0-9]+}]', [UserController::class, 'checkNickname']);
         $app->post('/check_password_current/{id:[0-9]+}', [UserController::class, 'checkCurrentPassword']);
     })->add(new ProfileMiddleware())->add('csrf');
-
-    // Client
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/clients', [ClientController::class, 'list']);
-        $app->post('/app/client/datatable', [ClientController::class, 'datatable']);
-        $app->get('/app/client/form[/{id:[0-9]+}]', [ClientController::class, 'form']);
-        $app->post('/app/client/save/{mode}', [ClientController::class, 'save']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->post('/app/client/delete', [ClientController::class, 'delete']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->post('/app/client/{id:[0-9]+}', [ClientController::class, 'load']);
-        $app->post('/app/client/selector', [ClientController::class, 'selector']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    // Client processes
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/client/processes/{id:[0-9]+}', [ClientController::class, 'processes']);
-        $app->post('/app/client/processes/datatable/{id:[0-9]+}', [ClientController::class, 'processesDatatable']);
-        $app->get('/app/clientProcesses/form/{clientId:[0-9]+}', [ProcessController::class, 'form']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    // Process
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/processes', [ProcessController::class, 'list']);
-        $app->post('/app/process/datatable', [ProcessController::class, 'datatable']);
-        $app->post('/app/process/{id:[0-9]+}', [ProcessController::class, 'load']);
-        $app->get('/app/process/form[/{id:[0-9]+}[/{clientId:[0-9]+}]]', [ProcessController::class, 'form']);
-        $app->post('/app/process/save/{mode}', [ProcessController::class, 'save']);
-        $app->post('/app/process/logs/datatable/{id:[0-9]+}', [ProcessController::class, 'logsDatatable']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->post('/app/process/delete', [ProcessController::class, 'delete']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
-
-    // Process file
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/process/file/{id:[0-9]+}', [ProcessController::class, 'processFile']);
-        $app->post('/app/process/upload_file', [ProcessController::class, 'uploadFile']);
-        $app->get('/app/process/download_file/{id:[0-9]+}', [ProcessController::class, 'downloadFile']);
-        $app->post('/app/process/file/delete', [ProcessController::class, 'deleteFile']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]));
-
-    // Process type
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/process_types', [ProcessTypeController::class, 'list']);
-        $app->post('/app/process_type/datatable', [ProcessTypeController::class, 'datatable']);
-        $app->post('/app/process_type/{id:[0-9]+}', [ProcessTypeController::class, 'load']);
-        $app->post('/app/process_type/delete', [ProcessTypeController::class, 'delete']);
-        $app->get('/app/process_type/form[/{id:[0-9]+}]', [ProcessTypeController::class, 'form']);
-        $app->post('/app/process_type/save/{mode}', [ProcessTypeController::class, 'save']);
-        $app->post('/app/process_type/order/{id}/{direction:[0-1]}', [ProcessTypeController::class, 'order']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    // Tasks
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/tasks', [TaskController::class, 'list']);
-        $app->post('/app/task/datatable[/{processId:[0-9]+}]', [TaskController::class, 'datatable']);
-        $app->post('/app/task/{id:[0-9]+}', [TaskController::class, 'load']);
-        $app->post('/app/task/delete', [TaskController::class, 'delete']);
-        $app->get('/app/task/form/process/{processId:[0-9]+}', [TaskController::class, 'form']);
-        $app->get('/app/task/form[/{id:[0-9]+}[/{processId:[0-9]+}]]', [TaskController::class, 'form']);
-        $app->post('/app/task/save/{mode}', [TaskController::class, 'save']);
-        $app->post('/app/task/logs/datatable/{id:[0-9]+}', [TaskController::class, 'logsDatatable']);
-        $app->post('/app/task/tag_whitelist/{processId:[0-9]+}', [TaskController::class, 'getTagsForTaskWhitelist']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };
