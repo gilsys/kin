@@ -7,9 +7,13 @@ namespace App\Constant;
 class StaticListTable
 {
 
+    const Area = 'AR';
+
     public static function getEntity($key)
     {
-        $mapping = [];
+        $mapping = [
+            self::Area => 'area',
+        ];
 
         if (empty($mapping[$key])) {
             throw new \Exception(__('app.error.invalid_parameters'));
