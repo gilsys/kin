@@ -19,6 +19,9 @@ class MenuSection {
     const MenuAdminData = 'AD';
     const MenuAdminLogs = 'AL';
 
+    const MenuArea = 'MAR';
+
+
     private static function constantExists($dynamicConstant) {
         $fin = new ReflectionClass(__CLASS__);
         $arrConst = $fin->getConstants();
@@ -27,7 +30,7 @@ class MenuSection {
     }
 
     public static function getMaintenanceMenu($staticTable) {
-        //$sections = ['MA', 'MP', 'MT', 'MQ', 'MS', 'MR'];
+        $sections = ['M'];
         foreach ($sections as $section) {
             if (self::constantExists($section . $staticTable)) {
                 return $section . $staticTable;
