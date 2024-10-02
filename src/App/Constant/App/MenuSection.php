@@ -20,6 +20,8 @@ class MenuSection {
     const MenuAdminLogs = 'AL';
 
     const MenuArea = 'MAR';
+    
+    const MenuMarket = 'MM';
 
 
     private static function constantExists($dynamicConstant) {

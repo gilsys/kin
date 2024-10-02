@@ -1,0 +1,88 @@
+<form id="mt-market-form" class="d-none data-form" data-js="MarketForm" action="/app/market/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>" method="post" autocomplete="off" data-information-prefix="">
+    <?php
+    $this->insert(
+        "inc/common/subheader",
+        [
+            'entity' => 'market',
+            'btnBack' => '/app/markets',
+            'btnSave' => true,
+            'menu' => $menu,
+            'breadcumb' => $breadcumb
+        ]
+    );
+    ?>
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php endif; ?>
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.color') ?></label>
+                    <div>
+                        <input type="text" required class="form-control jscolor color-btn-text" name="color">
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.main_language') ?></label>
+                    <div>
+                        <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['languages'] as $language): ?>
+                                <option value="<?php echo $language['id'] ?>">
+                                    <?php echo $language['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.qr_language') ?></label>
+                    <div>
+                        <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['languages'] as $language): ?>
+                                <option value="<?php echo $language['id'] ?>">
+                                    <?php echo $language['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.entity.plural.area') ?></label>
+                    <div>
+                        <select name="market_area_ids[]" required multiple data-control="select2" data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select kt-select2">
+                            <?php foreach ($data['areas'] as $area) : ?>
+                                <option value="<?php echo $area['id'] ?>">
+                                    <?php echo $area['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php if (!empty($data['id'])): ?>
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+    </div>
+</form>
