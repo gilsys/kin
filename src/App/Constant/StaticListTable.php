@@ -8,11 +8,13 @@ class StaticListTable
 {
 
     const Area = 'AR';
+    const Language = 'LN';
 
     public static function getEntity($key)
     {
         $mapping = [
             self::Area => 'area',
+            self::Language => 'language',
         ];
 
         if (empty($mapping[$key])) {

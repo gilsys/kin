@@ -8,6 +8,7 @@ use App\Controller\App\DashboardController;
 use App\Controller\App\FileController;
 use App\Controller\App\i18nController;
 use App\Controller\App\LoginController;
+use App\Controller\App\MarketController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
 use App\Controller\App\StaticListController;
@@ -117,4 +118,17 @@ return function (App $app) {
         $app->post('/check_nickname[/{id:[0-9]+}]', [UserController::class, 'checkNickname']);
         $app->post('/check_password_current/{id:[0-9]+}', [UserController::class, 'checkCurrentPassword']);
     })->add(new ProfileMiddleware())->add('csrf');
+
+
+
+     // Markets
+     $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/markets', [MarketController::class, 'list']);
+        $app->post('/app/market/datatable', [MarketController::class, 'datatable']);
+        $app->post('/app/market/{id:[0-9]+}', [MarketController::class, 'load']);
+        $app->get('/app/market/form[/{id:[0-9]+}]', [MarketController::class, 'form']);
+        $app->post('/app/market/save/{mode}', [MarketController::class, 'save']);        
+        $app->post('/app/market/delete', [MarketController::class, 'delete']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
+    
 };
