@@ -20,7 +20,7 @@ class TranslationsToFilesCommand {
         try {
             $appTranslations = !empty($args[0]) && $args[0] == 'app';
 
-            $langs = ['es', 'ca', 'en'];
+            $langs = ['es', 'fr', 'en'];
             $translationDAO = new TranslationDAO($this->container->get('pdo'));
             $translations = $appTranslations ? $translationDAO->getTranslations(['c2m']) : $translationDAO->getTranslations([], ['c2m']);
 

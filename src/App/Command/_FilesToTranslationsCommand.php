@@ -18,7 +18,7 @@ class _FilesToTranslationsCommand {
 
     public function command($args) {
         try {
-            $langs = ['es', 'ca', 'en'];
+            $langs = ['es', 'fr', 'en'];
             $translations = [];
             foreach ($langs as $lang) {
                 $translationsFile = $this->container->get('i18n')->getTranslationsFile($lang);
