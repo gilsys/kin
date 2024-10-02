@@ -1,0 +1,626 @@
+Las siguientes claves se encontraron en los archivos:
+- app.common.back encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\pin_modal.phtml (línea 19)
+- app.common.clients encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\sidebar.phtml (línea 18)
+- app.common.close encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\media_viewer.phtml (línea 12)
+- app.common.color encontrada en:
+    - Z:\data\www\kin/src\templates\app\static_list\form.phtml (línea 30)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 85)
+- app.common.concept encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\emailphone.phtml (línea 13)
+- app.common.date encontrada en:
+    - Z:\data\www\kin/src\App\Service\NoticeService.php (línea 239)
+    - Z:\data\www\kin/src\templates\app\inc\common\dates_info.phtml (línea 4)
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 3)
+- app.common.date_created encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\dates_info.phtml (línea 10)
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 3)
+- app.common.date_long encontrada en:
+    - Z:\data\www\kin/src\App\Service\NoticeService.php (línea 239)
+- app.common.date_updated encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\dates_info.phtml (línea 16)
+- app.common.dates_info encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\dates_info.phtml (línea 4)
+- app.common.download encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\media_viewer.phtml (línea 13)
+- app.common.duration_hour encontrada en:
+    - Z:\data\www\kin/src\App\Util\CommonUtils.php (línea 380)
+- app.common.duration_hours encontrada en:
+    - Z:\data\www\kin/src\App\Util\CommonUtils.php (línea 380)
+- app.common.email encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\emailphone.phtml (línea 35)
+- app.common.exit encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\subheader.phtml (línea 4)
+- app.common.export encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 4)
+- app.common.export_copy encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 11)
+- app.common.export_csv encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 13)
+- app.common.export_excel encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 12)
+- app.common.export_print encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 10)
+- app.common.filter encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_filter.phtml (línea 1)
+    - Z:\data\www\kin/src\templates\app\inc\common\datatable.phtml (línea 44)
+- app.common.form.add encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 75)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 71)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_add.phtml (línea 4)
+    - Z:\data\www\kin/src\templates\app\inc\common\subheader.phtml (línea 22)
+- app.common.form.remove_image encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 10)
+- app.common.form.select_image encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 6)
+- app.common.form.update encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 75)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 71)
+- app.common.from encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 5)
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 4)
+- app.common.go_home encontrada en:
+    - Z:\data\www\kin/src\templates\app\error.phtml (línea 33)
+- app.common.id encontrada en:
+    - Z:\data\www\kin/src\templates\app\static_list\list.phtml (línea 7)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 33)
+- app.common.list_of encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 52)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 40)
+- app.common.log.message encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 14)
+- app.common.log.user encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 15)
+- app.common.main_information encontrada en:
+    - Z:\data\www\kin/src\templates\app\static_list\form.phtml (línea 18)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 23)
+- app.common.media_formats encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 14)
+- app.common.name encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\emailphone.phtml (línea 16)
+    - Z:\data\www\kin/src\templates\app\static_list\form.phtml (línea 24)
+    - Z:\data\www\kin/src\templates\app\static_list\list.phtml (línea 8)
+- app.common.options encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_export.phtml (línea 9)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_list.phtml (línea 6)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_save.phtml (línea 6)
+- app.common.order encontrada en:
+    - Z:\data\www\kin/src\templates\app\static_list\list.phtml (línea 9)
+- app.common.parameters encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\menu.phtml (línea 18)
+- app.common.phone encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\emailphone.phtml (línea 7)
+- app.common.processes encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\sidebar.phtml (línea 28)
+- app.common.reset encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\datatable.phtml (línea 38)
+- app.common.reset_filters encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\datatable.phtml (línea 38)
+- app.common.search encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_search.phtml (línea 3)
+- app.common.status encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 76)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 16)
+- app.common.tasks encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\sidebar.phtml (línea 38)
+- app.common.to encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 6)
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 5)
+- app.common.type encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\menu_left.phtml (línea 16)
+- app.common.users encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\menu.phtml (línea 10)
+- app.controller.common.pin_not_valid encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 117)
+- app.controller.delete_ok encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 118)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 161)
+- app.controller.email_ok encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 247)
+- app.controller.login.error.password encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 146)
+- app.controller.login.title encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 36)
+- app.controller.save_ok encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 172)
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 127)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 124)
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 297)
+- app.controller.user.error.nickname_exists encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 152)
+- app.controller.user.error.password encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 80)
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 159)
+- app.controller.user.error.password_current encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 86)
+- app.error.delete encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 114)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 157)
+- app.error.delete_dependencies encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 114)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 157)
+- app.error.email encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 244)
+- app.error.file_not_found encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\FileController.php (línea 31)
+- app.error.invalid_parameters encontrada en:
+    - Z:\data\www\kin/src\App\Constant\StaticListTable.php (línea 15)
+    - Z:\data\www\kin/src\App\Dao\LogDAO.php (línea 19)
+- app.error.invalid_value encontrada en:
+    - Z:\data\www\kin/src\App\Dao\BaseDAO.php (línea 141)
+- app.error.save encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 198)
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 123)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 121)
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 147)
+- app.error.save_deleted encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 147)
+- app.error.user_already_has_password encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 234)
+- app.header.logout encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\user.phtml (línea 40)
+- app.header.profile encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\user.phtml (línea 33)
+- app.header.quick_links.title encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\quick_links.phtml (línea 2)
+- app.home encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\breadcumb.phtml (línea 4)
+    - Z:\data\www\kin/src\templates\app\inc\common\form_header.phtml (línea 4)
+- app.js.common.all encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 34)
+- app.js.common.attention encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 718)
+- app.js.common.cancel encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user.form.js (línea 154)
+- app.js.common.delete encontrada en:
+    - Z:\data\www\kin/public\app\js\project\static_list.datatable.js (línea 81)
+- app.js.common.down encontrada en:
+    - Z:\data\www\kin/public\app\js\project\static_list.datatable.js (línea 67)
+    - Z:\data\www\kin/public\app\js\uppy.custom.js (línea 75)
+- app.js.common.download encontrada en:
+    - Z:\data\www\kin/public\app\js\uppy.custom.js (línea 75)
+- app.js.common.edit encontrada en:
+    - Z:\data\www\kin/public\app\js\project\static_list.datatable.js (línea 80)
+    - Z:\data\www\kin/public\app\js\project\user.datatable.js (línea 88)
+- app.js.common.form_errors encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 718)
+- app.js.common.loading encontrada en:
+    - Z:\data\www\kin/public\app\js\admin.utils.js (línea 82)
+- app.js.common.no encontrada en:
+    - Z:\data\www\kin/public\app\js\modal.alerts.js (línea 34)
+- app.js.common.readless encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 454)
+- app.js.common.readmore encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 451)
+- app.js.common.send encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user.form.js (línea 154)
+- app.js.common.up encontrada en:
+    - Z:\data\www\kin/public\app\js\project\static_list.datatable.js (línea 66)
+- app.js.common.yes encontrada en:
+    - Z:\data\www\kin/public\app\js\modal.alerts.js (línea 33)
+- app.js.datatable.copy_keys encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 67)
+- app.js.datatable.copy_title encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 66)
+- app.js.datatable.empty_table encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 46)
+- app.js.datatable.first encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 56)
+- app.js.datatable.info_records encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 47)
+- app.js.datatable.info_records_empty encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 48)
+- app.js.datatable.info_records_filtered encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 49)
+- app.js.datatable.last encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 57)
+- app.js.datatable.loading encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 54)
+- app.js.datatable.next encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 58)
+- app.js.datatable.no_records encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 45)
+- app.js.datatable.previous encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 59)
+- app.js.datatable.processing encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 43)
+- app.js.datatable.row_copied encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 70)
+- app.js.datatable.rows_copied encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 69)
+- app.js.datatable.search encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 51)
+- app.js.datatable.show_records encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 44)
+- app.js.datatable.sort_ascending encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 62)
+- app.js.datatable.sort_descending encontrada en:
+    - Z:\data\www\kin/public\app\js\datatables.custom.js (línea 63)
+- app.js.error encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 35)
+    - Z:\data\www\kin/public\app\js\project\profile.form.js (línea 25)
+    - Z:\data\www\kin/public\app\js\project\user.form.js (línea 19)
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 35)
+- app.js.error.ajax encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 35)
+- app.js.error.greater_than encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 84)
+- app.js.error.money encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 76)
+- app.js.error.nickname_exists encontrada en:
+    - Z:\data\www\kin/public\app\js\project\profile.form.js (línea 57)
+    - Z:\data\www\kin/public\app\js\project\user.form.js (línea 37)
+- app.js.error.nickname_format encontrada en:
+    - Z:\data\www\kin/public\app\js\project\profile.form.js (línea 39)
+    - Z:\data\www\kin/public\app\js\project\user.form.js (línea 19)
+- app.js.error.nif encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 239)
+- app.js.error.nifCif encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 239)
+- app.js.error.password_current encontrada en:
+    - Z:\data\www\kin/public\app\js\project\profile.form.js (línea 25)
+- app.js.error.password_length encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 89)
+- app.js.error.password_lower_case encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 91)
+- app.js.error.password_number encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 95)
+- app.js.error.password_special_character encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 97)
+- app.js.error.password_upper_case encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 93)
+- app.js.error.pin_length encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 108)
+- app.js.error.videoMaxFileSize encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 358)
+- app.js.info encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 30)
+- app.js.jseditor.button_collapse encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 47)
+- app.js.jseditor.button_copy_row_title_short encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 46)
+- app.js.jseditor.button_delete_all encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 36)
+- app.js.jseditor.button_delete_all_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 37)
+- app.js.jseditor.button_delete_last encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 38)
+- app.js.jseditor.button_delete_last_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 39)
+- app.js.jseditor.button_delete_node_warning encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 53)
+- app.js.jseditor.button_delete_row_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 44)
+- app.js.jseditor.button_delete_row_title_short encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 45)
+- app.js.jseditor.button_expand encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 48)
+- app.js.jseditor.button_move_down_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 41)
+- app.js.jseditor.button_move_up_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 42)
+- app.js.jseditor.button_object_properties encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 43)
+- app.js.jseditor.choices_placeholder_text encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 51)
+- app.js.jseditor.default_array_item_title encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 52)
+- app.js.jseditor.error_additionalItems encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 20)
+- app.js.jseditor.error_additional_properties encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 27)
+- app.js.jseditor.error_anyOf encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 5)
+- app.js.jseditor.error_date encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 29)
+- app.js.jseditor.error_datetime_local encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 31)
+- app.js.jseditor.error_dependency encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 28)
+- app.js.jseditor.error_disallow encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 10)
+- app.js.jseditor.error_disallow_union encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 10)
+- app.js.jseditor.error_enum encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 4)
+- app.js.jseditor.error_hostname encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 35)
+- app.js.jseditor.error_invalid_epoch encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 32)
+- app.js.jseditor.error_ipv4 encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 33)
+- app.js.jseditor.error_ipv6 encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 34)
+- app.js.jseditor.error_maxItems encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 21)
+- app.js.jseditor.error_maxLength encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 17)
+- app.js.jseditor.error_maxProperties encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 24)
+- app.js.jseditor.error_maximum_excl encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 13)
+- app.js.jseditor.error_maximum_incl encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 14)
+- app.js.jseditor.error_minItems encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 22)
+- app.js.jseditor.error_minLength encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 18)
+- app.js.jseditor.error_minProperties encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 25)
+- app.js.jseditor.error_minimum_excl encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 15)
+- app.js.jseditor.error_minimum_incl encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 16)
+- app.js.jseditor.error_multipleOf encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 12)
+- app.js.jseditor.error_not encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 2)
+- app.js.jseditor.error_notempty encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 3)
+- app.js.jseditor.error_notset encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 2)
+- app.js.jseditor.error_oneOf encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 6)
+- app.js.jseditor.error_pattern encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 19)
+- app.js.jseditor.error_required encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 26)
+- app.js.jseditor.error_time encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 30)
+- app.js.jseditor.error_type encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 8)
+- app.js.jseditor.error_type_union encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 8)
+- app.js.jseditor.error_uniqueItems encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 23)
+- app.js.jseditor.flatpickr_clear_button encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 50)
+- app.js.jseditor.flatpickr_toggle_button encontrada en:
+    - Z:\data\www\kin/public\app\js\lib\jsoneditor.i18n.js (línea 49)
+- app.js.lang.code encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 52)
+- app.js.lang.code_extended encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 481)
+- app.js.lang.datepicker encontrada en:
+    - Z:\data\www\kin/public\app\js\bootstrap-datepicker.i18n.js (línea 2)
+- app.js.pin.text encontrada en:
+    - Z:\data\www\kin/public\app\js\project\pin.js (línea 18)
+- app.js.pin.text_consumer encontrada en:
+    - Z:\data\www\kin/public\app\js\project\pin.js (línea 21)
+- app.js.pin.title encontrada en:
+    - Z:\data\www\kin/public\app\js\project\pin.js (línea 17)
+- app.js.pin.title_consumer encontrada en:
+    - Z:\data\www\kin/public\app\js\project\pin.js (línea 20)
+- app.js.success encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 32)
+- app.js.summernote.important_text_1 encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 526)
+- app.js.summernote.important_text_2 encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 527)
+- app.js.summernote.small encontrada en:
+    - Z:\data\www\kin/public\app\js\main.js (línea 525)
+- app.js.utils.delete_record encontrada en:
+    - Z:\data\www\kin/public\app\js\admin.utils.js (línea 15)
+- app.js.utils.delete_record_text encontrada en:
+    - Z:\data\www\kin/public\app\js\admin.utils.js (línea 15)
+- app.js.warning encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 31)
+- app.log.action encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 30)
+- app.log.action.auth.failed encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 36)
+- app.log.action.auth.logout encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 33)
+- app.log.action.auth.success encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 34)
+- app.log.action.auth.user_locked encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 35)
+- app.log.action.delete encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 109)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 150)
+- app.log.action.enter_password.success encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 38)
+- app.log.action.forgot_password.pin_invalid encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 31)
+- app.log.action.forgot_password.sent encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 30)
+- app.log.action.forgot_password.success encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 32)
+- app.log.action.pin.not_valid encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 40)
+- app.log.action.pin.sent encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 39)
+- app.log.action.pin.valid encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 41)
+- app.log.action.save encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 163)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 112)
+- app.log.action.update encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\BaseController.php (línea 166)
+    - Z:\data\www\kin/src\App\Controller\App\StaticListController.php (línea 115)
+- app.log.action.user.email_password_sent encontrada en:
+    - Z:\data\www\kin/public\app\js\project\user_logs.datatable.js (línea 37)
+- app.log.action.user.status encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 215)
+- app.log.action.user.update encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 107)
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 289)
+- app.log.action.user.update_auth encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 289)
+- app.log.history encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\logs.phtml (línea 21)
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 52)
+- app.login.access encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 31)
+- app.login.access_my_user encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 97)
+- app.login.enter_password_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\enter_password.phtml (línea 5)
+- app.login.forgot encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 20)
+- app.login.forgot_password_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 46)
+- app.login.forgot_pin_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 45)
+- app.login.forgot_send encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 62)
+- app.login.forgot_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 44)
+- app.login.login encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\enter_password.phtml (línea 4)
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 5)
+- app.login.login_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 6)
+- app.login.password encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\enter_password.phtml (línea 13)
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 19)
+- app.login.password_send encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\enter_password.phtml (línea 30)
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 93)
+- app.login.pin encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 67)
+- app.login.pin_send encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 71)
+- app.login.repeat_password encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\enter_password.phtml (línea 22)
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 85)
+- app.login.user encontrada en:
+    - Z:\data\www\kin/src\templates\app\login\form.phtml (línea 13)
+- app.menu.users encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\menu_left.phtml (línea 24)
+- app.profile encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\ProfileController.php (línea 29)
+- app.save.save encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_list.phtml (línea 2)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_save.phtml (línea 2)
+    - Z:\data\www\kin/src\templates\app\inc\common\subheader.phtml (línea 11)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 88)
+- app.save.save_add encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_list.phtml (línea 17)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_save.phtml (línea 17)
+- app.save.save_close encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_list.phtml (línea 25)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_save.phtml (línea 25)
+- app.save.save_edit encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\common\button_list.phtml (línea 10)
+    - Z:\data\www\kin/src\templates\app\inc\common\button_save.phtml (línea 10)
+- app.save.send encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\pin_modal.phtml (línea 22)
+- app.task_payment_statuses encontrada en:
+    - Z:\data\www\kin/src\templates\app\inc\header\menu.phtml (línea 28)
+- app.user.auth_data encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 28)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 66)
+- app.user.auth_data_change encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 58)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 87)
+- app.user.avatar encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 2)
+- app.user.delete encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 98)
+- app.user.delete_change encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 118)
+- app.user.delete_confirm encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 104)
+- app.user.delete_confirm_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 104)
+- app.user.email encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 86)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 29)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 38)
+- app.user.email_password encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 86)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 29)
+- app.user.email_password_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 86)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 34)
+- app.user.last_access encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 57)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 41)
+- app.user.log.action encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 14)
+- app.user.log.date encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 18)
+- app.user.log.device encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 16)
+- app.user.log.ip encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 15)
+- app.user.log.message encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 13)
+- app.user.log.user_agent encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 17)
+- app.user.logs encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 90)
+    - Z:\data\www\kin/src\templates\app\user\inc\header_info.phtml (línea 34)
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 51)
+- app.user.logs_auth.title encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\logs.phtml (línea 51)
+- app.user.name encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 51)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 34)
+- app.user.nickname encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 34)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 72)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 21)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 36)
+- app.user.password encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 40)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 78)
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 40)
+- app.user.password_current encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 40)
+- app.user.password_new encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 48)
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 78)
+- app.user.personal_information encontrada en:
+    - Z:\data\www\kin/src\templates\app\profile\form.phtml (línea 16)
+    - Z:\data\www\kin/src\templates\app\user\inc\header_info.phtml (línea 31)
+- app.user.phone encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 69)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 37)
+- app.user.phone1 encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 69)
+- app.user.profile encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 36)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 4)
+- app.user.registration_date encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 42)
+- app.user.restore encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 128)
+- app.user.restore_change encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 148)
+- app.user.restore_confirm encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 134)
+- app.user.restore_confirm_text encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 134)
+- app.user.select_profile encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\form.phtml (línea 44)
+- app.user.surnames encontrada en:
+    - Z:\data\www\kin/src\templates\app\user\inc\personal_information.phtml (línea 57)
+    - Z:\data\www\kin/src\templates\app\user\list.phtml (línea 35)
+- app.users.title encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\UserController.php (línea 96)
+- controller.login.change_password_ok encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 154)
+- controller.login.enter_password_ok encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 227)
+- controller.login.error.send_pin_email encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 93)
+- controller.login.recaptcha_not_valid encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 70)
+- controller.login.url_not_valid encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 163)
+- controller.login.user_not_exists encontrada en:
+    - Z:\data\www\kin/src\App\Controller\App\LoginController.php (línea 80)
+- service.auth.insufficient_permissions encontrada en:
+    - Z:\data\www\kin/src\App\Service\AuthService.php (línea 73)
+- service.auth.token_not_valid encontrada en:
+    - Z:\data\www\kin/src\App\Service\AuthService.php (línea 128)
+- service.auth.token_timed_out encontrada en:
+    - Z:\data\www\kin/src\App\Service\AuthService.php (línea 137)
+- service.auth.user_locked encontrada en:
+    - Z:\data\www\kin/src\App\Service\AuthService.php (línea 66)
+- service.auth.user_not_valid encontrada en:
+    - Z:\data\www\kin/src\App\Service\AuthService.php (línea 62)
