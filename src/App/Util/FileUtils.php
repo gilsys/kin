@@ -392,5 +392,4 @@ class FileUtils {
     public static function checkValidUrl($id, $token) {
         return $token == md5(PASSWORD_SALT . $id);
     }
-
 }
