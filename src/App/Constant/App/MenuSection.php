@@ -12,16 +12,18 @@ class MenuSection {
     const MenuSettings = 'M';
     const MenuUsers = 'U';
     const MenuUserData = 'UD';
-    const MenuUserLogs = 'UL';    
-    const MenuDashboard = 'D';    
-    const MenuProfile = 'F';    
+    const MenuUserLogs = 'UL';
+    const MenuDashboard = 'D';
+    const MenuProfile = 'F';
     const MenuAdmin = 'A';
     const MenuAdminData = 'AD';
     const MenuAdminLogs = 'AL';
 
     const MenuArea = 'MAR';
-    
+
     const MenuMarket = 'MM';
+
+    const MenuProduct = 'MP';
 
 
     private static function constantExists($dynamicConstant) {
@@ -40,5 +42,4 @@ class MenuSection {
         }
         throw new \Exception();
     }
-
 }

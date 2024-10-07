@@ -9,6 +9,7 @@ use App\Controller\App\FileController;
 use App\Controller\App\i18nController;
 use App\Controller\App\LoginController;
 use App\Controller\App\MarketController;
+use App\Controller\App\ProductController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
 use App\Controller\App\StaticListController;
@@ -121,14 +122,24 @@ return function (App $app) {
 
 
 
-     // Markets
-     $app->group('', function (RouteCollectorProxy $app) {
+    // Markets
+    $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/markets', [MarketController::class, 'list']);
         $app->post('/app/market/datatable', [MarketController::class, 'datatable']);
         $app->post('/app/market/{id:[0-9]+}', [MarketController::class, 'load']);
         $app->get('/app/market/form[/{id:[0-9]+}]', [MarketController::class, 'form']);
-        $app->post('/app/market/save/{mode}', [MarketController::class, 'save']);        
+        $app->post('/app/market/save/{mode}', [MarketController::class, 'save']);
         $app->post('/app/market/delete', [MarketController::class, 'delete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-    
+
+    // Products
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/products', [ProductController::class, 'list']);
+        $app->post('/app/product/datatable', [ProductController::class, 'datatable']);
+        $app->post('/app/product/{id:[0-9]+}', [ProductController::class, 'load']);
+        $app->get('/app/product/form[/{id:[0-9]+}]', [ProductController::class, 'form']);
+        $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
+        $app->post('/app/product/delete', [ProductController::class, 'delete']);
+        $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 };

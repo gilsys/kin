@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Constant\App\FormSaveMode;
+use App\Dao\FileDAO;
 use App\Exception\AuthException;
 use App\Exception\CustomException;
 use App\Service\LogService;
 use App\Util\CommonUtils;
+use App\Util\FileUtils;
 use App\Util\ResponseUtils;
+use Defuse\Crypto\File;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,7 +31,7 @@ abstract class BaseController {
     }
 
     abstract public function getDAO();
-    
+
     abstract public function getNameForLogs($entity);
 
     public function get($element) {
@@ -58,7 +61,7 @@ abstract class BaseController {
         // Carga los flash messages para mostrarlos en pantalla
         $data['messages'] = $this->get('flash')->getMessages();
         $data['entity'] = static::ENTITY_SINGULAR;
-        
+
         // Javascripts a incluir
         $data['js'] = ['/assets/plugins/custom/datatables/datatables.bundle.js', '/js/datatables.custom.js', '/js/project/' . static::ENTITY_SINGULAR . '.datatable.js'];
         $data['css'] = ['/assets/plugins/custom/datatables/datatables.bundle.css'];
@@ -201,5 +204,47 @@ abstract class BaseController {
         }
 
         return $this->savePostSave($request, $response, $args, $formData);
+    }
+
+    public function saveFile($request, $id, $formField, $field, $fileType, $dao = null) {
+        $dao = !empty($dao) ? $dao : $this->getDAO();
+        $fileDAO = new FileDAO($this->get('pdo'));
+        $oldFileId = $dao->getSingleField($id, $field);
+        $fileId = !empty($oldFileId) ? $oldFileId : $fileDAO->getNext();
+
+        $directory = $this->get('params')->getParam('FOLDER_PRIVATE');
+        $file = FileUtils::uploadFile($request, $fileType, $directory, $fileId, $formField, false, true, null, false, 'file');
+
+        if (!empty($file)) {
+            if (empty($oldFileId)) {
+                $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $file]);
+                $dao->updateSingleField($id, $field, $fileId);
+            } else {
+                $fileDAO->updateSingleField($fileId, 'file', $file);
+                $dao->updateDateUpdated($id);
+            }
+        }
+    }
+
+    public function getFile($response, $id, $field, $dao = null) {
+        $dao = !empty($dao) ? $dao : $this->getDAO();
+        $fileId = $dao->getSingleField($id, $field);
+        if (empty($fileId)) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+
+        return $this->getFileById($response, $fileId);
+    }
+
+    public function getFileById($response, $fileId, $field = 'file') {
+        $fileDAO = new FileDAO($this->get('pdo'));
+        $file = $fileDAO->getById($fileId);
+
+        $response = FileUtils::streamFile($this, $response, $file['file_type_id'], 'FOLDER_PRIVATE', $file['file'], $file['id'], $field, false);
+
+        if (!empty($response)) {
+            return $response;
+        }
+        throw new \Exception(__('app.error.file_not_found'), 404);
     }
 }

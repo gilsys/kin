@@ -1,0 +1,96 @@
+<form
+    id="mt-product-form"
+    class="d-none data-form"
+    data-js="ProductForm"
+    action="/app/product/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
+    method="post"
+    autocomplete="off"
+    enctype="multipart/form-data">
+    <?php
+    $this->insert(
+        "inc/common/subheader",
+        [
+            'entity' => 'product',
+            'btnBack' => '/app/products',
+            'btnSave' => true,
+            'menu' => $menu,
+            'breadcumb' => $breadcumb
+        ]
+    );
+    ?>
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php endif; ?>
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.entity.area') ?></label>
+                    <div>
+                        <select name="area_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['areas'] as $area): ?>
+                                <option value="<?php echo $area['id'] ?>">
+                                    <?php echo $area['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_2', 'title' => __('app.common.image'), 'inputName' => 'image_es_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_3', 'title' => __('app.common.image'), 'inputName' => 'image_es_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_6', 'title' => __('app.common.image'), 'inputName' => 'image_es_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_2', 'title' => __('app.common.image'), 'inputName' => 'image_en_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_3', 'title' => __('app.common.image'), 'inputName' => 'image_en_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_6', 'title' => __('app.common.image'), 'inputName' => 'image_en_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_2', 'title' => __('app.common.image'), 'inputName' => 'image_fr_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_3', 'title' => __('app.common.image'), 'inputName' => 'image_fr_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+                <div class="col-md-4">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_6', 'title' => __('app.common.image'), 'inputName' => 'image_fr_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <?php if (!empty($data['id'])): ?>
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+</form>

@@ -39,12 +39,11 @@ class FileController extends BaseController {
             throw new \Exception(__('file_not_found'));
         }
 
-        $file = $data['data']['file'];        
+        $file = $data['data']['file'];
         $response = FileUtils::streamFile($this, $response, $file['file_type_id'], 'FOLDER_PRIVATE', $file['file'], $file['id'], 'file', false, FileUtils::FILENAME_HASH, false);
         if (!empty($response)) {
             return $response;
         }
         throw new \Exception(__('app.error.file_not_found'), 404);
     }
-
 }
