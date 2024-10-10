@@ -102,5 +102,4 @@ class MarketController extends BaseController {
             $marketAreaDAO->save(['market_id' => $formData['id'], 'area_id' => $marketAreaId]);
         }
     }
-   
 }

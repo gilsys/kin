@@ -18,7 +18,7 @@ class ProductDAO extends BaseDAO {
             ['db' => 'id', 'dt' => 'id'],
             ['db' => 'name', 'dt' => 'name'],
             ['db' => 'area_name', 'dt' => 'area_name'],
-            ['db' => 'area_color', 'dt' => 'area_color'],
+            ['db' => 'area_color', 'dt' => 'area_color', 'exact' => true],
             ['db' => 'total_booklets', 'dt' => 'total_booklets', 'exact' => true],
             ['db' => 'area_id', 'dt' => 'area_id', 'exact' => true],
             [

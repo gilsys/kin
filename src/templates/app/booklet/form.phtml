@@ -1,0 +1,120 @@
+<form
+    id="mt-booklet-form"
+    class="d-none data-form"
+    data-js="BookletForm"
+    action="/app/booklet/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
+    method="post"
+    autocomplete="off"
+    enctype="multipart/form-data">
+    <?php
+    $this->insert(
+        "inc/common/subheader",
+        [
+            'entity' => 'booklet',
+            'btnBack' => '/app/booklets',
+            'btnSave' => true,
+            'menu' => $menu,
+            'breadcumb' => $breadcumb
+        ]
+    );
+    ?>
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php endif; ?>
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col md-6">
+                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.visuals_language') ?></label>
+                    <div>
+                        <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['languages'] as $lang): ?>
+                                <option value="<?php echo $lang['id'] ?>">
+                                    <?php echo $lang['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.qr_language') ?></label>
+                    <div>
+                        <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['languages'] as $lang): ?>
+                                <option value="<?php echo $lang['id'] ?>">
+                                    <?php echo $lang['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <?php if (!empty($data['id'])): ?>
+            <div class="card card-custom card-sticky">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3><?php echo __('app.common.additional_info') ?></h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row profile-allow profile-A">
+                        <div class="col md-6">
+                            <label class="col-form-label"><?php echo __('app.entity.market') ?></label>
+                            <div>
+                                <input type="text" class="form-control" disabled name="market_name" />
+                            </div>
+                        </div>
+                        <div class="col md-6">
+                            <label class="col-form-label"><?php echo __('app.creator') ?></label>
+                            <div>
+                                <input type="text" class="form-control" disabled name="creator_name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-form-label"><?php echo __('app.common.date_created') ?></label>
+                            <div>
+                                <input class="form-control mt-date-created" disabled type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-form-label"><?php echo __('app.common.date_updated') ?></label>
+                            <div>
+                                <input class="form-control mt-date-updated" disabled type="text">
+                            </div>
+                        </div>
+                        <?php if (!empty($fields)) : ?>
+                            <?php foreach ($fields as $fieldName => $fieldLabel) : ?>
+                                <div class="col-md-6">
+                                    <label class="col-form-label"><?php echo $fieldLabel ?></label>
+                                    <div>
+                                        <input class="form-control <?php echo $fieldName ?>" disabled type="text">
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+        <?php endif; ?>
+</form>

@@ -12,7 +12,7 @@
         </select>
     </div>
 <?php endif; ?>
-<div class="col-sm-6 col-xl-3">                
+<div class="col-sm-6 col-xl-3">
     <label class="form-label"><?= __('app.common.status') ?></label>
     <select data-placeholder="<?php __ss('app.common.status') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="user_status_id">
         <option value=""></option>
@@ -28,22 +28,22 @@
 
 <?php $this->start('columns') ?>
 <!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
-<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive --> 
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
 <th data-priority="6"></th>
 <th data-priority="4"><?= __ss('app.common.id') ?></th>
 <th data-priority="3"><?= __ss('app.user.name') ?></th>
 <th data-priority="3"><?= __ss('app.user.surnames') ?></th>
 <th data-priority="4"><?= __ss('app.user.nickname') ?></th>
-<th data-priority="4"><?= __ss('app.user.phone') ?></th>
+<th data-priority="4"><?= __ss('app.entity.market') ?></th>
 <th data-priority="1"><?= __ss('app.user.email') ?></th>
-<th data-priority="4"><?= __ss('app.user.profile') ?></th> 
+<th data-priority="4"><?= __ss('app.user.profile') ?></th>
 <th data-priority="2"><?= __ss('app.common.status') ?></th>
 <th data-priority="7"><?= __ss('app.user.last_access') ?></th>
 <th data-priority="7"><?= __ss('app.user.registration_date') ?></th>
-<th></th>                    
-<th></th>                    
+<th></th>
+<th></th>
 <th data-priority="1" class="text-center"></th>
-    <?php $this->stop() ?>
+<?php $this->stop() ?>
 
 <?php $this->insert("inc/common/subheader", ['entity' => $entity, 'btnExport' => true, 'btnAdd' => true, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
 <?php $this->insert('inc/common/datatable', ['entity' => $entity, 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>

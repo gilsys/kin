@@ -7,16 +7,13 @@ namespace App\Dao;
 use App\Constant\UserStatus;
 use App\Util\CommonUtils;
 
-class UserDAO extends BaseDAO
-{
+class UserDAO extends BaseDAO {
 
-    public function __construct($connection)
-    {
+    public function __construct($connection) {
         parent::__construct($connection, 'st_user');
     }
 
-    public function getById($id, $extractPersonalInformation = true)
-    {
+    public function getById($id, $extractPersonalInformation = true) {
         $sql = "SELECT u.*, AES_DECRYPT(u.personal_information, :AES_KEY) AS personal_information, p.color as user_profile_color 
                 FROM " . $this->table . " u
                 INNER JOIN st_user_profile p on p.id = u.user_profile_id
@@ -33,8 +30,7 @@ class UserDAO extends BaseDAO
         return $result;
     }
 
-    public function getForSelectByProfileWithStatus($userProfileId, $onlyEnabled = false, $userIds = null)
-    {
+    public function getForSelectByProfileWithStatus($userProfileId, $onlyEnabled = false, $userIds = null) {
         $where = "";
         $data = ['userProfileId' => $userProfileId, 'AES_KEY' => AES_KEY];
         if ($onlyEnabled) {
@@ -60,8 +56,7 @@ class UserDAO extends BaseDAO
         return $this->fetchAll($sql, $data);
     }
 
-    public function getFullname($id)
-    {
+    public function getFullname($id) {
         $sql = 'SELECT 
                 TRIM(CONCAT(JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(personal_information, :AES_KEY), "$.name")), " " , JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(personal_information, :AES_KEY), "$.surnames")))) as fullname
                 FROM ' . $this->table . '
@@ -69,8 +64,7 @@ class UserDAO extends BaseDAO
         return $this->fetchOneField($sql, ['id' => $id, 'AES_KEY' => AES_KEY]);
     }
 
-    public function getForSelectFullname()
-    {
+    public function getForSelectFullname() {
         $sql = 'SELECT 
                 id,
                 TRIM(CONCAT(JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(personal_information, :AES_KEY), "$.name")), " " , JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(personal_information, :AES_KEY), "$.surnames")))) as fullname
@@ -78,8 +72,7 @@ class UserDAO extends BaseDAO
         return $this->fetchAll($sql, ['AES_KEY' => AES_KEY]);
     }
 
-    public function getFullById($id)
-    {
+    public function getFullById($id) {
         $sql = 'SELECT u.*, 
                 AES_DECRYPT(u.personal_information, :AES_KEY) AS personal_information, 
                 p.name as user_profile, 
@@ -98,8 +91,7 @@ class UserDAO extends BaseDAO
         return $this->extractPersonalInformation($result);
     }
 
-    public function getRemoteDatatable($profilesToShow)
-    {
+    public function getRemoteDatatable($profilesToShow) {
         // Columnas a tratar en el datatable
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
@@ -113,13 +105,17 @@ class UserDAO extends BaseDAO
             ['db' => 'address', 'dt' => 'address'],
             // Los campos de fecha deben ser formateados
             [
-                'db' => 'date_created', 'dt' => 'date_created', 'date' => true,
+                'db' => 'date_created',
+                'dt' => 'date_created',
+                'date' => true,
                 'formatter' => function ($d, $row) {
                     return CommonUtils::convertDate($d);
                 }
             ],
             [
-                'db' => 'last_login', 'dt' => 'last_login', 'date' => true,
+                'db' => 'last_login',
+                'dt' => 'last_login',
+                'date' => true,
                 'formatter' => function ($d, $row) {
                     return CommonUtils::convertDate($d);
                 }
@@ -163,8 +159,7 @@ class UserDAO extends BaseDAO
         return $this->datatablesSimple($table, 'id', $columns);
     }
 
-    public function save($data)
-    {
+    public function save($data) {
         $data['password'] = CommonUtils::getPasswordEncrypted($data['password'], $this->getNextAutoincrement());
         $query = 'INSERT INTO ' . $this->table . ' (nickname, personal_information, password, user_status_id, user_profile_id, color) '
             . 'VALUES (:nickname, AES_ENCRYPT(:personal_information, :AES_KEY), :password, :user_status_id, :user_profile_id, :color)';
@@ -177,29 +172,25 @@ class UserDAO extends BaseDAO
         return $id;
     }
 
-    public function updatePassword($id, $password)
-    {
+    public function updatePassword($id, $password) {
         $password = CommonUtils::getPasswordEncrypted($password, $id);
         $query = 'UPDATE ' . $this->table . ' SET password = :password WHERE id = :id';
         $this->query($query, compact('id', 'password'));
     }
 
-    public function checkLOPD($id)
-    {
+    public function checkLOPD($id) {
         $query = 'UPDATE ' . $this->table . ' SET date_lopd_accepted = NOW() WHERE id = :id';
         $this->query($query, compact('id'));
     }
 
-    public function updateAuth($id, $data)
-    {
+    public function updateAuth($id, $data) {
         $password = CommonUtils::getPasswordEncrypted($data['password'], $id);
         $nickname = $data['nickname'];
         $query = 'UPDATE ' . $this->table . ' SET password = :password, nickname = :nickname WHERE id = :id';
         $this->query($query, compact('id', 'password', 'nickname'));
     }
 
-    public function updateProfile($data)
-    {
+    public function updateProfile($data) {
         $sqlExtra = '';
         if (!empty($data['password'])) {
             $data['password'] = CommonUtils::getPasswordEncrypted($data['password'], $data['id']);
@@ -216,8 +207,7 @@ class UserDAO extends BaseDAO
         $this->query($query, $data);
     }
 
-    public function update($data)
-    {
+    public function update($data) {
         $sqlExtra = '';
         if (!empty($data['password'])) {
             $data['password'] = CommonUtils::getPasswordEncrypted($data['password'], $data['id']);
@@ -246,15 +236,13 @@ class UserDAO extends BaseDAO
      * @param type $result
      * @return type
      */
-    private function extractPersonalInformation($result)
-    {
+    private function extractPersonalInformation($result) {
         $result = array_merge($result, json_decode($result['personal_information'], true));
         unset($result['personal_information']);
         return $result;
     }
 
-    public function getByEmail($email, $mergePersonalInformation = true)
-    {
+    public function getByEmail($email, $mergePersonalInformation = true) {
         $sql = "SELECT u.*, AES_DECRYPT(u.personal_information, :AES_KEY) AS personal_information, p.color as user_profile_color 
                 FROM " . $this->table . " u
                 INNER JOIN st_user_profile p on p.id = u.user_profile_id
@@ -270,8 +258,7 @@ class UserDAO extends BaseDAO
         }
     }
 
-    public function getByLogin($login, $mergePersonalInformation = true)
-    {
+    public function getByLogin($login, $mergePersonalInformation = true) {
         $sql = "SELECT u.*, AES_DECRYPT(u.personal_information, :AES_KEY) AS personal_information, p.color as user_profile_color 
                 FROM " . $this->table . " u
                 INNER JOIN st_user_profile p on p.id = u.user_profile_id
@@ -287,8 +274,7 @@ class UserDAO extends BaseDAO
         }
     }
 
-    public function getByToken($token)
-    {
+    public function getByToken($token) {
         $sql = "SELECT u.*, AES_DECRYPT(u.personal_information, :AES_KEY) AS personal_information, p.color as user_profile_color 
                 FROM " . $this->table . " u
                 INNER JOIN st_user_profile p on p.id = u.user_profile_id
@@ -300,8 +286,7 @@ class UserDAO extends BaseDAO
         return $this->extractPersonalInformation($result);
     }
 
-    public function existsEmail($email, $userId = null)
-    {
+    public function existsEmail($email, $userId = null) {
         $data = ['email' => $email];
         $sqlUserId = '';
         if (!empty($userId)) {
@@ -315,8 +300,7 @@ class UserDAO extends BaseDAO
         return !empty($result);
     }
 
-    public function existsNickname($nickname, $userId = null)
-    {
+    public function existsNickname($nickname, $userId = null) {
         $data = compact('nickname');
         $sqlUserId = '';
         if (!empty($userId)) {
@@ -329,31 +313,26 @@ class UserDAO extends BaseDAO
         return !empty($result);
     }
 
-    public function loginSuccess($id)
-    {
+    public function loginSuccess($id) {
         $this->query("update " . $this->table . " set last_login = NOW(), failed_logins=0 WHERE id = :id", ['id' => $id]);
     }
 
-    public function lockUser($id)
-    {
+    public function lockUser($id) {
         $this->query("update " . $this->table . " set failed_logins=failed_logins+1, user_status_id=:locked WHERE id = :id", ['id' => $id, 'locked' => UserStatus::Disabled]);
     }
 
-    public function loginFailed($id)
-    {
+    public function loginFailed($id) {
         $this->query("update " . $this->table . " set failed_logins=failed_logins+1 WHERE id = :id", ['id' => $id]);
     }
 
-    public function updateWithRandomToken($id)
-    {
+    public function updateWithRandomToken($id) {
         do {
             $token = CommonUtils::generateRandomToken($id);
         } while (!empty($this->getByToken($token)));
         $this->updateSingleField($id, 'token', $token);
     }
 
-    public function updateWithRandomChangePasswordToken($id)
-    {
+    public function updateWithRandomChangePasswordToken($id) {
         do {
             $token = CommonUtils::generateRandomToken($id);
         } while (!empty($this->getByChangePasswordToken($token)));
@@ -361,8 +340,7 @@ class UserDAO extends BaseDAO
         return $token;
     }
 
-    public function getByChangePasswordToken($token)
-    {
+    public function getByChangePasswordToken($token) {
         $sql = "SELECT * FROM " . $this->table . " WHERE change_password_token = :token";
         $result = $this->fetchRecord($sql, ['token' => $token]);
         if (empty($result)) {
@@ -371,8 +349,7 @@ class UserDAO extends BaseDAO
         return $this->extractPersonalInformation($result);
     }
 
-    public function getByPin($pin, $userId = null)
-    {
+    public function getByPin($pin, $userId = null) {
         $data = ['pin' => $pin, 'AES_KEY' => AES_KEY];
         $sqlUserId = '';
         if (!empty($userId)) {
@@ -388,8 +365,7 @@ class UserDAO extends BaseDAO
         return $this->extractPersonalInformation($result);
     }
 
-    public function checkCurrentPassword($id, $currentPassword)
-    {
+    public function checkCurrentPassword($id, $currentPassword) {
         $password = $this->getSingleField($id, 'password');
         return ($password == CommonUtils::getPasswordEncrypted($currentPassword, $id));
     }
