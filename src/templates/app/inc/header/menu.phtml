@@ -47,6 +47,14 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); ?>" href="/app/booklets" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <span class="menu-title"><?php echo __('app.entity.plural.booklet') ?></span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
             </div>
             <!--end:Menu sub-->
         </div>

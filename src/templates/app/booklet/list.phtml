@@ -1,0 +1,65 @@
+<?php $this->start('filters') ?>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.entity.market') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_id">
+        <option value=""></option>
+        <?php foreach ($data['markets'] as $market) : ?>
+            <option value="<?= $market['id'] ?>"><?= $market['name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.visuals_language') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="main_language_id">
+        <option value=""></option>
+        <?php foreach ($data['languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.qr_language') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="qr_language_id">
+        <option value=""></option>
+        <?php foreach ($data['languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.creator') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="creator_user_id">
+        <option value=""></option>
+        <?php var_dump($fullnames); ?>
+        <?php foreach ($data['users'] as $user) : ?>
+            <option value="<?= $user['id'] ?>"><?= $user['fullname'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+
+<?php $this->stop() ?>
+
+
+<?php $this->start('columns') ?>
+<!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
+<th data-priority="5"><?php echo __('app.common.id') ?></th>
+<th data-priority="2"><?= __ss('app.common.name') ?></th>
+<th data-priority="6"><?= __ss('app.creator') ?></th>
+<th data-priority="4"><?= __ss('app.entity.market') ?></th>
+<th data-priority="4"><?= __ss('app.visuals_language') ?></th>
+<th data-priority="4"><?= __ss('app.qr_language') ?></th>
+<th data-priority="7"><?= __ss('app.common.date_created.short') ?></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th data-priority="1" class="text-center"></th>
+
+<?php $this->stop() ?>
+
+<?php $this->insert("inc/common/subheader", ['entity' => 'booklet', 'btnExport' => true, 'btnAdd' => true, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
+<?php $this->insert('inc/common/datatable', ['entity' => 'booklet', 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>

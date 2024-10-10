@@ -10,6 +10,7 @@ use App\Controller\App\i18nController;
 use App\Controller\App\LoginController;
 use App\Controller\App\MarketController;
 use App\Controller\App\ProductController;
+use App\Controller\App\BookletController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
 use App\Controller\App\StaticListController;
@@ -141,5 +142,15 @@ return function (App $app) {
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
         $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+
+    // Booklets
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/booklets', [BookletController::class, 'list']);
+        $app->post('/app/booklet/datatable', [BookletController::class, 'datatable']);
+        $app->post('/app/booklet/{id:[0-9]+}', [BookletController::class, 'load']);
+        $app->get('/app/booklet/form[/{id:[0-9]+}]', [BookletController::class, 'form']);
+        $app->post('/app/booklet/save/{mode}', [BookletController::class, 'save']);
+        $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 };
