@@ -105,6 +105,18 @@ class UserForm {
             mForm.find("[name='color']").val(profileColor)[0].jscolor.fromString(profileColor);
         });
 
+
+        $("[name='user_profile_id']").on("change", function () {
+            var selectedProfileId = $(this).val();
+            var marketBlock = $(".market-block");
+
+            if (selectedProfileId == null || selectedProfileId == 'A') {
+                marketBlock.addClass('d-none');
+            } else {
+                marketBlock.removeClass('d-none');
+            }
+        });
+
         if (id.length) {
             $.post('/app/user/' + id, function (data) {
                 mForm.find("[name='id']").val(data.id);
@@ -118,14 +130,11 @@ class UserForm {
                 mForm.find("[name='personal_information[surnames]']").val(data.surnames);
                 mForm.find("[name='personal_information[email]']").val(data.email);
                 mForm.find("[name='personal_information[phone1]']").val(data.phone1);
-                mForm.find("[name='personal_information[address]']").val(data.address);
 
                 mForm.find("[name='user_profile_id']").val(data.user_profile_id).change();
+                mForm.find("[name='market_id']").val(data.market_id).change();
                 mForm.find("[name='color']").val(data.color)[0].jscolor.fromString(data.color);
 
-                $("[name='personal_information[city]']").val(data.city);
-                $("[name='personal_information[state]']").val(data.state);
-                $("[name='personal_information[address]']").val(data.address);
                 iUserHeader.info(data);
 
                 $('#auth-data-change').click(function (e) {

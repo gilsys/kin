@@ -1,7 +1,7 @@
 class UserDatatable {
 
-    constructor(){
-        this.entity = 'user';        
+    constructor() {
+        this.entity = 'user';
     }
 
     changeStatus(q) {
@@ -19,7 +19,8 @@ class UserDatatable {
             },
             columns: [
                 // Añadimos todas las columnas con las que queremos trabajar
-                {data: null,
+                {
+                    data: null,
                     orderable: false,
                     searchable: false,
                     className: 'text-center',
@@ -28,8 +29,9 @@ class UserDatatable {
                         return '<div style="background-image: url(\'/app/user/avatar/' + full.id + addDateUpdatedTimestampParam(full) + '\')" class="mt-datatable-image"></div>';
                     }
                 },
-                {data: 'id', width: 60},
-                {data: 'name',
+                { data: 'id', width: 60 },
+                {
+                    data: 'name',
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
                             return full.name;
@@ -38,7 +40,8 @@ class UserDatatable {
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.color, 0.1) + '; color: ' + full.color + '">' + full.name + '</span>';
                     }
                 },
-                {data: 'surnames',
+                {
+                    data: 'surnames',
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
                             return full.surnames;
@@ -47,16 +50,27 @@ class UserDatatable {
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.color, 0.1) + '; color: ' + full.color + '">' + full.surnames + '</span>';
                     }
                 },
-                {data: 'nickname'},                
-                {data: 'phone'},
-                {data: 'email'},                
-                {data: 'profile', 'visible': true, width: 110,
+                { data: 'nickname' },
+                {
+                    data: 'market_name',
+                    render: function (data, type, full, meta) {
+                        if (type == 'export') {
+                            return full.market_name;
+                        }
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.market_color, 0.1) + '; color: ' + full.market_color + '">' + full.market_name + '</span>';
+                    }
+                },
+                { data: 'email' },
+                {
+                    data: 'profile', 'visible': true, width: 110,
                     render: function (data, type, full, meta) {
                         // Realizamos un render especial para utilizar badges y mejorar la interfaz                        
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.user_profile_color, 0.1) + '; color: ' + full.user_profile_color + '">' + __('table.user_profile.' + full.user_profile_id) + '</span>';
                     }
-                ,},                
-                {data: 'status', width: 60,
+                    ,
+                },
+                {
+                    data: 'status', width: 60,
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
                             return __('table.user_status.' + full.user_status_id);
@@ -71,13 +85,15 @@ class UserDatatable {
                         return '<div class="form-check form-switch form-check-custom form-check-solid"><input onchange="javascript:iUserDatatable.changeStatus(this)" class="form-check-input h-20px w-30px" ' + checked + ' type="checkbox" data-id="' + full.id + '"/></div>';
                     }
                 },
-                {data: 'last_login', 'visible': true},
-                {data: 'date_created', 'visible': true},
-                
+                { data: 'last_login', 'visible': true },
+                { data: 'date_created', 'visible': true },
+
                 // Incluimos campos invisibles, útiles para filtros
-                {data: 'user_status_id', 'visible': false},
-                {data: 'user_profile_id', 'visible': false},
-                {data: null,
+                { data: 'user_status_id', 'visible': false },
+                { data: 'user_profile_id', 'visible': false },
+                { data: 'market_id', 'visible': false },
+                {
+                    data: null,
                     orderable: false,
                     searchable: false,
                     className: 'text-center p-0',

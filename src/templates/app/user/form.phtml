@@ -50,6 +50,19 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-lg-6 market-block d-none">
+                        <label class="col-form-label required"><?php echo __('app.entity.market') ?></label>
+                        <div>
+                            <select name="market_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                                <?php foreach ($data['markets'] as $market): ?>
+                                    <option value="<?php echo $market['id'] ?>">
+                                        <?php echo $market['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
