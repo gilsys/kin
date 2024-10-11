@@ -124,7 +124,11 @@ class UserDAO extends BaseDAO {
             ['db' => 'user_status_color', 'dt' => 'user_status_color', 'exact' => true],
             ['db' => 'user_profile_id', 'dt' => 'user_profile_id', 'exact' => true],
             ['db' => 'user_status_id', 'dt' => 'user_status_id', 'exact' => true],
-            ['db' => 'date_updated', 'dt' => 'date_updated'],
+            ['db' => 'market_id', 'dt' => 'market_id', 'exact' => true],
+            ['db' => 'market_name', 'dt' => 'market_name'],
+            ['db' => 'market_color', 'dt' => 'market_color', 'exact' => true],
+            ['db' => 'date_updated', 'dt' => 'date_updated']
+
         ];
 
         // Trabajamos con campos JSON, extraemos la información directamente y eliminamos las comillas
@@ -147,11 +151,15 @@ class UserDAO extends BaseDAO {
       u.last_login,
       u.user_profile_id,
       u.user_status_id,
+      m.name as market_name,
+      m.id as market_id,
+      m.color as market_color,
       p.color as user_profile_color,
       us.color as user_status_color
     FROM ' . $this->table . ' u
     INNER JOIN st_user_profile p ON u.user_profile_id = p.id and p.id IN (\'' . implode('\',\'', $profilesToShow) . '\')
     INNER JOIN st_user_status us ON u.user_status_id = us.id
+    INNER JOIN st_market m ON u.market_id = m.id
     ' . $userStatusSql . '
     GROUP BY u.id
     ) temp';
@@ -161,8 +169,8 @@ class UserDAO extends BaseDAO {
 
     public function save($data) {
         $data['password'] = CommonUtils::getPasswordEncrypted($data['password'], $this->getNextAutoincrement());
-        $query = 'INSERT INTO ' . $this->table . ' (nickname, personal_information, password, user_status_id, user_profile_id, color) '
-            . 'VALUES (:nickname, AES_ENCRYPT(:personal_information, :AES_KEY), :password, :user_status_id, :user_profile_id, :color)';
+        $query = 'INSERT INTO ' . $this->table . ' (nickname, personal_information, password, user_status_id, user_profile_id, color, market_id) '
+            . 'VALUES (:nickname, AES_ENCRYPT(:personal_information, :AES_KEY), :password, :user_status_id, :user_profile_id, :color, :market_id)';
 
         $data['AES_KEY'] = AES_KEY;
         $this->query($query, $data);
@@ -220,11 +228,12 @@ class UserDAO extends BaseDAO {
             $sqlExtra .= ', color = :color';
         }
 
-        $query = 'UPDATE ' . $this->table . ' SET '
-            . ' personal_information = AES_ENCRYPT(:personal_information, :AES_KEY), '
-            . ' user_profile_id = :user_profile_id, '
-            . ' user_status_id = :user_status_id' . $sqlExtra
-            . ' WHERE id = :id';
+        $query = 'UPDATE ' . $this->table . ' SET 
+            personal_information = AES_ENCRYPT(:personal_information, :AES_KEY), 
+            user_profile_id = :user_profile_id,
+            market_id = :market_id, 
+            user_status_id = :user_status_id' . $sqlExtra . '
+            WHERE id = :id';
 
         $data['AES_KEY'] = AES_KEY;
         $this->query($query, $data);

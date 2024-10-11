@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Constant\App\MenuSection;
+use App\Constant\StaticListTable;
 use App\Constant\UserProfile;
 use App\Constant\UserStatus;
 use App\Controller\App\BaseController;
 use App\Dao\ClientDAO;
 use App\Dao\LogDAO;
+use App\Dao\MarketDAO;
+use App\Dao\StaticListDAO;
 use App\Dao\StepDAO;
 use App\Dao\UserDAO;
 use App\Dao\UserProfileDAO;
@@ -53,9 +56,11 @@ class UserController extends BaseController {
 
         // Carga selectores para filtros
         $userStatusDAO = new UserStatusDAO($this->get('pdo'));
+        $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data'] = [
             'userStatus' => $userStatusDAO->getForSelect('id', 'name', 'custom_order'),
+            'markets' => $marketDAO->getForSelect(),
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -80,6 +85,11 @@ class UserController extends BaseController {
 
         $data['menu'] = static::MENU_DATA;
         $data['data']['userProfiles'] = $userProfileDAO->getAll('custom_order');
+
+        $marketDAO = new MarketDAO($this->get('pdo'));
+        $data['data']['markets'] = $marketDAO->getForSelect();
+
+
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
 
@@ -168,6 +178,11 @@ class UserController extends BaseController {
         // Convierte los datos personales en JSON
         $formData['personal_information'] = json_encode($formData['personal_information']);
         $formData['user_status_id'] = empty($formData['user_status_id']) ? UserStatus::Disabled : $formData['user_status_id'];
+
+
+        if ($formData['user_profile_id'] == UserProfile::Administrator) {
+            $formData['market_id'] = null;
+        }
     }
 
     public function savePersist($request, $response, $args, &$formData) {
@@ -195,7 +210,7 @@ class UserController extends BaseController {
         } else if (FileUtils::checkRemoveEmptyFile($request, 'avatar')) {
             $userDAO->updateSingleFieldEncryptedJSON($formData['id'], 'personal_information', 'avatar', '');
         }
-        $userDAO->updateSingleField($formData['id'], 'color',$formData['color']);
+        $userDAO->updateSingleField($formData['id'], 'color', $formData['color']);
         if ($formData['id'] == $this->get('session')['user']['id']) {
             $authService->reload();
         }
@@ -349,5 +364,4 @@ class UserController extends BaseController {
         $result = $userDAO->getForSelectByProfileWithStatus(UserProfile::User, true);
         return ResponseUtils::withJson($response, $result);
     }
-
 }

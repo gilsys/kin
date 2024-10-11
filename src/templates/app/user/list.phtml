@@ -23,6 +23,15 @@
         <?php endforeach; ?>
     </select>
 </div>
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.entity.market') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_id">
+        <option value=""></option>
+        <?php foreach ($data['markets'] as $market) : ?>
+            <option value="<?= $market['id'] ?>"><?= $market['name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 <?php $this->stop() ?>
 
 
@@ -40,6 +49,7 @@
 <th data-priority="2"><?= __ss('app.common.status') ?></th>
 <th data-priority="7"><?= __ss('app.user.last_access') ?></th>
 <th data-priority="7"><?= __ss('app.user.registration_date') ?></th>
+<th></th>
 <th></th>
 <th></th>
 <th data-priority="1" class="text-center"></th>

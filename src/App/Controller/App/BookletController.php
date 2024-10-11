@@ -7,6 +7,7 @@ namespace App\Controller\App;
 use App\Constant\App\MenuSection;
 use App\Constant\FileType;
 use App\Constant\StaticListTable;
+use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\MarketDAO;
 use App\Dao\StaticListDAO;
