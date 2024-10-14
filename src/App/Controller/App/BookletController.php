@@ -66,9 +66,40 @@ class BookletController extends BaseController {
         $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data']['markets'] = $marketDAO->getForSelect();
-
         $data['data']['languages'] = $languageDAO->getForSelect();
 
+        // Obtener el market del usuario y el idioma asociado a ese market
+        $marketId = $this->get('session')['user']['market_id'];
+
+        if (!empty($marketId)) {
+            $marketData = $marketDAO->getById($marketId);
+            $data['data']['default_main_language'] = $marketData['main_language_id'];
+        } else {
+            $data['data']['default_main_language'] = null;
+        }
+
         return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+
+
+    public function savePreSave($request, $response, $args, &$formData) {
+        // Si es un nuevo booklet
+        if (empty($formData['id'])) {
+            $formData['creator_user_id'] = $this->get('session')['user']['id'];
+        }
+
+        // Si el usuario no es administrador, se asocia el market del usuario (o el que había si ya estaba creado)
+        if ($this->get('session')['user']['user_profile_id'] != UserProfile::Administrator) {
+            if (empty($formData['id'])) {
+                $formData['market_id'] = $this->get('session')['user']['market_id'];
+            } else {
+                $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
+            }
+        }
+
+        // Hardcoded layouts
+        $formData['page2_booklet_layout_id'] = 1;
+        $formData['page3_booklet_layout_id'] = 1;
+        $formData['page4_booklet_layout_id'] = 1;
     }
 };
