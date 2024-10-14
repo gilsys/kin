@@ -22,6 +22,7 @@ class BookletForm {
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+                mForm.find("[name='market_id']").val(data.market_id).change();
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));

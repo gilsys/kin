@@ -95,7 +95,7 @@ return function (App $app) {
     // User
     $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/users', [UserController::class, 'list']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
     $app->group('/app/user', function (RouteCollectorProxy $app) {
         $app->post('/datatable', [UserController::class, 'datatable']);
@@ -142,7 +142,7 @@ return function (App $app) {
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
         $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
     // Booklets
     $app->group('', function (RouteCollectorProxy $app) {
@@ -152,5 +152,5 @@ return function (App $app) {
         $app->get('/app/booklet/form[/{id:[0-9]+}]', [BookletController::class, 'form']);
         $app->post('/app/booklet/save/{mode}', [BookletController::class, 'save']);
         $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };

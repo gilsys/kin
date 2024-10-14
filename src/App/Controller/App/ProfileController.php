@@ -95,6 +95,7 @@ class ProfileController extends BaseController {
             $formData['personal_information'] = json_encode($formData['personal_information']);
             $formData['user_profile_id'] = $oldUser['user_profile_id'];
             $formData['user_status_id'] = $oldUser['user_status_id'];
+            $formData['market_id'] = $oldUser['market_id'];
 
             if (!empty($formData['nickname'])) {
                 $userDAO->updateAuth($id, ['nickname' => $formData['nickname'], 'password' => $formData['password']]);
