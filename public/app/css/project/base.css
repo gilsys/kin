@@ -1364,7 +1364,3 @@ form.data-form .card, .form-extra-card
         overflow: auto !important;
     }
 }
-
-.select2-search.select2-search--inline{
-    width: 100% !important;
-}
