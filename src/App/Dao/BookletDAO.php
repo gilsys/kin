@@ -99,8 +99,8 @@ class BookletDAO extends BaseDAO {
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, page2_booklet_layout_id, page3_booklet_layout_id, page4_booklet_layout_id, creator_user_id) '
-            . 'VALUES (:name, :qr_language_id, :main_language_id, :page2_booklet_layout_id, :page3_booklet_layout_id, :page4_booklet_layout_id, :creator_user_id)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, page2_booklet_layout_id, page3_booklet_layout_id, page4_booklet_layout_id, market_id, creator_user_id) '
+            . 'VALUES (:name, :qr_language_id, :main_language_id, :page2_booklet_layout_id, :page3_booklet_layout_id, :page4_booklet_layout_id, :market_id, :creator_user_id)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
@@ -110,7 +110,11 @@ class BookletDAO extends BaseDAO {
         $query = 'UPDATE ' . $this->table . ' SET 
             name = :name,
             qr_language_id = :qr_language_id,
-            main_language_id = :main_language_id
+            main_language_id = :main_language_id,
+            market_id = :market_id,
+            page2_booklet_layout_id = :page2_booklet_layout_id,
+            page3_booklet_layout_id = :page3_booklet_layout_id,
+            page4_booklet_layout_id = :page4_booklet_layout_id
             WHERE id = :id';
         $this->query($query, $data);
     }
