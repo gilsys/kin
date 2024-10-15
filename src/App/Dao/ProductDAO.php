@@ -74,4 +74,12 @@ class ProductDAO extends BaseDAO {
             WHERE id = :id';
         $this->query($query, $data);
     }
+
+    public function getByMarketId($marketId) {
+        $sql = "SELECT p.id, p.name
+                FROM " . $this->table . " p 
+                INNER JOIN st_market_area ma ON ma.area_id = p.area_id AND ma.market_id = :marketId
+                ORDER BY p.name ASC";
+        return $this->fetchAll($sql, compact('marketId'));
+    }
 }
