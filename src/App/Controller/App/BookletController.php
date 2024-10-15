@@ -9,10 +9,13 @@ use App\Constant\FileType;
 use App\Constant\StaticListTable;
 use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
+use App\Dao\BookletLayoutDAO;
 use App\Dao\MarketDAO;
+use App\Dao\ProductDAO;
 use App\Dao\StaticListDAO;
 use App\Dao\UserDAO;
 use App\Exception\AuthException;
+use App\Util\CommonUtils;
 use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -64,9 +67,12 @@ class BookletController extends BaseController {
         $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
         $languageDAO = new StaticListDAO($this->get('pdo'), 'st_' . $languageEntity);
         $marketDAO = new MarketDAO($this->get('pdo'));
+        $bookletLayoutDAO = new BookletLayoutDAO($this->get('pdo'));
 
         $data['data']['markets'] = $marketDAO->getForSelect();
         $data['data']['languages'] = $languageDAO->getForSelect();
+
+        $data['data']['layouts'] = $bookletLayoutDAO->getForSelect('id', 'name', 'custom_order');
 
         // Obtener el market del usuario y el idioma asociado a ese market
         $marketId = $this->get('session')['user']['market_id'];
@@ -101,5 +107,21 @@ class BookletController extends BaseController {
         $formData['page2_booklet_layout_id'] = 1;
         $formData['page3_booklet_layout_id'] = 1;
         $formData['page4_booklet_layout_id'] = 1;
+    }
+
+    public function getProducts(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $formData = CommonUtils::getSanitizedData($request);
+        if ($this->get('session')['user']['user_profile_id'] != UserProfile::Administrator) {
+            if (empty($formData['id'])) {
+                $formData['market_id'] = $this->get('session')['user']['market_id'];
+            } else {
+                $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
+            }
+        }
+
+        $productDAO = new ProductDAO($this->get('pdo'));
+        $products = $productDAO->getByMarketId($formData['market_id']);
+
+        return ResponseUtils::withJson($response, $products);
     }
 };
