@@ -1,55 +1,58 @@
 <!DOCTYPE html>
 <html lang="<?php echo __('app.js.lang.code') ?>" data-bs-theme="light">
-    <!-- begin::Head -->
-    <head>
-        <script>
-            if (window.self != window.top)
-                document.documentElement.className += " framed";
-        </script>
-        <base href="../">
-        <?php $this->insert("inc/security/csrf_meta", compact('csrf')) ?>        
-        <meta charset="utf-8" />
-        <title><?php echo $params['PROJECT_NAME'] ?><?php echo!empty($title) ? ' ' . $title : '' ?></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<!-- begin::Head -->
 
-        <link href="/app/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-        <link href="/app/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-        <link href="/app/css/project/base.css<?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
-        <link href="/app/css/project/custom.css<?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
+<head>
+    <script>
+        if (window.self != window.top)
+            document.documentElement.className += " framed";
+    </script>
+    <base href="../">
+    <?php $this->insert("inc/security/csrf_meta", compact('csrf')) ?>
+    <meta charset="utf-8" />
+    <title><?php echo $params['PROJECT_NAME'] ?><?php echo !empty($title) ? ' ' . $title : '' ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
-        <!-- Uppy file uploader-->
-        <link href="https://releases.transloadit.com/uppy/v3.7.0/uppy.min.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/3.7.0/uppy.min.js"></script>
-        <script src="https://releases.transloadit.com/uppy/v3.6.1/uppy.min.js"></script>
-        <script src="https://releases.transloadit.com/uppy/locales/v3.0.7/es_ES.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-        <?php if (!empty($css)): ?>
-            <?php foreach ($css as $cssFile): ?>                
-                <link href="/app<?php echo $cssFile ?><?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
-            <?php endforeach; ?>
-        <?php endif; ?>
+    <link href="/app/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/app/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/app/css/project/base.css<?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
+    <link href="/app/css/project/custom.css<?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
+
+    <!-- Uppy file uploader-->
+    <link href="https://releases.transloadit.com/uppy/v3.7.0/uppy.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/3.7.0/uppy.min.js"></script>
+    <script src="https://releases.transloadit.com/uppy/v3.6.1/uppy.min.js"></script>
+    <script src="https://releases.transloadit.com/uppy/locales/v3.0.7/es_ES.min.js"></script>
+
+    <?php if (!empty($css)): ?>
+        <?php foreach ($css as $cssFile): ?>
+            <link href="/app<?php echo $cssFile ?><?php echo '?v=' . RESOURCES_VERSION ?>" rel="stylesheet" type="text/css" />
+        <?php endforeach; ?>
+    <?php endif; ?>
 
 
-        <link rel="apple-touch-icon" sizes="57x57" HREF="/apple-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" HREF="/apple-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" HREF="/apple-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" HREF="/apple-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" HREF="/apple-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" HREF="/apple-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" HREF="/apple-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" HREF="/apple-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" HREF="/apple-icon-180x180.png">
-        <link rel="apple-touch-icon" sizes="192x192" HREF="/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="192x192"  HREF="/android-icon-192x192.png">
-        <link rel="icon" type="image/png" sizes="144x144"  HREF="/android-icon-144x144.png">
-        <link rel="icon" type="image/png" sizes="96x96" HREF="/favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" HREF="/favicon-16x16.png">
-        <link rel="icon" type="image/png" sizes="32x32" HREF="/favicon-32x32.png">
-        <link rel="manifest" HREF="/manifest.json">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-    </head>
+    <link rel="apple-touch-icon" sizes="57x57" HREF="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" HREF="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" HREF="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" HREF="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" HREF="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" HREF="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" HREF="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" HREF="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" HREF="/apple-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="192x192" HREF="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" HREF="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="144x144" HREF="/android-icon-144x144.png">
+    <link rel="icon" type="image/png" sizes="96x96" HREF="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" HREF="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" HREF="/favicon-32x32.png">
+    <link rel="manifest" HREF="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
