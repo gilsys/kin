@@ -1,0 +1,105 @@
+<div data-kt-stepper-element="content" data-booklet-page="<?php echo $pageNum ?>">
+    <div class="card card-custom card-sticky w-100">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.booklet.step_page_' . $pageNum) ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <label class="col-form-label required"><?php echo __('app.layout') ?></label>
+                    <div>
+                        <select name="page<?php echo $pageNum ?>_booklet_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2 booklet-layout-select" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($layouts as $layout): ?>
+                                <option value="<?php echo $layout['id'] ?>">
+                                    <?php echo $layout['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 booklet-table-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Productos pre-cargados con tres tamaños de imagen
+    const products = [{
+            name: 'Laptop',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Laptop1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Laptop1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Laptop1/2'
+            }
+        },
+        {
+            name: 'Smartphone',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Smartphone1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Smartphone1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Smartphone1/2'
+            }
+        },
+        {
+            name: 'Tablet',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Tablet1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Tablet1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Tablet1/2'
+            }
+        },
+        {
+            name: 'Camera',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Camera1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Camera1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Camera1/2'
+            }
+        },
+        {
+            name: 'Smartwatch',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Smartwatch1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Smartwatch1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Smartwatch1/2'
+            }
+        },
+        {
+            name: 'Headphones',
+            image: {
+                '1/6': 'https://via.placeholder.com/150?text=Headphones1/6',
+                '1/3': 'https://via.placeholder.com/300?text=Headphones1/3',
+                '1/2': 'https://via.placeholder.com/450?text=Headphones1/2'
+            }
+        }
+    ];
+
+    // Evento para cambiar el fondo de la celda al seleccionar un producto
+    $(document).on('change', '.product-select', function() {
+        const imageUrl = $(this).find('option:selected').data('bg');
+        const $td = $(this).closest('td');
+
+        // Evitar selección de productos duplicados
+        const selectedProduct = $(this).val();
+        if (selectedProduct) {
+            $('.product-select').not(this).each(function() {
+                if ($(this).val() === selectedProduct) {
+                    $(this).val('').trigger('change');
+                }
+            });
+        }
+
+        // Cambiar fondo de la celda
+        if (imageUrl) {
+            $td.css('background-image', `url(${imageUrl})`);
+            $td.css('background-size', 'cover');
+        } else {
+            $td.css('background-image', 'none');
+        }
+    });
+</script>
