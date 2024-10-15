@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'app.booklet.step_generate_pdf' => '',
+    'app.booklet.step_info' => '',
+    'app.booklet.step_page_2' => '',
+    'app.booklet.step_page_3' => '',
+    'app.booklet.step_page_4' => '',
     'app.common.about' => 'Sobre nosaltres',
     'app.common.accept' => 'Acceptar',
     'app.common.accepted' => 'Acceptat',
@@ -418,6 +423,7 @@ return [
     'app.language.english' => '',
     'app.language.french' => '',
     'app.language.spanish' => '',
+    'app.layout' => '',
     'app.legal' => 'Avís legal',
     'app.log.action' => 'Acció',
     'app.log.action.auth.failed' => 'Identificació incorrecta',

@@ -152,5 +152,6 @@ return function (App $app) {
         $app->get('/app/booklet/form[/{id:[0-9]+}]', [BookletController::class, 'form']);
         $app->post('/app/booklet/save/{mode}', [BookletController::class, 'save']);
         $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
+        $app->post('/app/booklet/get_products', [BookletController::class, 'getProducts']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };
