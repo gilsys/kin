@@ -11,3 +11,42 @@ body.profile-B .profile-deny.profile-B {
     display: none !important;
 }
 
+
+
+
+[data-bs-theme=light]{
+    --bs-primary-active: #003a78 !important;
+    --bs-primary:#0c776e !important;
+    --bs-primary-light:#fff;
+    --bs-success-active: #0c776e !important;
+    --bs-success: #0c776e !important;
+
+    --bs-component-hover-bg: #B4DFF2 !important;
+
+    --bs-text-primary:var(--bs-primary-active);
+    --bs-text-success:var(--bs-primary);
+    --bs-component-active-bg:var(--bs-primary-active);
+    --bs-component-hover-color:var(--bs-primary-active);
+    --bs-component-checked-bg:var(--bs-primary-active);
+    --bs-menu-link-color-hover:var(--bs-primary-active);
+    --bs-menu-link-color-show:var(--bs-primary-active);
+    --bs-menu-link-color-here:var(--bs-primary-active);
+    --bs-menu-link-color-active:var(--bs-primary-active);
+    --bs-ribbon-label-bg:var(--bs-primary-active);
+    --bs-ribbon-label-border-color:var(--bs-primary-active);    
+}
+
+.btn-primary{
+    background-color: var(--bs-primary-active) !important;
+}
+
+.button-filter.btn-light-primary, .button-filter.btn-light-primary i {
+    background-color: var(--bs-primary);
+    color: var(--bs-primary-light);
+}
+
+.btn:hover{
+    opacity: 0.8 !important;
+}
+
+
