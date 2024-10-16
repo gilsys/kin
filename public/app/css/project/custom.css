@@ -60,4 +60,7 @@ body.profile-B .profile-deny.profile-B {
     border: 1px solid #ccc;
     text-align: center;
     vertical-align: top !important;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }

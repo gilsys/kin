@@ -1,52 +1,53 @@
 class BookletForm {
     tableConfigurations = {
         1: [
-            ['1/2'],
-            ['1/2']
+            ['2'],
+            ['2']
         ],
         2: [
-            ['1/3'],
-            ['1/3'],
-            ['1/3']
+            ['3'],
+            ['3'],
+            ['3']
         ],
         3: [
-            ['1/6', '1/6'],
-            ['1/3'],
-            ['1/3']
+            ['6', '6'],
+            ['3'],
+            ['3']
         ],
         4: [
-            ['1/6', '1/6'],
-            ['1/6', '1/6'],
-            ['1/3']
+            ['6', '6'],
+            ['6', '6'],
+            ['3']
         ],
         5: [
-            ['1/6', '1/6'],
-            ['1/3'],
-            ['1/6', '1/6']
+            ['6', '6'],
+            ['3'],
+            ['6', '6']
         ],
         6: [
-            ['1/6', '1/6'],
-            ['1/6', '1/6'],
-            ['1/6', '1/6']
+            ['6', '6'],
+            ['6', '6'],
+            ['6', '6']
         ],
         7: [
-            ['1/3'],
-            ['1/6', '1/6'],
-            ['1/3']
+            ['3'],
+            ['6', '6'],
+            ['3']
         ],
         8: [
-            ['1/3'],
-            ['1/6', '1/6'],
-            ['1/6', '1/6']
+            ['3'],
+            ['6', '6'],
+            ['6', '6']
         ],
         9: [
-            ['1/3'],
-            ['1/3'],
-            ['1/6', '1/6']
+            ['3'],
+            ['3'],
+            ['6', '6']
         ]
     };
 
     products = [];
+    selectedProducts = {};
 
     ready() {
         var that = this;
@@ -56,28 +57,69 @@ class BookletForm {
             id = id.val();
         }
 
-        mForm.validate({
-            ignore: ":not(:visible)",
-            onkeyup: false
-        });
-
         var stepper = new KTStepper(mForm.find('#mt-booklet-stepper')[0]);
-        stepper.on("kt.stepper.click", function (stepper) {
-            stepper.goTo(stepper.getClickedStepIndex());
+
+        mForm.validate({
+            ignore: "",
+            onkeyup: false,
+            invalidHandler: function (event, validator) {
+                AdminUtils.hideLoading();
+                if (validator.numberOfInvalids()) {
+                    showWarning(__('app.js.common.attention'), __('app.js.common.form_errors'));
+                    var stepIndex = $(validator.errorList[0].element).closest('[data-kt-stepper-element="content"]').index();
+                    stepper.goTo(stepIndex + 1);
+                }
+            }
         });
 
-        $('.booklet-layout-select').on('change', function () {
+        function changeStep(index, stepper) {
+            var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
+            var marketValid = !mForm.find("[name='market_id']").is(':visible') || mForm.find("[name='market_id']").valid();
+
+            if (!languageValid || !marketValid) {
+                return;
+            }
+
+            stepper.goTo(index);
+        }
+
+        stepper.on("kt.stepper.click", function (stepper) {
+            changeStep(stepper.getClickedStepIndex(), stepper);
+        });
+        stepper.on("kt.stepper.next", function (stepper) {
+            changeStep(stepper.getNextStepIndex(), stepper);
+        });
+        stepper.on("kt.stepper.previous", function (stepper) {
+            changeStep(stepper.getPreviousStepIndex(), stepper);
+        });
+
+        mForm.find("[name='market_id']").on('change', function () {
+            that.getProducts();
+        });
+
+        mForm.find("[name='main_language_id']").on('change', function () {
+            mForm.find('select.booklet-product-select').trigger('change.select2');
+        });
+
+        mForm.find('select.booklet-layout-select').on('change', function () {
             var tableContainer = $(this).closest('[data-booklet-page]').find('.booklet-table-container');
+            var page = $(this).closest('[data-booklet-page]').attr('data-booklet-page');
             if ($(this).val() != null && $(this).val() != '') {
-                tableContainer.html(that.generateTable($(this).val()));
-                that.getProducts();
+                that.generateTable(page, $(this).val(), tableContainer);
+                that.selectProducts(page);
             } else {
                 tableContainer.html('');
             }
-        })
+        });
 
         if (id.length) {
             $.post('/app/booklet/' + id, function (data) {
+                data.booklet_products.forEach(function (product) {
+                    if (typeof that.selectedProducts[product.page] == 'undefined') {
+                        that.selectedProducts[product.page] = [];
+                    }
+                    that.selectedProducts[product.page].push(product.product_id);
+                });
 
                 mForm.find("[name='name']").val(data.name);
 
@@ -86,6 +128,11 @@ class BookletForm {
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+
+                mForm.find("[name='page2_booklet_layout_id']").val(data.page2_booklet_layout_id).trigger('change.select2');
+                mForm.find("[name='page3_booklet_layout_id']").val(data.page3_booklet_layout_id).trigger('change.select2');
+                mForm.find("[name='page4_booklet_layout_id']").val(data.page4_booklet_layout_id).trigger('change.select2');
+
                 mForm.find("[name='market_id']").val(data.market_id).change();
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
@@ -100,41 +147,79 @@ class BookletForm {
         }
     }
 
-    generateTable(layoutId) {
-        var mForm = $('#mt-booklet-form');
-        var languageId = mForm.find("[name='main_language_id']").val();
-
+    generateTable(page, layoutId, container) {
         var config = this.tableConfigurations[layoutId];
         var tableHTML = '<table class="table table-bordered"><tbody>';
 
+        var order = 0;
         config.forEach(row => {
             tableHTML += '<tr>';
-            // Verificar si hay una sola columna en la fila, para aplicar colspan=2
             if (row.length === 1) {
-                tableHTML += `<td colspan="2">
-                                <select class="product-select form-control" required>
-                                    <option value="">Seleccionar producto</option>`;
-                products.forEach(product => {
-                    tableHTML += `<option value="${product.name}" data-bg="${product.image[row[0]]}">${product.name}</option>`;
-                });
-                tableHTML += '</select></td>';
+                order++;
+                tableHTML += `<td colspan="2">` + this.getSelectProductHtml(page, order, row[0]) + `</td>`;
             } else {
-                // En caso de múltiples celdas en la fila (sin colspan)
                 row.forEach(col => {
-                    tableHTML += `<td><select class="product-select form-control" required><option value="">Seleccionar producto</option>`;
-                    products.forEach(product => {
-                        tableHTML += `<option value="${product.name}" data-bg="${product.image[col]}">${product.name}</option>`;
-                    });
-                    tableHTML += '</select></td>';
+                    order++;
+                    tableHTML += `<td>` + this.getSelectProductHtml(page, order, col) + `</td>`;
                 });
             }
             tableHTML += '</tr>';
         });
 
         tableHTML += '</tbody></table>';
-        return tableHTML;
+
+        container.html(tableHTML);
+
+        var that = this;
+        container.find('select.booklet-product-select').each(function () {
+            initSelect2($(this));
+
+            $(this).on('select2:selecting', function (e) {
+                var mForm = $('#mt-booklet-form');
+                var selectedValue = e.params.args.data.id;
+
+                var exists = mForm.find('select.booklet-product-select').filter(function () {
+                    return $(this).val() === selectedValue;
+                }).length > 0;
+
+                if (exists) {
+                    e.preventDefault();
+                    showWarning(__('app.js.common.attention'), __('app.js.booklet.product_already_selected'));
+                }
+            });
+
+            $(this).on('change.select2', function () {
+                var mForm = $('#mt-booklet-form');
+                var languageId = mForm.find("[name='main_language_id']").val();
+                var td = $(this).closest('td');
+
+                if ($(this).val() != null && $(this).val() != '') {
+                    var product = that.products[$(this).val()];
+                    td.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
+                } else {
+                    td.css('background-image', 'none');
+                }
+            });
+
+            $(this).on('change', function () {
+                var page = $(this).closest('[data-booklet-page]').attr('data-booklet-page');
+                that.selectedProducts[page] = [];
+                $(this).closest('[data-booklet-page]').find('select.booklet-product-select').each(function () {
+                    that.selectedProducts[page].push($(this).val());
+                });
+            });
+        });
     }
 
+    getSelectProductHtml(page, order, displayMode) {
+        var html = `<select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
+                        <option disabled selected value>` + __('app.js.common.select_value') + `</option>`;
+        Object.values(this.products).forEach(product => {
+            html += `<option value="` + product.id + `">` + product.name + `</option>`;
+        });
+        html += `</select>`;
+        return html;
+    }
 
     getProducts() {
         var mForm = $('#mt-booklet-form');
@@ -144,10 +229,21 @@ class BookletForm {
             'market_id': mForm.find("[name='market_id']").length > 0 ? mForm.find("[name='market_id']").val() : null
         };
 
-        $.post('/app/booklet/get_products', params, function (data) {
+        $.post('/app/booklet/get_products', params, data => {
             this.products = data;
+            mForm.find('select.booklet-layout-select').change();
         });
     }
 
+    selectProducts(page) {
+        var mForm = $('#mt-booklet-form');
 
+        if (typeof this.selectedProducts[page] == 'undefined') {
+            return;
+        }
+
+        this.selectedProducts[page].forEach(function (productId, index) {
+            mForm.find('[name^="booklet_product[' + page + '][' + (index + 1) + ']"]').val(productId).trigger('change.select2');
+        });
+    }
 }

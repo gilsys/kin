@@ -10,6 +10,7 @@ use App\Constant\StaticListTable;
 use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\BookletLayoutDAO;
+use App\Dao\BookletProductDAO;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
 use App\Dao\StaticListDAO;
@@ -87,6 +88,17 @@ class BookletController extends BaseController {
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
 
+    public function load(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $data = $this->getDAO()->getFullById($args['id']);
+        if (empty($data)) {
+            throw new AuthException();
+        }
+
+        $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
+        $data['booklet_products'] = $bookletProductDAO->getByBookletId($args['id']);
+
+        return ResponseUtils::withJson($response, $data);
+    }
 
     public function savePreSave($request, $response, $args, &$formData) {
         // Si es un nuevo booklet
@@ -103,10 +115,27 @@ class BookletController extends BaseController {
             }
         }
 
-        // Hardcoded layouts
-        $formData['page2_booklet_layout_id'] = 1;
-        $formData['page3_booklet_layout_id'] = 1;
-        $formData['page4_booklet_layout_id'] = 1;
+        if (!empty($formData['id'])) {
+            $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
+            $bookletProductDAO->clear($formData['id']);
+        }
+    }
+
+    public function savePersist($request, $response, $args, &$formData) {
+        $bookletProducts = !empty($formData['booklet_product']) ? $formData['booklet_product'] : [];
+        unset($formData['booklet_product']);
+
+        parent::savePersist($request, $response, $args, $formData);
+
+        $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
+        foreach ($bookletProducts as $page => $pageItems) {
+            foreach ($pageItems as $order => $product) {
+                $displayMode = key($product);
+                $productId = current($product);
+
+                $bookletProductDAO->save(['booklet_id' => $formData['id'], 'product_id' => $productId, 'page' => $page, 'custom_order' => $order, 'display_mode' => $displayMode]);
+            }
+        }
     }
 
     public function getProducts(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {

@@ -76,10 +76,14 @@ class ProductDAO extends BaseDAO {
     }
 
     public function getByMarketId($marketId) {
-        $sql = "SELECT p.id, p.name
+        $sql = "SELECT p.id, p.name, p.date_updated
                 FROM " . $this->table . " p 
                 INNER JOIN st_market_area ma ON ma.area_id = p.area_id AND ma.market_id = :marketId
                 ORDER BY p.name ASC";
-        return $this->fetchAll($sql, compact('marketId'));
+        $result = [];
+        foreach ($this->fetchAll($sql, compact('marketId')) as $row) {
+            $result[$row['id']] = $row;
+        }
+        return $result;
     }
 }
