@@ -7,6 +7,7 @@
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "bryanjhv/slim-session": "~4.1.2",
         "defuse/php-encryption": "^2.2",
+        "dompdf/dompdf": "^3.0",
         "league/plates": "^3.5",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^1.24",
