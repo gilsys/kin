@@ -24,7 +24,7 @@
     <div class="stepper stepper-pills first" id="mt-booklet-stepper">
         <div class="stepper-nav flex-start flex-wrap mb-10">
             <?php foreach (['info', 'page_2', 'page_3', 'page_4', 'generate_pdf'] as $i => $step): ?>
-                <div class="stepper-item mx-8 my-4<?php if ($i == 0): ?> current<?php endif; ?>" data-kt-stepper-element="nav" data-kt-stepper-action="step">
+                <div class="stepper-item me-12 my-4<?php if ($i == 0): ?> current<?php endif; ?>" data-kt-stepper-element="nav" data-kt-stepper-action="step">
                     <div class="stepper-wrapper d-flex align-items-center">
                         <div class="stepper-icon w-40px h-40px">
                             <i class="stepper-check fas fa-check"></i>
@@ -167,5 +167,25 @@
                 PDF
             </div>
         </div>
+
+        <!--begin::Actions-->
+        <div class="d-flex flex-stack container-fluid">
+            <div class="me-2">
+                <button type="button" class="btn btn-secondary" data-kt-stepper-action="previous">
+                    <?php echo __('app.common.previous') ?>
+                </button>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-primary" data-kt-stepper-action="submit">
+                    <?php echo __('app.common.save') ?>
+                </button>
+
+                <button type="button" class="btn btn-primary" data-kt-stepper-action="next">
+                    <?php echo __('app.common.next') ?>
+                </button>
+            </div>
+        </div>
+        <!--end::Actions-->
     </div>
 </form>
