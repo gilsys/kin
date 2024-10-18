@@ -68,6 +68,10 @@ body.profile-B .profile-deny.profile-B {
     border: 1px solid #ccc;
     text-align: center;
     vertical-align: top !important;
+}
+
+.booklet-table-container td .booklet-product-image {
+
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
