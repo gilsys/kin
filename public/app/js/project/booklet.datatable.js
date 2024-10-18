@@ -22,8 +22,24 @@ class BookletDatatable {
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.market_color, 0.1) + '; color: ' + full.market_color + '">' + full.market_name + '</span>';
                     }
                 },
-                { data: 'main_language_name' },
-                { data: 'qr_language_name' },
+                {
+                    data: 'main_language',
+                    render: function (data, type, full, meta) {
+                        if (type == 'export') {
+                            return full.main_language;
+                        }
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.main_language_color, 0.1) + '; color: ' + full.main_language_color + '">' + __(full.main_language) + '</span>';
+                    }
+                },
+                {
+                    data: 'qr_language',
+                    render: function (data, type, full, meta) {
+                        if (type == 'export') {
+                            return full.qr_language;
+                        }
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.qr_language_color, 0.1) + '; color: ' + full.qr_language_color + '">' + __(full.qr_language) + '</span>';
+                    }
+                },
                 { data: 'date_created' },
                 // Incluimos campos invisibles, útiles para filtros
                 { data: 'main_language_id', 'visible': false },
