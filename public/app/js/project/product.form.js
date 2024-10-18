@@ -17,7 +17,7 @@ class ProductForm {
 
                 mForm.find("[name='name']").val(data.name);
                 mForm.find("[name='area_id']").val(data.area_id).change();
-                mForm.find("[name='slug']").val(data.slug).change();
+                mForm.find("[name='slug']").val(data.slug);
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
