@@ -57,7 +57,13 @@ class BookletForm {
             id = id.val();
         }
 
-        var stepper = new KTStepper(mForm.find('#mt-booklet-stepper')[0]);
+        var startStep = 1;
+        if (localStorage.getItem('active_booklet_tab') != null) {
+            startStep = localStorage.getItem('active_booklet_tab');
+            localStorage.removeItem('active_booklet_tab');
+        }
+
+        var stepper = new KTStepper(mForm.find('#mt-booklet-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
             ignore: "",
@@ -69,6 +75,12 @@ class BookletForm {
                     var stepIndex = $(validator.errorList[0].element).closest('[data-kt-stepper-element="content"]').index();
                     stepper.goTo(stepIndex + 1);
                 }
+            },
+            submitHandler: function (form) {
+                if (jQuery.inArray($(form).attr('action').split('/').pop(), ['N', 'B']) === -1) {
+                    localStorage.setItem('active_booklet_tab', stepper.getCurrentStepIndex());
+                }
+                return true;
             }
         });
 
@@ -112,13 +124,30 @@ class BookletForm {
             }
         });
 
+        mForm.find('.file-info-container .btn-delete-file').on('click', function () {
+            var fileContainer = $(this).closest('.file-container');
+            var fileId = $(this).attr('data-file-id');
+            
+            showConfirm(__('app.js.utils.delete_record'), __('app.js.utils.delete_record_text'), 'question', function () {
+                $.post('/app/booklet/pdf/delete/' + fileId, function (data) {
+                    if (typeof data.success != 'undefined' && data.success == '1') {
+                        var fileInfoContainer = fileContainer.closest('.file-info-container');
+                        fileContainer.remove();
+                        if (!fileInfoContainer.find('.btn-delete-file').length) {
+                            fileInfoContainer.find('.historical-title').remove();
+                        }
+                    }
+                });
+            });
+        });
+
         if (id.length) {
             $.post('/app/booklet/' + id, function (data) {
                 data.booklet_products.forEach(function (product) {
                     if (typeof that.selectedProducts[product.page] == 'undefined') {
                         that.selectedProducts[product.page] = [];
                     }
-                    that.selectedProducts[product.page].push(product.product_id);
+                    that.selectedProducts[product.page].push({ id: product.product_id, order: product.custom_order });
                 });
 
                 mForm.find("[name='name']").val(data.name);
@@ -135,13 +164,21 @@ class BookletForm {
 
                 mForm.find("[name='market_id']").val(data.market_id).change();
 
+                if (!userHasProfile(['A'])) {
+                    that.getProducts();
+                }
+
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
 
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
-            // Valores por defecto en registros nuevos            
+            // Valores por defecto en registros nuevos        
+            if (!userHasProfile(['A'])) {
+                that.getProducts();
+            }
+
             mForm.removeDisabledOptions();
             AdminUtils.showDelayedAfterLoad();
         }
@@ -205,14 +242,14 @@ class BookletForm {
                 var page = $(this).closest('[data-booklet-page]').attr('data-booklet-page');
                 that.selectedProducts[page] = [];
                 $(this).closest('[data-booklet-page]').find('select.booklet-product-select').each(function () {
-                    that.selectedProducts[page].push($(this).val());
+                    that.selectedProducts[page].push({ id: $(this).val(), order: $(this).attr('data-order') });
                 });
             });
         });
     }
 
     getSelectProductHtml(page, order, displayMode) {
-        var html = `<select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
+        var html = `<select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-order="` + order + `" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
                         <option disabled selected value>` + __('app.js.common.select_value') + `</option>`;
         Object.values(this.products).forEach(product => {
             html += `<option value="` + product.id + `">` + product.name + `</option>`;
@@ -242,8 +279,12 @@ class BookletForm {
             return;
         }
 
-        this.selectedProducts[page].forEach(function (productId, index) {
-            mForm.find('[name^="booklet_product[' + page + '][' + (index + 1) + ']"]').val(productId).trigger('change.select2');
+        this.selectedProducts[page].forEach(product => {
+            if (typeof this.products[product.id] == 'undefined') {
+                return;
+            }
+
+            mForm.find('[name^="booklet_product[' + page + '][' + product.order + ']"]').val(product.id).trigger('change.select2');
         });
     }
 }

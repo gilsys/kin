@@ -12,8 +12,8 @@
     <label class="form-label"><?= __('app.visuals_language') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="main_language_id">
         <option value=""></option>
-        <?php foreach ($data['languages'] as $lang) : ?>
-            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php foreach ($data['main_languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= __($lang['name']) ?></option>
         <?php endforeach; ?>
     </select>
 </div>
@@ -22,8 +22,8 @@
     <label class="form-label"><?= __('app.qr_language') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="qr_language_id">
         <option value=""></option>
-        <?php foreach ($data['languages'] as $lang) : ?>
-            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php foreach ($data['qr_languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= __($lang['name']) ?></option>
         <?php endforeach; ?>
     </select>
 </div>

@@ -149,14 +149,12 @@ return function (App $app) {
         $app->get('/app/booklets', [BookletController::class, 'list']);
         $app->post('/app/booklet/datatable', [BookletController::class, 'datatable']);
         $app->post('/app/booklet/{id:[0-9]+}', [BookletController::class, 'load']);
-        $app->get('/app/booklet/form[/{id:[0-9]+}]', [BookletController::class, 'form']);
+        $app->get('/app/booklet/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [BookletController::class, 'form']);
         $app->post('/app/booklet/save/{mode}', [BookletController::class, 'save']);
         $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
         $app->post('/app/booklet/get_products', [BookletController::class, 'getProducts']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
-
-    // Render PDF
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/booklet/pdf/{id:[0-9]+}', [BookletController::class, 'generatePdf']);
+        $app->get('/app/booklet/pdf/{id:[0-9]+}', [BookletController::class, 'pdfPreview']);
+        $app->get('/app/booklet/pdf/file/{id:[0-9]+}', [BookletController::class, 'pdfFile']);
+        $app->post('/app/booklet/pdf/delete/{id:[0-9]+}', [BookletController::class, 'pdfDelete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };
