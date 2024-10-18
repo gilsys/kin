@@ -1364,3 +1364,8 @@ form.data-form .card, .form-extra-card
         overflow: auto !important;
     }
 }
+
+.image-input.image-input-outline .image-input-wrapper{
+    background-size: contain;
+    background-position: center;
+}

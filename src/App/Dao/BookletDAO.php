@@ -118,4 +118,35 @@ class BookletDAO extends BaseDAO {
             WHERE id = :id';
         $this->query($query, $data);
     }
+
+    public function getBookletImages($bookletId, $lang) {
+        $query = "SELECT
+                    bp.page, 
+                    bp.custom_order, 
+                    p.id as product_id, 
+                    f.id as image_id,
+                    display_mode,
+                    f.file,
+                    p.slug
+                FROM 
+                    st_booklet_product bp
+                INNER JOIN 
+                    st_booklet b ON b.id = bp.booklet_id
+                INNER JOIN 
+                    st_product p ON p.id = bp.product_id
+                LEFT JOIN 
+                    st_file f ON f.id = 
+                            CASE 
+                                WHEN bp.display_mode = 2 THEN p.image_" . $lang . "_2
+                                WHEN bp.display_mode = 3 THEN p.image_" . $lang . "_3
+                                WHEN bp.display_mode = 6 THEN p.image_" . $lang . "_6
+                            END                    
+                WHERE 
+                    bp.booklet_id = :bookletId
+                ORDER BY 
+                    bp.page ASC, 
+                    bp.custom_order ASC";
+
+        return $this->fetchAll($query, compact('bookletId'));
+    }
 }
