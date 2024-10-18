@@ -20,6 +20,7 @@ use App\Util\CommonUtils;
 use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use App\Service\PdfService;
 
 class BookletController extends BaseController {
 
@@ -152,5 +153,10 @@ class BookletController extends BaseController {
         $products = $productDAO->getByMarketId($formData['market_id']);
 
         return ResponseUtils::withJson($response, $products);
+    }
+
+    public function generatePdf(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+        $pdfService->bookletPdf($args['id']);
     }
 };

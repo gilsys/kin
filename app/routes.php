@@ -154,4 +154,9 @@ return function (App $app) {
         $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
         $app->post('/app/booklet/get_products', [BookletController::class, 'getProducts']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
+
+    // Render PDF
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/booklet/pdf/{id:[0-9]+}', [BookletController::class, 'generatePdf']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        .page-2,
+        .page-3 {
+            page-break-after: always;
+        }
+
+        html {
+            margin: 0;
+        }
+
+        .product {
+            position: fixed;
+            /* border: 1px solid red; */
+        }
+
+        .position-2 {
+            width: 100%;
+            height: 50%;
+        }
+
+        .position-3 {
+            width: 100%;
+            height: 33.33333%;
+        }
+
+        .position-6 {
+            width: 50%;
+            height: 33.33333%;
+        }
+
+        .qr {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            z-index: 9999999;
+            bottom: 100px;
+        }
+
+        .position-2 .qr {
+            bottom: 50px;
+            right: 50px;
+        }
+
+        .position-3 .qr {
+            bottom: 50px;
+            right: 50px;
+        }
+
+        .position-6 .qr {
+            bottom: 50px;
+            right: 50px;
+        }
+
+        .product img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<?php
+$positions = [
+    '2_1' => ['x' => '0', 'y' => '0'],
+    '2_2' => ['x' => '0', 'y' => '50%'],
+    '3_1' => ['x' => '0', 'y' => '0'],
+    '3_2' => ['x' => '0', 'y' => '33.33333%'],
+    '3_3' => ['x' => '0', 'y' => '66.666666%'],
+    '6_1' => ['x' => '0', 'y' => '0'],
+    '6_2' => ['x' => '50%', 'y' => '0'],
+    '6_3' => ['x' => '0', 'y' => '33.33333%'],
+    '6_4' => ['x' => '50%', 'y' => '33.33333%'],
+    '6_5' => ['x' => '0', 'y' => '66.666666%'],
+    '6_6' => ['x' => '50%', 'y' => '66.666666%'],
+];
+
+$layouts = [];
+$layouts[1] = ['2_1', '2_2']; // 1/2 + 1/2
+$layouts[2] = ['3_1', '3_2', '3_3']; // 1/3 + 1/3 + 1/3
+$layouts[3] = ['6_1', '6_2', '3_2', '3_3']; // 1/3x2 + 1/3 + 1/3
+$layouts[4] = ['6_1', '6_2', '6_3', '6_4', '3_3']; // 1/3x2 + 1/3x2 + 1/3
+$layouts[5] = ['6_1', '6,2', '3_2', '6_5', '6_6']; // 1/3x2 + 1/3 + 1/3x2
+$layouts[6] = ['6_1', '6_2', '6_3', '6_4', '6_5', '6_6']; // 1/3x2 + 1/3x2 + 1/3x2
+$layouts[7] = ['3_1', '6_2', '3_2', '3_3']; // 1/3 + 1/3x2 + 1/3
+$layouts[8] = ['3_1', '6_2', '6_3', '6_4', '6_5', '6_6']; // 1/3 + 1/3x2 + 1/3x2
+$layouts[9] = ['3_1', '3_2', '6_5', '6_6']; // 1/3 + 1/3 + 1/3x2
+
+?>
+
+
+<body>
+    <?php for ($page = 2; $page <= 4; $page++): ?>
+        <div class="page-<?php echo $page ?>">
+            <?php $currentLayout = $booklet['page' . $page . '_booklet_layout_id']; ?>
+            <?php foreach ($booklet['pages'][$page] as $i => $product): ?>
+                <?php $currentPosition = $layouts[$currentLayout][$i]; ?>
+                <?php $position = $positions[$currentPosition] ?>
+                <div class="product position-<?php echo $currentPosition[0] ?>" style="top: <?php echo $position['y'] ?>; left: <?php echo $position['x'] ?>">
+                    <div class="qr">
+                        <img src='<?php echo $product['qr']; ?>'>
+                    </div>
+                    <img src='<?php echo $product['image'] ?>'>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endfor; ?>
+</body>
+
+</html>
