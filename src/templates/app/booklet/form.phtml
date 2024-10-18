@@ -22,23 +22,26 @@
     <?php endif; ?>
 
     <div class="stepper stepper-pills first" id="mt-booklet-stepper">
-        <div class="stepper-nav flex-start flex-wrap mb-10">
-            <?php foreach (['info', 'page_2', 'page_3', 'page_4', 'generate_pdf'] as $i => $step): ?>
-                <div class="stepper-item me-12 my-4<?php if ($i == 0): ?> current<?php endif; ?>" data-kt-stepper-element="nav" data-kt-stepper-action="step">
-                    <div class="stepper-wrapper d-flex align-items-center">
-                        <div class="stepper-icon w-40px h-40px">
-                            <i class="stepper-check fas fa-check"></i>
-                            <span class="stepper-number"><?php echo $i + 1 ?></span>
+        <div class="card card-custom">
+            <div class="card-body py-4">
+                <div class="stepper-nav flex-start flex-wrap">
+                    <?php foreach (['info', 'page_2', 'page_3', 'page_4', 'generate_pdf'] as $i => $step): ?>
+                        <div class="stepper-item pe-lg-2 pe-xl-8 my-4<?php if ($i == 0): ?> current<?php endif; ?>" data-kt-stepper-element="nav" data-kt-stepper-action="step">
+                            <div class="stepper-wrapper d-flex align-items-center">
+                                <div class="stepper-icon w-40px h-40px">
+                                    <span class="stepper-number"><?php echo $i + 1 ?></span>
+                                </div>
+                                <div class="stepper-label">
+                                    <h3 class="stepper-title">
+                                        <?php echo __('app.booklet.step_' . $step) ?>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="stepper-line h-40px"></div>
                         </div>
-                        <div class="stepper-label">
-                            <h3 class="stepper-title">
-                                <?php echo __('app.booklet.step_' . $step) ?>
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="stepper-line h-40px"></div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
+            </div>
         </div>
 
         <div>
@@ -86,10 +89,10 @@
                                 <div>
                                     <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
                                         <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                                        <?php foreach ($data['languages'] as $lang): ?>
+                                        <?php foreach ($data['main_languages'] as $lang): ?>
                                             <option value="<?php echo $lang['id'] ?>"
                                                 <?php echo (!empty($data['default_main_language']) && $lang['id'] == $data['default_main_language']) ? 'selected' : '' ?>>
-                                                <?php echo $lang['name'] ?>
+                                                <?php echo __($lang['name']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -101,9 +104,9 @@
                                 <div>
                                     <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
                                         <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                                        <?php foreach ($data['languages'] as $lang): ?>
+                                        <?php foreach ($data['qr_languages'] as $lang): ?>
                                             <option value="<?php echo $lang['id'] ?>">
-                                                <?php echo $lang['name'] ?>
+                                                <?php echo __($lang['name']) ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -164,7 +167,47 @@
             <?php $this->insert("booklet/inc/page", ['pageNum' => 4, 'layouts' => $data['layouts']]) ?>
 
             <div data-kt-stepper-element="content">
-                PDF
+                <div class="card card-custom card-sticky w-100">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2><?php echo __('app.booklet.step_generate_pdf') ?></h2>
+                        </div>
+                    </div>
+                    <div class="card-body file-info-container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="pb-1 border-bottom"><?php echo __('app.booklet.pdf_versions_info') ?></div>
+                            </div>
+
+                            <?php if (!empty($data['bookletFiles'])): ?>
+                                <?php foreach ($data['bookletFiles'] as $i => $pdFile): ?>
+                                    <?php if ($i == 0): ?>
+                                        <div class="col-12 mb-3 h4"><?php echo __('app.booklet.pdf_versions_last') ?></div>
+                                    <?php elseif ($i == 1): ?>
+                                        <div class="col-12 mb-3 mt-5 h4 historical-title"><?php echo __('app.booklet.pdf_versions') ?></div>
+                                    <?php endif; ?>
+                                    <div class="col-sm-6 col-md-4 col-lg-3 mb-4 file-container">
+                                        <a class="file-info d-block p-3 <?php if ($i == 0): ?>last-file<?php endif; ?>" href="/app/booklet/pdf/file/<?php echo $pdFile['id'] ?>" target="_blank">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <i class="la la-file-pdf"></i>
+                                                </div>
+                                                <div class="col-9">
+                                                    <?php $fileDate = explode(' ', date('d/m/Y H:i:s', strtotime($pdFile['date']))) ?>
+                                                    <div><?php echo $fileDate[0] ?></div>
+                                                    <div><?php echo $fileDate[1] ?></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <?php if ($i > 0): ?>
+                                            <a href="javascript:;" class="btn-delete-file" data-file-id="<?php echo $pdFile['id'] ?>"><i class="la la-trash"></i></a>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -177,9 +220,26 @@
             </div>
 
             <div>
-                <button type="button" class="btn btn-primary" data-kt-stepper-action="submit">
-                    <?php echo __('app.common.save') ?>
-                </button>
+                <div class="dropdown project-dropdown" data-kt-stepper-action="submit">
+                    <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="btn btn-primary btn rounded btn-rounded-grouped pe-2"><?php echo __('app.save.generate_pdf') ?></a><a href="javascript:;" class="btn btn-primary btn ms-0 ps-2 rounded btn-rounded-grouped dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="ki-outline ki-down fs-3 ms-1"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end border-1 border-primary p-3">
+                        <li><span class="dropdown-item py-3 text-primary bg-white"><?php echo __('app.common.options') ?>:</span></li>
+                        <li>
+                            <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="dropdown-item py-3">
+                                <i class="nav-icon la la-file-pdf"></i>
+                                <span class="nav-text"><?php echo __('app.save.save_generate_pdf') ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndPreview ?>" class="dropdown-item py-3">
+                                <i class="nav-icon la la-eye"></i>
+                                <span class="nav-text"><?php echo __('app.save.save_preview_pdf') ?></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
                 <button type="button" class="btn btn-primary" data-kt-stepper-action="next">
                     <?php echo __('app.common.next') ?>

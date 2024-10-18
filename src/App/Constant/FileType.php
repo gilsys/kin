@@ -7,4 +7,6 @@ namespace App\Constant;
 class FileType {
 
     const ProductImage = 'PI';
+    const BookletFile = 'BF';
+    
 }
