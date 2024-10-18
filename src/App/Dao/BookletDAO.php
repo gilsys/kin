@@ -30,7 +30,7 @@ class BookletDAO extends BaseDAO {
         return $this->fetchRecord($sql, compact('id'));
     }
 
-    public function getRemoteDatatable() {
+    public function getRemoteDatatable($userId = null) {
         // Columnas a tratar en el datatable
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
@@ -65,6 +65,11 @@ class BookletDAO extends BaseDAO {
 
         ];
 
+        $whereSql = '';
+        if(!empty($userId)) {
+            $whereSql .= ' AND b.creator_user_id = ' . intval($userId);
+        }
+
         $table = '(
             SELECT
                 b.id,
@@ -95,7 +100,8 @@ class BookletDAO extends BaseDAO {
             INNER JOIN
                 st_language l1 ON b.main_language_id = l1.id  
             INNER JOIN
-                st_language l2 ON b.qr_language_id = l2.id    
+                st_language l2 ON b.qr_language_id = l2.id  
+            WHERE 1 = 1' . $whereSql . '  
         ) temp';
 
 

@@ -63,9 +63,21 @@ class BookletController extends BaseController {
     }
 
     /**
+     * Obtiene los datos para mostrar la datatable
+     */
+    public function datatable(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $userId = $this->get('security')->isUser() ? $this->get('security')->getUserId() : null;
+        return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($userId));
+    }
+
+    /**
      * Prepara el formulario de crear/editar booklets
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        if (!empty($args['id'])) {
+            $this->get('security')->checkBookletOwner($args['id']);
+        }
+
         $data = $this->prepareForm($args);
 
         // Obtenemos los valores a mostrar en los desplegables
@@ -109,6 +121,8 @@ class BookletController extends BaseController {
     }
 
     public function load(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $this->get('security')->checkBookletOwner($args['id']);
+
         $data = $this->getDAO()->getFullById($args['id']);
         if (empty($data)) {
             throw new AuthException();
@@ -124,6 +138,8 @@ class BookletController extends BaseController {
         // Si es un nuevo booklet
         if (empty($formData['id'])) {
             $formData['creator_user_id'] = $this->get('session')['user']['id'];
+        } else {
+            $this->get('security')->checkBookletOwner($formData['id']);
         }
 
         // Si el usuario no es administrador, se asocia el market del usuario (o el que había si ya estaba creado)
@@ -191,6 +207,8 @@ class BookletController extends BaseController {
     }
 
     public function deletePreDelete($request, $response, $args, &$formData) {
+        $this->get('security')->checkBookletOwner($formData['id']);
+
         $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
         $bookletProductDAO->clear($formData['id']);
 
@@ -215,6 +233,8 @@ class BookletController extends BaseController {
     }
 
     public function pdfPreview(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $this->get('security')->checkBookletOwner($args['id']);
+        
         $this->get('logger')->addInfo("Preview PDF " . static::ENTITY_SINGULAR . " - id: " . $args['id']);
         $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
         $pdfService->bookletPdf($args['id'], false);
@@ -224,6 +244,8 @@ class BookletController extends BaseController {
     public function pdfFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
         $bookletFile = $bookletFileDAO->getByFileId($args['id']);
+
+        $this->get('security')->checkBookletOwner($bookletFile['booklet_id']);
 
         if (empty($bookletFile)) {
             throw new \Exception(__('app.error.file_not_found'), 404);
@@ -235,9 +257,11 @@ class BookletController extends BaseController {
     public function pdfDelete(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
         $bookletFile = $bookletFileDAO->getByFileId($args['id']);
+
+        $this->get('security')->checkBookletOwner($bookletFile['booklet_id']);
+
         $bookletFileDAO->deleteByFileId($bookletFile['file_id']);
 
         return ResponseUtils::withJson($response, ['success' => 1]);
     }
-
 };
