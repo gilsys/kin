@@ -36,7 +36,8 @@ class ProductDAO extends BaseDAO {
                 'formatter' => function ($d, $row) {
                     return CommonUtils::convertDate($d);
                 }
-            ]
+            ],
+            ['db' => 'slug', 'dt' => 'slug']
 
         ];
 
@@ -46,6 +47,7 @@ class ProductDAO extends BaseDAO {
                 p.name,
                 p.date_created,
                 p.date_updated,
+                p.slug,
                 a.name as area_name,
                 a.color as area_color,
                 a.id as area_id,
@@ -60,8 +62,8 @@ class ProductDAO extends BaseDAO {
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, area_id) '
-            . 'VALUES (:name, :area_id)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, area_id, slug) '
+            . 'VALUES (:name, :area_id, :slug)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
@@ -70,7 +72,8 @@ class ProductDAO extends BaseDAO {
     public function update($data) {
         $query = 'UPDATE ' . $this->table . ' SET 
             name = :name,
-            area_id = :area_id
+            area_id = :area_id,
+            slug = :slug
             WHERE id = :id';
         $this->query($query, $data);
     }
