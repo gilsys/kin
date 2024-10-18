@@ -6,14 +6,12 @@ namespace App\Controller\App;
 
 use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
-use App\Constant\FileType;
 use App\Constant\StaticListTable;
 use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
 use App\Dao\BookletLayoutDAO;
 use App\Dao\BookletProductDAO;
-use App\Dao\FileDAO;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
 use App\Dao\StaticListDAO;
@@ -21,7 +19,6 @@ use App\Dao\UserDAO;
 use App\Exception\AuthException;
 use App\Service\LogService;
 use App\Util\CommonUtils;
-use App\Util\FileUtils;
 use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -99,7 +96,6 @@ class BookletController extends BaseController {
         }
 
         if (!empty($args['mode']) && !empty($args['id'])) {
-            // TODO generate pdf
             if ($args['mode'] == FormSaveMode::SaveAndPreview) {
                 $data['jscustom'] = 'window.open("/app/booklet/pdf/' . $args['id'] . '", "_blank")';
             } else if ($args['mode'] == FormSaveMode::SaveAndGenerate) {
@@ -170,12 +166,8 @@ class BookletController extends BaseController {
 
         if (!empty($args['mode']) && $args['mode'] == FormSaveMode::SaveAndGenerate) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
-
-            // TODO generate pdf
-            //$pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-            //$pdfService->bookletePdf($id, true);
-            $this->testSaveFile($this->getDAO()->getFullById($formData['id']));
-
+            $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+            $pdfService->bookletPdf($formData['id'], true);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
         }
     }
@@ -223,10 +215,9 @@ class BookletController extends BaseController {
     }
 
     public function pdfPreview(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-        // TODO generate pdf
         $this->get('logger')->addInfo("Preview PDF " . static::ENTITY_SINGULAR . " - id: " . $args['id']);
-        //$pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-        //$pdfService->bookletePdf($args['id'], false);
+        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+        $pdfService->bookletPdf($args['id'], false);
         exit();
     }
 
@@ -249,19 +240,4 @@ class BookletController extends BaseController {
         return ResponseUtils::withJson($response, ['success' => 1]);
     }
 
-    // TODO generate pdf
-    private function testSaveFile($booklet) {
-        $fileDAO = new FileDAO($this->get('pdo'));
-
-        $fileName = 'booklet_' . $booklet['id'] . '_' . $fileDAO->getNextAutoincrement() . '.pdf';
-        $fileType = FileType::BookletFile;
-
-        $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $fileName]);
-
-        $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
-        $bookletFileDAO->save(['booklet_id' => $booklet['id'], 'file_id' => $fileId]);
-
-        $directory = $this->get('params')->getParam('FOLDER_PRIVATE');
-        FileUtils::saveFile($fileType, $directory, $fileId, 'file', $fileName, file_get_contents('Z:/test.pdf'));
-    }
 };

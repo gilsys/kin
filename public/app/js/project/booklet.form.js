@@ -228,13 +228,13 @@ class BookletForm {
             $(this).on('change.select2', function () {
                 var mForm = $('#mt-booklet-form');
                 var languageId = mForm.find("[name='main_language_id']").val();
-                var td = $(this).closest('td');
+                var imageContainer = $(this).closest('td').find('.booklet-product-image');
 
                 if ($(this).val() != null && $(this).val() != '') {
                     var product = that.products[$(this).val()];
-                    td.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
+                    imageContainer.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
                 } else {
-                    td.css('background-image', 'none');
+                    imageContainer.css('background-image', 'none');
                 }
             });
 
@@ -249,12 +249,12 @@ class BookletForm {
     }
 
     getSelectProductHtml(page, order, displayMode) {
-        var html = `<select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-order="` + order + `" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
+        var html = `<div class="d-flex flex-column h-100"><select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-order="` + order + `" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
                         <option disabled selected value>` + __('app.js.common.select_value') + `</option>`;
         Object.values(this.products).forEach(product => {
             html += `<option value="` + product.id + `">` + product.name + `</option>`;
         });
-        html += `</select>`;
+        html += `</select><div class="booklet-product-image mt-3 flex-grow-1"></div></div>`;
         return html;
     }
 

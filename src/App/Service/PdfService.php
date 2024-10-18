@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Constant\FileType;
 use App\Dao\BookletDAO;
+use App\Dao\BookletFileDAO;
+use App\Dao\FileDAO;
 use App\Util\FileUtils;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -48,7 +50,7 @@ class PdfService extends BaseService {
         return 'data:image/png;base64,' . base64_encode($qrCode->getString());
     }
 
-    public function bookletPdf($bookletId) {
+    public function bookletPdf($bookletId, $save) {
         $bookletDAO = new BookletDAO($this->pdo);
         $booklet = $bookletDAO->getFullById($bookletId);
         $bookletImages = $bookletDAO->getBookletImages($bookletId, $booklet['main_language_id']);
@@ -93,7 +95,21 @@ class PdfService extends BaseService {
         // Renderizamos el HTML como PDF
         $dompdf->render();
 
-        // Output del PDF generado al navegador
-        $dompdf->stream();
+        $outputFile = $bookletId . '_' . date('YmdHis') . '.pdf';
+
+        if ($save) {
+            $fileType = FileType::BookletFile;
+
+            $fileDAO = new FileDAO($this->pdo);
+            $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
+
+            $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
+            $bookletFileDAO->save(['booklet_id' => $booklet['id'], 'file_id' => $fileId]);
+
+            $directory = $this->params->getParam('FOLDER_PRIVATE');
+            FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
+        } else {
+            $dompdf->stream($outputFile, ["Attachment" => '0']);
+        }
     }
 }
