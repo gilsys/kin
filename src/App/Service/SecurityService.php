@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Constant\UserProfile;
-use App\Dao\VisitDAO;
+use App\Dao\BookletDAO;
 use App\Exception\AuthException;
 
 class SecurityService extends BaseService {
@@ -45,6 +45,20 @@ class SecurityService extends BaseService {
 
     public function checkStaticList($staticList) {
         if ($this->isAdmin()) {
+            return true;
+        }
+
+        throw new AuthException();
+    }
+
+    public function checkBookletOwner($bookletId) {
+        if (empty($bookletId) || $this->isAdmin()) {
+            return true;
+        }
+        $bookletDAO = new BookletDAO($this->pdo);
+        $creatorUserId = $bookletDAO->getSingleField($bookletId, 'creator_user_id');
+
+        if ($this->checkUser($creatorUserId)) {
             return true;
         }
 

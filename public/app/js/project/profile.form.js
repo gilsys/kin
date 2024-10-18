@@ -13,7 +13,7 @@ class ProfileForm {
                 return true;
             }
 
-            var url = "/app/user/check_password_current/" + id;
+            var url = "/app/user/check_password_current";
             $.post({
                 url: url,
                 async: false,

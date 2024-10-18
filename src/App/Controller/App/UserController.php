@@ -352,7 +352,7 @@ class UserController extends BaseController {
     public function checkCurrentPassword(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $formData = $request->getParsedBody();
         $userDAO = new UserDAO($this->get('pdo'));
-        $result = $userDAO->checkCurrentPassword($args['id'], $formData['password']) ? 1 : 0;
+        $result = $userDAO->checkCurrentPassword($this->get('security')->getUserId(), $formData['password']) ? 1 : 0;
         return ResponseUtils::withJson($response, $result);
     }
 

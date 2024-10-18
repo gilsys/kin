@@ -66,7 +66,7 @@ return function (App $app) {
     $app->group('/app/file', function (RouteCollectorProxy $app) {
         $app->get('/user/avatar/{id}', [FileController::class, 'avatar']);
         $app->get('/{token}', [FileController::class, 'token']);
-    })->add(new ProfileMiddleware());
+    })->add(new ProfileMiddleware([UserProfile::Administrator]));
 
     // Profile
     $app->group('/app/profile', function (RouteCollectorProxy $app) {
@@ -81,21 +81,15 @@ return function (App $app) {
         $app->post('/app/static_list/datatable/{list}', [StaticListController::class, 'datatable']);
         $app->get('/app/static_list/form/{list}[/{id:[0-9]+}]', [StaticListController::class, 'form']);
         $app->post('/app/static_list/delete/{list}', [StaticListController::class, 'delete']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
         $app->post('/app/static_list/{list}/{id}', [StaticListController::class, 'load']);
-    })->add(new ProfileMiddleware())->add('csrf');
-
-    $app->group('/app/static_list', function (RouteCollectorProxy $app) {
-        $app->post('/save/{list}/{mode}', [StaticListController::class, 'save']);
-        $app->post('/order/{list}/{id}/{direction:[0-1]}', [StaticListController::class, 'order']);
+        $app->post('/app/static_list/save/{list}/{mode}', [StaticListController::class, 'save']);
+        $app->post('/app/static_list/order/{list}/{id}/{direction:[0-1]}', [StaticListController::class, 'order']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     // User
     $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/users', [UserController::class, 'list']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     $app->group('/app/user', function (RouteCollectorProxy $app) {
         $app->post('/datatable', [UserController::class, 'datatable']);
@@ -108,20 +102,15 @@ return function (App $app) {
         $app->post('/status/{id:[0-9]+}/{userStatusId:[A-Z]}', [UserController::class, 'status']);
         $app->get('/email_password/{id:[0-9]+}', [UserController::class, 'emailPassword']);
         $app->post('/update-auth', [UserController::class, 'updateAuth']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->post('/app/user/{id:[0-9]+}', [UserController::class, 'load']);
-        $app->post('/app/user/selector', [UserController::class, 'selector']);
+        $app->post('/{id:[0-9]+}', [UserController::class, 'load']);
+        $app->post('/selector', [UserController::class, 'selector']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     $app->group('/app/user', function (RouteCollectorProxy $app) {
         $app->get('/avatar/{id:[0-9]+}', [UserController::class, 'avatar']);
         $app->post('/check_nickname[/{id:[0-9]+}]', [UserController::class, 'checkNickname']);
-        $app->post('/check_password_current/{id:[0-9]+}', [UserController::class, 'checkCurrentPassword']);
+        $app->post('/check_password_current', [UserController::class, 'checkCurrentPassword']);
     })->add(new ProfileMiddleware())->add('csrf');
-
-
 
     // Markets
     $app->group('', function (RouteCollectorProxy $app) {
@@ -131,7 +120,7 @@ return function (App $app) {
         $app->get('/app/market/form[/{id:[0-9]+}]', [MarketController::class, 'form']);
         $app->post('/app/market/save/{mode}', [MarketController::class, 'save']);
         $app->post('/app/market/delete', [MarketController::class, 'delete']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     // Products
     $app->group('', function (RouteCollectorProxy $app) {
@@ -141,6 +130,9 @@ return function (App $app) {
         $app->get('/app/product/form[/{id:[0-9]+}]', [ProductController::class, 'form']);
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+
+    $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
