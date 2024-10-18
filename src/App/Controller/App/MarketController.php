@@ -73,7 +73,8 @@ class MarketController extends BaseController {
         $languageDAO = new StaticListDAO($this->get('pdo'), 'st_' . $languageEntity);
 
         $data['data']['areas'] = $areaTypeDAO->getForSelect();
-        $data['data']['languages'] = $languageDAO->getForSelect();
+        $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
+        $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
