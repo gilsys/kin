@@ -23,7 +23,8 @@
                 <!--begin::Navbar item-->
                 <li class="nav-item py-1">
                     <!--begin::Navbar link-->
-                    <a href="javascript:;" class="nav-link py-4 px-1 btn <?php //App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); ?>">
+                    <a href="javascript:;" class="nav-link py-4 px-1 btn <?php //App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); 
+                                                                            ?>">
                         <?php $this->insert("inc/common/icon/prescription") ?>
                         <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('app.entity.plural.recipe') ?></span>
                     </a>
@@ -36,6 +37,16 @@
                     <a href="/app/products" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuProduct, 'active'); ?>">
                         <?php $this->insert("inc/common/icon/product_1") ?>
                         <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('app.entity.plural.product') ?></span>
+                    </a>
+                    <!--end::Navbar link-->
+                </li>
+                <!--end::Navbar item-->
+                <!--begin::Navbar item-->
+                <li class="nav-item py-1">
+                    <!--begin::Navbar link-->
+                    <a href="/app/subproducts" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuSubProduct, 'active'); ?>">
+                        <?php $this->insert("inc/common/icon/product_1") ?>
+                        <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('app.entity.plural.references') ?></span>
                     </a>
                     <!--end::Navbar link-->
                 </li>

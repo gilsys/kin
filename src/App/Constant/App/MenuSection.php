@@ -24,6 +24,7 @@ class MenuSection {
     const MenuMarket = 'MM';
 
     const MenuProduct = 'P';
+    const MenuSubProduct = 'SP';
 
     const MenuBooklet = 'B';
 

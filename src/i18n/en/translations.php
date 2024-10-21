@@ -226,6 +226,7 @@ return [
     'app.entity.process_status' => 'process status',
     'app.entity.product' => '',
     'app.entity.products' => '',
+    'app.entity.reference' => '',
     'app.entity.task_payment_status' => 'task payment status',
     'app.entity.task_status' => 'task status',
     'app.entity.task_type' => 'task type',

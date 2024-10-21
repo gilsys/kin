@@ -220,12 +220,17 @@ return [
     'app.entity.plural.process_status' => 'estados de proceso',
     'app.entity.plural.product' => 'Productos',
     'app.entity.plural.recipe' => 'Recetarios',
+<<<<<<< Updated upstream
+=======
+    'app.entity.plural.reference' => 'Referencias',
+>>>>>>> Stashed changes
     'app.entity.plural.task_payment_status' => 'estados de pago de tarea',
     'app.entity.plural.task_status' => 'estados de tarea',
     'app.entity.plural.task_type' => 'tipos de tarea',
     'app.entity.process_status' => 'estado de proceso',
     'app.entity.product' => 'Producto',
     'app.entity.products' => 'Productos',
+    'app.entity.reference' => 'Referencia',
     'app.entity.task_payment_status' => 'estado de pago de tarea',
     'app.entity.task_status' => 'estado de tarea',
     'app.entity.task_type' => 'tipo de tarea',
