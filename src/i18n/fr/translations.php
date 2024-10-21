@@ -220,12 +220,17 @@ return [
     'app.entity.plural.process_status' => 'estatus de procés',
     'app.entity.plural.product' => '',
     'app.entity.plural.recipe' => '',
+<<<<<<< Updated upstream
+=======
+    'app.entity.plural.reference' => '',
+>>>>>>> Stashed changes
     'app.entity.plural.task_payment_status' => 'estatus de pagament de tasca',
     'app.entity.plural.task_status' => 'estatus de tasca',
     'app.entity.plural.task_type' => 'tipus de tasca',
     'app.entity.process_status' => 'estatus de procés',
     'app.entity.product' => '',
     'app.entity.products' => '',
+    'app.entity.reference' => '',
     'app.entity.task_payment_status' => 'estatus de pagament de tasca',
     'app.entity.task_status' => 'estatus de tasca',
     'app.entity.task_type' => 'tipus de tasca',
