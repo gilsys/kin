@@ -23,7 +23,7 @@
                 <!--begin::Navbar item-->
                 <li class="nav-item py-1">
                     <!--begin::Navbar link-->
-                    <a href="javascript:;" class="nav-link py-4 px-1 btn <?php //App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); ?>">
+                    <a href="/app/recipes" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuRecipe, 'active'); ?>">
                         <?php $this->insert("inc/common/icon/prescription") ?>
                         <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('app.entity.plural.recipe') ?></span>
                     </a>

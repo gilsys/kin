@@ -84,7 +84,8 @@ class BookletController extends BaseController {
         $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
         $languageDAO = new StaticListDAO($this->get('pdo'), 'st_' . $languageEntity);
         $marketDAO = new MarketDAO($this->get('pdo'));
-        $bookletLayoutDAO = new BookletLayoutDAO($this->get('pdo'));
+        $bookletLayoutEntity = StaticListTable::getEntity(StaticListTable::BookletLayout);
+        $bookletLayoutDAO = new StaticListDAO($this->get('pdo'), 'st_' . $bookletLayoutEntity);
 
         $data['data']['markets'] = $marketDAO->getForSelect();
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');

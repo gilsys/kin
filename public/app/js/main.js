@@ -436,6 +436,12 @@ $(document).ready(function () {
     $('[data-datatable-select-ajax]').each(function () {
         select2AjaxSearch($(this), $(this).attr('data-datatable-select-ajax'));
     });
+
+    JSONEditor.defaults.options.theme = 'bootstrap5';
+    if (__('app.js.lang.code') != 'en') {
+        JSONEditor.defaults.language = 'i18n';
+    }
+    JSONEditor.defaults.options.iconlib = "fontawesome5";
 });
 function InitClamp() {
     ReloadClamp();
@@ -716,6 +722,15 @@ function defaultFormValidationHandler(event, validator) {
     AdminUtils.hideLoading();
     if (validator.numberOfInvalids()) {
         showWarning(__('app.js.common.attention'), __('app.js.common.form_errors'));
+    }
+}
+
+function stepperInvalidFormValidationHandler(validator, stepper) {
+    AdminUtils.hideLoading();
+    if (validator.numberOfInvalids()) {
+        showWarning(__('app.js.common.attention'), __('app.js.common.form_errors'));
+        var stepIndex = $(validator.errorList[0].element).closest('[data-kt-stepper-element="content"]').index();
+        stepper.goTo(stepIndex + 1);
     }
 }
 
@@ -1231,4 +1246,23 @@ const select2Badge = (item) => {
     span.innerHTML = template;
 
     return $(span);
+}
+
+function initFileVersionsList(mForm, deleteUrl) {
+    mForm.find('.file-info-container .btn-delete-file').on('click', function () {
+        var fileContainer = $(this).closest('.file-container');
+        var fileId = $(this).attr('data-file-id');
+        
+        showConfirm(__('app.js.utils.delete_record'), __('app.js.utils.delete_record_text'), 'question', function () {
+            $.post(deleteUrl + fileId, function (data) {
+                if (typeof data.success != 'undefined' && data.success == '1') {
+                    var fileInfoContainer = fileContainer.closest('.file-info-container');
+                    fileContainer.remove();
+                    if (!fileInfoContainer.find('.btn-delete-file').length) {
+                        fileInfoContainer.find('.historical-title').remove();
+                    }
+                }
+            });
+        });
+    });
 }

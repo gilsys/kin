@@ -139,16 +139,12 @@ JSON Editor
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.json-content-form > div > .card-body {
-    background-color: transparent;
-    padding:0;
-    border: 0;
-}
 
 .json-content-form > .je-object__container > .je-object__controls{
-    display: block !important;
+    display: none !important;
 }
 
+.json-content-form .card-title.level-1.je-object__title,
 .json-content-form .je-object__controls{
     display: none !important;
 }

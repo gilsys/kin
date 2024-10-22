@@ -13,6 +13,7 @@ use App\Controller\App\ProductController;
 use App\Controller\App\BookletController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
+use App\Controller\App\RecipeController;
 use App\Controller\App\StaticListController;
 use App\Controller\App\UserController;
 use App\Middleware\ProfileMiddleware;
@@ -148,5 +149,12 @@ return function (App $app) {
         $app->get('/app/booklet/pdf/{id:[0-9]+}', [BookletController::class, 'pdfPreview']);
         $app->get('/app/booklet/pdf/file/{id:[0-9]+}', [BookletController::class, 'pdfFile']);
         $app->post('/app/booklet/pdf/delete/{id:[0-9]+}', [BookletController::class, 'pdfDelete']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
+
+    // Recipes
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->post('/app/recipe/{id:[0-9]+}', [RecipeController::class, 'load']);
+        $app->get('/app/recipe/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [RecipeController::class, 'form']);
+        $app->post('/app/recipe/save/{mode}', [RecipeController::class, 'save']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };
