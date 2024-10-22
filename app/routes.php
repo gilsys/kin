@@ -162,10 +162,14 @@ return function (App $app) {
         $app->post('/app/booklet/pdf/delete/{id:[0-9]+}', [BookletController::class, 'pdfDelete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
+
     // Recipes
     $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/recipes', [RecipeController::class, 'list']);
+        $app->post('/app/recipe/datatable', [RecipeController::class, 'datatable']);
         $app->post('/app/recipe/{id:[0-9]+}', [RecipeController::class, 'load']);
-        $app->get('/app/recipe/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [RecipeController::class, 'form']);
         $app->post('/app/recipe/save/{mode}', [RecipeController::class, 'save']);
+        $app->post('/app/recipe/delete', [RecipeController::class, 'delete']);
+        $app->get('/app/recipe/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [RecipeController::class, 'form']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };

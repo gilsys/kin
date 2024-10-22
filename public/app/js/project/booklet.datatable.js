@@ -12,7 +12,7 @@ class BookletDatatable {
                 // Añadimos todas las columnas con las que queremos trabajar
                 { data: 'id', width: 30 },
                 { data: 'name' },
-                { data: 'creator_name' },
+                { data: 'creator_name', 'visible': userHasProfile(['A']) },
                 {
                     data: 'market_name',
                     render: function (data, type, full, meta) {
@@ -26,7 +26,7 @@ class BookletDatatable {
                     data: 'main_language',
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
-                            return full.main_language;
+                            return __(full.main_language);
                         }
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.main_language_color, 0.1) + '; color: ' + full.main_language_color + '">' + __(full.main_language) + '</span>';
                     }
@@ -35,7 +35,7 @@ class BookletDatatable {
                     data: 'qr_language',
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
-                            return full.qr_language;
+                            return __(full.qr_language);
                         }
                         return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.qr_language_color, 0.1) + '; color: ' + full.qr_language_color + '">' + __(full.qr_language) + '</span>';
                     }
