@@ -1,10 +1,10 @@
-class BookletDatatable {
+class RecipeDatatable {
     ready() {
-        var routeEdit = '/app/booklet/form';
-        var routeDelete = 'app/booklet/delete'
-        var routeDatatable = '/app/booklet/datatable';
+        var routeEdit = '/app/recipe/form';
+        var routeDelete = 'app/recipe/delete'
+        var routeDatatable = '/app/recipe/datatable';
 
-        var datatable = new CustomDatatable('#mt-booklet', {
+        var datatable = new CustomDatatable('#mt-recipe', {
             ajax: {
                 url: routeDatatable
             },
@@ -13,15 +13,6 @@ class BookletDatatable {
                 { data: 'id', width: 30 },
                 { data: 'name' },
                 { data: 'creator_name', 'visible': userHasProfile(['A']) },
-                {
-                    data: 'market_name',
-                    render: function (data, type, full, meta) {
-                        if (type == 'export') {
-                            return full.market_name;
-                        }
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.market_color, 0.1) + '; color: ' + full.market_color + '">' + full.market_name + '</span>';
-                    }
-                },
                 {
                     data: 'main_language',
                     render: function (data, type, full, meta) {
@@ -44,7 +35,6 @@ class BookletDatatable {
                 // Incluimos campos invisibles, útiles para filtros
                 { data: 'main_language_id', 'visible': false },
                 { data: 'qr_language_id', 'visible': false },
-                { data: 'market_id', 'visible': false },
                 { data: 'creator_user_id', 'visible': false },
                 {
                     data: null,

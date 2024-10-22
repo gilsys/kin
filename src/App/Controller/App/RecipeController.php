@@ -7,12 +7,15 @@ namespace App\Controller\App;
 use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
 use App\Constant\StaticListTable;
+use App\Dao\MarketDAO;
 use App\Dao\RecipeDAO;
 use App\Dao\RecipeFileDAO;
 use App\Dao\StaticListDAO;
+use App\Dao\UserDAO;
 use App\Exception\AuthException;
 use App\Service\LogService;
 use App\Service\PdfService;
+use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -31,6 +34,35 @@ class RecipeController extends BaseController {
     public function getNameForLogs($id) {
         return $this->getDAO()->getSingleField($id, 'name');
     }
+
+    /**
+     * Página de listado de recipes
+     */
+    public function list(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+        $data = $this->prepareList();
+
+        // Carga selectores para filtros
+        $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
+        $languageDAO = new StaticListDAO($this->get('pdo'), 'st_' . $languageEntity);
+        $marketDAO = new MarketDAO($this->get('pdo'));
+        $userDAO = new UserDAO($this->get('pdo'));
+
+        $data['data'] = [
+            'markets' => $marketDAO->getForSelect(),
+            'qr_languages' => $languageDAO->getForSelect('id', 'name', 'custom_order'),
+            'users' => $userDAO->getForSelectFullname()
+        ];
+
+        $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
+
+        return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+
+    public function datatable(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $userId = $this->get('security')->isUser() ? $this->get('security')->getUserId() : null;
+        return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($userId));
+    }
+
 
     /**
      * Prepara el formulario de crear/editar
