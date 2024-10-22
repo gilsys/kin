@@ -10,6 +10,7 @@ use App\Controller\App\i18nController;
 use App\Controller\App\LoginController;
 use App\Controller\App\MarketController;
 use App\Controller\App\ProductController;
+use App\Controller\App\SubProductController;
 use App\Controller\App\BookletController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
@@ -130,6 +131,16 @@ return function (App $app) {
         $app->get('/app/product/form[/{id:[0-9]+}]', [ProductController::class, 'form']);
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+
+    // Subproducts
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/subproducts', [SubProductController::class, 'list']);
+        $app->post('/app/subproduct/datatable', [SubProductController::class, 'datatable']);
+        $app->post('/app/subproduct/{id:[0-9]+}', [SubProductController::class, 'load']);
+        $app->get('/app/subproduct/form[/{id:[0-9]+}]', [SubProductController::class, 'form']);
+        $app->post('/app/subproduct/save/{mode}', [SubProductController::class, 'save']);
+        $app->post('/app/subproduct/delete', [SubProductController::class, 'delete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     $app->group('', function (RouteCollectorProxy $app) {
