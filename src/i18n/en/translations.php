@@ -520,7 +520,6 @@ return [
     'app.save.send' => 'Send',
     'app.slug' => '',
     'app.slug.description' => '',
-    'app.slug.placeholder' => '',
     'app.state.cities' => 'Cities',
     'app.state.community' => 'Community',
     'app.state.communties.name' => 'Community',

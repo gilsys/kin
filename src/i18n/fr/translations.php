@@ -520,7 +520,6 @@ return [
     'app.save.send' => 'Enviar',
     'app.slug' => '',
     'app.slug.description' => '',
-    'app.slug.placeholder' => '',
     'app.state.cities' => 'Poblacions',
     'app.state.community' => 'Comunitat',
     'app.state.communties.name' => 'Comunitat',

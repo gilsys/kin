@@ -520,7 +520,6 @@ return [
     'app.save.send' => 'Enviar',
     'app.slug' => 'Slug',
     'app.slug.description' => 'Parte de la URL que viene después de \'/producto/\'. \'https://www.kin.es/producto/kin-oro/\', el slug es \'kin-oro\'.',
-    'app.slug.placeholder' => 'kin-oro',
     'app.state.cities' => 'Poblaciones',
     'app.state.community' => 'Comunidad',
     'app.state.communties.name' => 'Comunidad',
