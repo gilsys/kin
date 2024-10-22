@@ -51,8 +51,9 @@
                 </div>
                 <div class="col-md-4">
                     <label class="col-form-label required"><?php echo __('app.slug') ?></label>
+                    <?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('test')]); ?>
                     <div>
-                        <input type="text" class="form-control" required placeholder="<?php echo __('app.slug') ?>" name="slug" maxlength="100" />
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.slug.placeholder') ?>" name="slug" maxlength="100" />
                     </div>
                 </div>
             </div>
