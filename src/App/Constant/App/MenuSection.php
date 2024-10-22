@@ -27,6 +27,8 @@ class MenuSection {
 
     const MenuBooklet = 'B';
 
+    const MenuRecipe = 'R';
+
 
     private static function constantExists($dynamicConstant) {
         $fin = new ReflectionClass(__CLASS__);

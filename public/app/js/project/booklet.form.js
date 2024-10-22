@@ -69,12 +69,7 @@ class BookletForm {
             ignore: "",
             onkeyup: false,
             invalidHandler: function (event, validator) {
-                AdminUtils.hideLoading();
-                if (validator.numberOfInvalids()) {
-                    showWarning(__('app.js.common.attention'), __('app.js.common.form_errors'));
-                    var stepIndex = $(validator.errorList[0].element).closest('[data-kt-stepper-element="content"]').index();
-                    stepper.goTo(stepIndex + 1);
-                }
+                stepperInvalidFormValidationHandler(validator, stepper);
             },
             submitHandler: function (form) {
                 if (jQuery.inArray($(form).attr('action').split('/').pop(), ['N', 'B']) === -1) {
@@ -124,22 +119,7 @@ class BookletForm {
             }
         });
 
-        mForm.find('.file-info-container .btn-delete-file').on('click', function () {
-            var fileContainer = $(this).closest('.file-container');
-            var fileId = $(this).attr('data-file-id');
-            
-            showConfirm(__('app.js.utils.delete_record'), __('app.js.utils.delete_record_text'), 'question', function () {
-                $.post('/app/booklet/pdf/delete/' + fileId, function (data) {
-                    if (typeof data.success != 'undefined' && data.success == '1') {
-                        var fileInfoContainer = fileContainer.closest('.file-info-container');
-                        fileContainer.remove();
-                        if (!fileInfoContainer.find('.btn-delete-file').length) {
-                            fileInfoContainer.find('.historical-title').remove();
-                        }
-                    }
-                });
-            });
-        });
+        initFileVersionsList(mForm, '/app/booklet/pdf/delete/');
 
         if (id.length) {
             $.post('/app/booklet/' + id, function (data) {

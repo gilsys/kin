@@ -1,16 +1,16 @@
 <form
-    id="mt-booklet-form"
+    id="mt-recipe-form"
     class="d-none data-form"
-    data-js="BookletForm"
-    action="/app/booklet/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
+    data-js="RecipeForm"
+    action="/app/recipe/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
     method="post"
     autocomplete="off">
     <?php
     $this->insert(
         "inc/common/subheader",
         [
-            'entity' => 'booklet',
-            'btnBack' => '/app/booklets',
+            'entity' => 'recipe',
+            'btnBack' => '/app/recipes',
             'btnSave' => true,
             'menu' => $menu,
             'breadcumb' => $breadcumb
@@ -21,12 +21,10 @@
         <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
     <?php endif; ?>
 
-    <div class="stepper stepper-pills first" id="mt-booklet-stepper">
+    <div class="stepper stepper-pills first" id="mt-recipe-stepper">
         <?php $this->insert("inc/common/stepper_nav", ['steps' => [
             __('app.common.step_info'),
-            __('app.common.step_page') . ' ' . 2,
-            __('app.common.step_page') . ' ' . 3,
-            __('app.common.step_page') . ' ' . 4,
+            __('app.common.step_page'),
             __('app.common.step_generate_pdf')
         ]]) ?>
 
@@ -43,32 +41,9 @@
                             <div class="col md-6">
                                 <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
                                 <div>
-                                    <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
+                                    <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="45" />
                                 </div>
                             </div>
-
-                            <?php if ($_SESSION['user']['user_profile_id'] == App\Constant\UserProfile::Administrator) : ?>
-                                <div class="col-md-6">
-                                    <label class="col-form-label required"><?php echo __('app.entity.market') ?></label>
-                                    <div>
-                                        <select name="market_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
-                                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                                            <?php foreach ($data['markets'] as $market): ?>
-                                                <option value="<?php echo $market['id'] ?>">
-                                                    <?php echo $market['name'] ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <div class="col-md-6">
-                                    <label class="col-form-label"><?php echo __('app.entity.market') ?></label>
-                                    <div>
-                                        <input type="text" class="form-control" disabled name="market_name" />
-                                    </div>
-                                </div>
-                            <?php endif ?>
 
                             <div class="col-md-6">
                                 <label class="col-form-label required"><?php echo __('app.visuals_language') ?></label>
@@ -148,9 +123,37 @@
                 <?php endif; ?>
             </div>
 
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 2, 'layouts' => $data['layouts']]) ?>
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 3, 'layouts' => $data['layouts']]) ?>
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 4, 'layouts' => $data['layouts']]) ?>
+            <div class="flex-column" data-kt-stepper-element="content">
+                <div class="card card-custom card-sticky">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2><?php echo __('app.common.step_page') ?></h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="col-form-label required"><?php echo __('app.layout') ?></label>
+                                <div>
+                                    <select name="recipe_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                        <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                                        <?php foreach ($data['layouts'] as $layout): ?>
+                                            <option value="<?php echo $layout['id'] ?>">
+                                                <?php echo $layout['name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div id="json-content-form" class="json-content-form"></div>
+                                <input type="hidden" name="json_data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div data-kt-stepper-element="content">
                 <div class="card card-custom card-sticky w-100">
@@ -161,9 +164,9 @@
                     </div>
                     <div class="card-body">
                         <?php $this->insert("inc/common/generated_files", [
-                            'files' => !empty($data['bookletFiles']) ? $data['bookletFiles'] : [],
-                            'downloadUrl' => '/app/booklet/pdf/file/',
-                            'info' => __('app.booklet.pdf_versions_info')
+                            'files' => !empty($data['recipeFiles']) ? $data['recipeFiles'] : [],
+                            'downloadUrl' => '/app/recipe/pdf/file/',
+                            'info' => __('app.recipe.pdf_versions_info')
                         ]) ?>
                     </div>
                 </div>
