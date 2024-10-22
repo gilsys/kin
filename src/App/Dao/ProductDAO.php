@@ -20,6 +20,7 @@ class ProductDAO extends BaseDAO {
             ['db' => 'area_name', 'dt' => 'area_name'],
             ['db' => 'area_color', 'dt' => 'area_color', 'exact' => true],
             ['db' => 'total_booklets', 'dt' => 'total_booklets', 'exact' => true],
+            ['db' => 'total_references', 'dt' => 'total_references'],
             ['db' => 'area_id', 'dt' => 'area_id', 'exact' => true],
             [
                 'db' => 'date_created',
@@ -51,7 +52,8 @@ class ProductDAO extends BaseDAO {
                 a.name as area_name,
                 a.color as area_color,
                 a.id as area_id,
-                (SELECT COUNT(*) FROM st_booklet_product bp WHERE bp.product_id = p.id) as total_booklets
+                (SELECT COUNT(*) FROM st_booklet_product bp WHERE bp.product_id = p.id) as total_booklets,
+                (SELECT COUNT(*) FROM st_subproduct sp WHERE sp.product_id = p.id) as total_references
             FROM
                 ' . $this->table . ' p
                 INNER JOIN st_area a ON p.area_id = a.id            
