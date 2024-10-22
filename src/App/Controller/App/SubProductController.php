@@ -1,0 +1,65 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\App;
+
+use App\Constant\App\MenuSection;
+use App\Constant\FileType;
+use App\Constant\StaticListTable;
+use App\Dao\StaticListDAO;
+use App\Dao\ProductDAO;
+use App\Dao\SubProductDAO;
+use App\Exception\AuthException;
+use App\Util\ResponseUtils;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+class SubProductController extends BaseController {
+
+    const ENTITY_SINGULAR = 'subproduct';
+    const ENTITY_PLURAL = 'subproducts';
+    const MENU = MenuSection::MenuSubProduct;
+
+
+    public function getDAO() {
+        return new SubProductDAO($this->get('pdo'));
+    }
+
+
+    public function getNameForLogs($id) {
+        return $this->getDAO()->getSingleField($id, 'name');
+    }
+
+    /**
+     * Página de listado de productos
+     */
+    public function list(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+        $data = $this->prepareList();
+
+        // Carga selectores para filtros
+        $productDAO = new ProductDAO($this->get('pdo'));
+
+        $data['data'] = [
+            'products' => $productDAO->getForSelect()
+        ];
+
+        return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+
+    /**
+     * Prepara el formulario de crear/editar productos
+     */
+    public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $data = $this->prepareForm($args);
+
+        // Carga selectores para filtros
+        $productDAO = new ProductDAO($this->get('pdo'));
+
+        $data['data']['products'] =  $productDAO->getForSelect();
+
+
+
+        return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+}
