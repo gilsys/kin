@@ -128,7 +128,7 @@ class RecipeDAO extends BaseDAO {
         $name = $originalName . ' (' . $copyNameText . ')';
 
         $i = 1;
-        while (!empty($this->getByField('name', $name))) {
+        while (!empty($this->getByNameCreatorUserId($name, $creatorUserId))) {
             $i++;
             $name = $originalName . ' (' . $copyNameText . ' #' . $i . ')';
         }
@@ -138,5 +138,10 @@ class RecipeDAO extends BaseDAO {
         $this->query($query, compact('id', 'creatorUserId', 'name'));
         $newId = $this->getLastInsertId();
         return $newId;
+    }
+
+    public function getByNameCreatorUserId($name, $creatorUserId) {
+        $sql = "SELECT * FROM `" . $this->getTable() . "` WHERE name = :name AND creator_user_id = :creatorUserId";
+        return $this->fetchRecord($sql, compact('name', 'creatorUserId'));
     }
 }

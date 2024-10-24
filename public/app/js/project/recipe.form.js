@@ -111,7 +111,18 @@ class RecipeForm {
         window.JSONEditor.defaults.callbacks.template = {
             "filterSubproducts": (jseditor, e) => {
                 return e.item.product_id == e.watched.productId;
+            },
+            "enumTitle": (jseditor, e) => {
+                return e.item.name;
+            },
+            "enumValue": (jseditor, e) => {
+                return e.item.id;
             }
+        };
+
+        var select2options = {
+            "language": __('app.js.lang.code'),
+            "placeholder": __('app.js.common.select_value')
         };
 
         if (layoutId == 1) {
@@ -161,12 +172,13 @@ class RecipeForm {
                     "format": "select2",
                     "enumSource": [{
                         "source": this.products.products,
-                        "title": "{{item.name}}",
-                        "value": "{{item.id}}"
+                        "title": "enumTitle",
+                        "value": "enumValue"
                     }],
                     "readonly": disableEdit,
                     "options": {
-                        "grid_columns": 4
+                        "grid_columns": 4,
+                        "select2": select2options
                     }
                 },
                 "subproducts": {
@@ -192,11 +204,14 @@ class RecipeForm {
                                 },
                                 "enumSource": [{
                                     "source": this.products.subproducts,
-                                    "title": "{{item.name}}",
-                                    "value": "{{item.id}}",
+                                    "title": "enumTitle",
+                                    "value": "enumValue",
                                     "filter": "filterSubproducts"
                                 }],
-                                "readonly": disableEdit
+                                "readonly": disableEdit,
+                                "options": {
+                                    "select2": select2options
+                                }
                             }
                         }
                     },
@@ -232,6 +247,7 @@ class RecipeForm {
             //"disable_properties": true,
             "no_additional_properties": true,
             //"show_errors": "always",
+            "prompt_before_delete": false,
             "disable_array_delete_all_rows": true,
             "disable_array_delete_last_row": true,
             "schema": {
@@ -246,11 +262,39 @@ class RecipeForm {
                 this.jsonEditor.setValue(this.jsonData);
             }
 
+            this.jsonEditor.on('addRow', editor => {
+                $(editor.container).find('select[name*="[subproducts]"]').val('').change();
+            });
+
             if (disableEdit) {
                 setTimeout(() => {
                     $('#json-content-form').find('select').addClass('readonly-disabled');
                 }, 0);
             }
+        });
+
+        this.jsonEditor.on('change', function () {
+            $('#json-content-form select[name*="[subproducts]"]:not(.change-init)').each(function () {
+                $(this).on('select2:selecting', function (e) {
+                    var selectedValue = e.params.args.data.id;
+
+                    var exists = $('#json-content-form select[name*="[subproducts]"]').filter(function () {
+                        return $(this).val() === selectedValue;
+                    }).length > 0;
+
+                    if (exists) {
+                        e.preventDefault();
+                        showWarning(__('app.js.common.attention'), __('app.js.recipe.subproduct_already_selected'));
+                    }
+                });
+
+                $(this).addClass('change-init');
+            });
+
+            $('#json-content-form select[name*="[product]"]:not(.change-init)').on('change', function (e) {
+                $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('.json-editor-btntype-deleteall').click();
+                $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('select[name*="[subproducts]"]').val('').change();
+            }).addClass('change-init');
         });
     }
 

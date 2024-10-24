@@ -423,6 +423,7 @@ return [
     'app.js.pin.text_consumer' => 'Contacta amb l\'usuari i introdueix el PIN que s\'ha enviat al correu electrònic.',
     'app.js.pin.title' => 'L\'operació requereix validació per PIN',
     'app.js.pin.title_consumer' => 'Hi ha un usuari amb el NIF introduït',
+    'app.js.recipe.subproduct_already_selected' => '',
     'app.js.secondary' => 'Info',
     'app.js.select_city' => '- Selecciona una població -',
     'app.js.success' => 'Correcte',
