@@ -211,7 +211,7 @@ class BookletForm {
                 var imageContainer = $(this).closest('td').find('.booklet-product-image');
 
                 if ($(this).val() != null && $(this).val() != '') {
-                    var product = that.products[$(this).val()];
+                    var product = that.products['_' + $(this).val()];
                     imageContainer.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
                 } else {
                     imageContainer.css('background-image', 'none');
@@ -247,7 +247,12 @@ class BookletForm {
         };
 
         $.post('/app/booklet/get_products', params, data => {
-            this.products = data;
+            this.products = {};
+            data.forEach((item) => {
+                console.log(item)
+                this.products['_' + item.id] = item;
+            });
+            console.log(this.products)
             mForm.find('select.booklet-layout-select').change();
         });
     }
@@ -260,7 +265,7 @@ class BookletForm {
         }
 
         this.selectedProducts[page].forEach(product => {
-            if (typeof this.products[product.id] == 'undefined') {
+            if (typeof this.products['_' + product.id] == 'undefined') {
                 return;
             }
 

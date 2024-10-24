@@ -75,4 +75,11 @@ class SubProductDAO extends BaseDAO {
             WHERE id = :id';
         $this->query($query, $data);
     }
+
+    public function getSubProducts() {
+        $sql = "SELECT s.id, s.name, s.product_id
+                FROM " . $this->table . " s
+                ORDER BY s.product_id ASC, s.name ASC";
+        return $this->fetchAll($sql);
+    }
 }

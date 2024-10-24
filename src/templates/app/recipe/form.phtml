@@ -51,8 +51,7 @@
                                     <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
                                         <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                                         <?php foreach ($data['main_languages'] as $lang): ?>
-                                            <option value="<?php echo $lang['id'] ?>"
-                                                <?php echo (!empty($data['default_main_language']) && $lang['id'] == $data['default_main_language']) ? 'selected' : '' ?>>
+                                            <option value="<?php echo $lang['id'] ?>">
                                                 <?php echo __($lang['name']) ?>
                                             </option>
                                         <?php endforeach; ?>

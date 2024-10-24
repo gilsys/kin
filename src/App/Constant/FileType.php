@@ -8,5 +8,6 @@ class FileType {
 
     const ProductImage = 'PI';
     const BookletFile = 'BF';
+    const RecipeFile = 'RF';
     
 }

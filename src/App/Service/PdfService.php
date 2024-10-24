@@ -6,6 +6,8 @@ use App\Constant\FileType;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
 use App\Dao\FileDAO;
+use App\Dao\RecipeDAO;
+use App\Dao\RecipeFileDAO;
 use App\Util\FileUtils;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -105,6 +107,40 @@ class PdfService extends BaseService {
 
             $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
             $bookletFileDAO->save(['booklet_id' => $booklet['id'], 'file_id' => $fileId]);
+
+            $directory = $this->params->getParam('FOLDER_PRIVATE');
+            FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
+        } else {
+            $dompdf->stream($outputFile, ["Attachment" => '0']);
+        }
+    }
+
+    public function recipePdf($recipeId, $save) {
+        $recipeDAO = new RecipeDAO($this->pdo);
+        $recipe = $recipeDAO->getFullById($recipeId);
+
+        $dompdf = new Dompdf();
+        $options = new Options();
+
+        $html = "test";
+        $dompdf->loadHtml($html);
+
+        $options->setDpi(300);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Renderizamos el HTML como PDF
+        $dompdf->render();
+
+        $outputFile = $recipeId . '_' . date('YmdHis') . '.pdf';
+
+        if ($save) {
+            $fileType = FileType::RecipeFile;
+
+            $fileDAO = new FileDAO($this->pdo);
+            $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
+
+            $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
+            $recipeFileDAO->save(['recipe_id' => $recipe['id'], 'file_id' => $fileId]);
 
             $directory = $this->params->getParam('FOLDER_PRIVATE');
             FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dao;
 
+use App\Constant\UserProfile;
 use App\Util\CommonUtils;
 
 class RecipeDAO extends BaseDAO {
@@ -61,6 +62,7 @@ class RecipeDAO extends BaseDAO {
             ['db' => 'main_language_id', 'dt' => 'main_language_id', 'exact' => true],
             ['db' => 'main_language', 'dt' => 'main_language'],
             ['db' => 'main_language_color', 'dt' => 'main_language_color', 'exact' => true],
+            ['db' => 'editable', 'dt' => 'editable', 'exact' => true],
             [
                 'db' => 'date_created',
                 'dt' => 'date_created',
@@ -82,7 +84,7 @@ class RecipeDAO extends BaseDAO {
 
         $whereSql = '';
         if (!empty($userId)) {
-            $whereSql .= ' AND r.creator_user_id = ' . intval($userId);
+            $whereSql .= ' AND (r.creator_user_id = ' . intval($userId) . ' OR u.user_profile_id = "' . UserProfile::Administrator . '")';
         }
 
         $table = '(
@@ -102,7 +104,8 @@ class RecipeDAO extends BaseDAO {
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.name")), 
                     " ", 
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
-                ) as creator_name
+                ) as creator_name,
+                ' . (!empty($userId) ? 'IF(r.creator_user_id = ' . $userId . ', 1, 0)' : 1) . ' AS editable
             FROM
                 ' . $this->table . ' r
             INNER JOIN
@@ -116,5 +119,22 @@ class RecipeDAO extends BaseDAO {
 
 
         return $this->datatablesSimple($table, 'id', $columns);
+    }
+
+    public function duplicate($id, $creatorUserId, $copyNameText) {
+        $originalName = $this->getSingleField($id, 'name');
+        $name = $originalName . ' (' . $copyNameText . ')';
+
+        $i = 1;
+        while (!empty($this->getByField('name', $name))) {
+            $i++;
+            $name = $originalName . ' (' . $copyNameText . ' #' . $i . ')';
+        }
+
+        $query = 'INSERT INTO ' . $this->table . ' (name, main_language_id, qr_language_id, creator_user_id, recipe_layout_id, json_data) 
+                SELECT :name, main_language_id, qr_language_id, :creatorUserId, recipe_layout_id, json_data FROM ' . $this->table . ' WHERE id = :id';
+        $this->query($query, compact('id', 'creatorUserId', 'name'));
+        $newId = $this->getLastInsertId();
+        return $newId;
     }
 }

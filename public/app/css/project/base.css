@@ -1322,6 +1322,10 @@ form.data-form .card, .form-extra-card
     display: none !important;
 }
 
+.form-readonly .json-content-form{
+    pointer-events: none;
+}
+
 .uppy-ImageCropper {
     pointer-events: none;
 }
@@ -1364,4 +1368,8 @@ form.data-form .card, .form-extra-card
 .image-input.image-input-outline .image-input-wrapper{
     background-size: contain;
     background-position: center;
+}
+
+input[type="color"][readonly="true"] {
+    pointer-events: none;
 }

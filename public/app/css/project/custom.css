@@ -199,3 +199,97 @@ form.data-form .card .card-body .file-info-container .file-info .row > *{
 .menu-state-dark .menu-item.show>.menu-link .menu-icon i {
     color: var(--bs-primary);
 }
+
+form.data-form .json-content-form .card {
+    margin-bottom: 0 !important;
+}
+
+.json-content-form .btn-group{
+    margin-bottom: 25px;
+}
+
+.json-content-form [data-schematype="array"] .card-title{
+    display: none !important;
+}
+
+.json-content-form [data-schematype="array"] .card-body{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.json-content-form .json-editor-btn-add.json-editor-btntype-add {
+    border-top-right-radius: var(--bs-btn-border-radius) !important;
+    border-bottom-right-radius: var(--bs-btn-border-radius) !important;
+    height: 43.5px;
+} 
+
+.json-content-form [data-schematype="array"] [data-schematype="object"] .btn-group{
+    border-radius: 0.55rem !important;
+    overflow: hidden;
+    height: 43.5px;
+    margin-top: 27px;
+}
+
+.json-content-form [data-schematype="array"] [data-schematype="object"]{
+    display: flex;
+    justify-content: space-between;
+}
+
+.json-content-form:not(.disable-edit) [data-schematype="array"] [data-schematype="object"] .card-body{
+    max-width: calc(100% - 160px);
+}
+
+.json-content-form [data-schematype="array"] [data-schematype="object"] .card-body + div,
+.json-content-form .json-editor-btntype-delete span{
+    display: none !important;
+}
+
+.json-content-form input[type="color"]{
+    height: 40.38px;
+    padding: 0 !important;
+}
+
+.json-content-form .json-editor-btn- {
+    color: var(--bs-secondary-inverse);
+    border-color: var(--bs-secondary);
+    background-color: var(--bs-secondary);
+}
+
+.json-content-form .json-editor-btn-:hover{
+    color: var(--bs-secondary-inverse);
+    border-color: var(--bs-secondary-active);
+    background-color: var(--bs-secondary-active) !important;
+}
+
+.json-content-form a[target="_blank"]{
+    color: var(--bs-primary-active) !important;
+}
+
+.json-content-form.disable-edit [data-schematype="array"] [data-schematype="object"] .card-body > div > div{
+    display: flex;
+    align-items: center;
+}
+
+.json-content-form.disable-edit [data-schematype="array"] [data-schematype="object"] .card-body > div > div > div:last-child{
+    flex-grow: 1;
+}
+
+.json-content-form.disable-edit [data-schematype="boolean"][data-schemapath$=".active"] .form-check-label{
+    display: none;
+}
+
+.json-content-form.disable-edit [data-schematype="boolean"][data-schemapath$=".active"]{
+    margin-right: 10px;
+    margin-top: 27px;
+}
+
+.json-content-form [data-schematype="array"] [data-schematype="object"] .card-body,
+form.data-form .json-content-form .card{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.json-content-form [data-schemapath="root"] .card-body{
+    padding: 0;
+}

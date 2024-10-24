@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\App;
 
+use App\Constant\FileType;
 use App\Dao\UserDAO;
 use App\Util\FileUtils;
+use App\Util\ResponseUtils;
 use App\Util\SessionUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,6 +43,20 @@ class FileController extends BaseController {
 
         $file = $data['data']['file'];
         $response = FileUtils::streamFile($this, $response, $file['file_type_id'], 'FOLDER_PRIVATE', $file['file'], $file['id'], 'file', false, FileUtils::FILENAME_HASH, false);
+        if (!empty($response)) {
+            return $response;
+        }
+        throw new \Exception(__('app.error.file_not_found'), 404);
+    }
+
+    public function uploadFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $directory = $this->get('params')->getParam('FOLDER_PRIVATE');
+        $file = FileUtils::uploadFile($request, 'upload', $directory, null, 'file', false, false);
+        return ResponseUtils::withJson($response, ['filename' => $file]);
+    }
+
+    public function getUploadedFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $response = FileUtils::streamFile($this, $response, 'upload', 'FOLDER_PRIVATE', $args['name']);
         if (!empty($response)) {
             return $response;
         }

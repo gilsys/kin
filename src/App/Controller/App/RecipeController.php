@@ -8,13 +8,16 @@ use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
 use App\Constant\StaticListTable;
 use App\Dao\MarketDAO;
+use App\Dao\ProductDAO;
 use App\Dao\RecipeDAO;
 use App\Dao\RecipeFileDAO;
 use App\Dao\StaticListDAO;
+use App\Dao\SubProductDAO;
 use App\Dao\UserDAO;
 use App\Exception\AuthException;
 use App\Service\LogService;
 use App\Service\PdfService;
+use App\Util\CommonUtils;
 use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -63,13 +66,16 @@ class RecipeController extends BaseController {
         return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($userId));
     }
 
-
     /**
      * Prepara el formulario de crear/editar
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         if (!empty($args['id'])) {
-            $this->get('security')->checkRecipeOwner($args['id']);
+            $this->get('security')->checkRecipeOwner($args['id'], true);
+        }
+
+        if (!$this->get('security')->isAdmin() && empty($args['id'])) {
+            throw new AuthException();
         }
 
         $data = $this->prepareForm($args);
@@ -84,9 +90,6 @@ class RecipeController extends BaseController {
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
 
         $data['data']['layouts'] = $recipeLayoutDAO->getForSelect('id', 'name', 'custom_order');
-
-        // ???
-        $data['data']['default_main_language'] = null;
 
         if (!empty($args['id'])) {
             $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
@@ -107,12 +110,29 @@ class RecipeController extends BaseController {
     }
 
     public function load(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-        $this->get('security')->checkRecipeOwner($args['id']);
-        return parent::load($request, $response, $args);
+        $this->get('security')->checkRecipeOwner($args['id'], true);
+
+        $data = $this->getDAO()->getFullById($args['id']);
+        if (empty($data)) {
+            throw new AuthException();
+        }
+        $data['editable'] = $this->get('security')->isAdmin() || $this->get('security')->getUserId() == $data['creator_user_id'] ? 1 : 0;
+        return ResponseUtils::withJson($response, $data);
     }
 
     public function savePreSave($request, $response, $args, &$formData) {
         unset($formData['root']);
+
+        if (!$this->get('security')->isAdmin()) {
+            if (empty($formData['id'])) {
+                throw new AuthException();
+            }
+
+            $old = $this->getDAO()->getById($formData['id']);
+            $formData['qr_language_id'] = $old['qr_language_id'];
+            $formData['main_language_id'] = $old['main_language_id'];
+            $formData['recipe_layout_id'] = $old['recipe_layout_id'];
+        }
 
         if (empty($formData['id'])) {
             $formData['creator_user_id'] = $this->get('session')['user']['id'];
@@ -127,7 +147,7 @@ class RecipeController extends BaseController {
         if (!empty($args['mode']) && $args['mode'] == FormSaveMode::SaveAndGenerate) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
             $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-            //$pdfService->bookletPdf($formData['id'], true);
+            $pdfService->recipePdf($formData['id'], true);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
         }
     }
@@ -148,5 +168,77 @@ class RecipeController extends BaseController {
             default:
                 return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
         }
+    }
+
+    public function deletePreDelete($request, $response, $args, &$formData) {
+        $this->get('security')->checkRecipeOwner($formData['id']);
+
+        $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
+        $recipeFileDAO->clear($formData['id']);
+    }
+
+    public function getProducts(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $productDAO = new ProductDAO($this->get('pdo'));
+        $data['products'] = $productDAO->getProducts();
+
+        $subProductDAO = new SubProductDAO($this->get('pdo'));
+        $data['subproducts'] = $subProductDAO->getSubProducts();
+
+        return ResponseUtils::withJson($response, $data);
+    }
+
+    public function pdfPreview(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $this->get('security')->checkRecipeOwner($args['id']);
+
+        $this->get('logger')->addInfo("Preview PDF " . static::ENTITY_SINGULAR . " - id: " . $args['id']);
+        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+        $pdfService->recipePdf($args['id'], false);
+        exit();
+    }
+
+    public function pdfFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
+        $recipeFile = $recipeFileDAO->getByFileId($args['id']);
+
+        $this->get('security')->checkRecipeOwner($recipeFile['recipe_id'], true);
+
+        if (empty($recipeFile)) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+
+        return parent::getFileById($response, $recipeFile['file_id']);
+    }
+
+    public function pdfDelete(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
+        $recipeFile = $recipeFileDAO->getByFileId($args['id']);
+
+        $this->get('security')->checkRecipeOwner($recipeFile['recipe_id']);
+
+        $recipeFileDAO->deleteByFileId($recipeFile['file_id']);
+
+        return ResponseUtils::withJson($response, ['success' => 1]);
+    }
+
+    public function duplicate(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $formData = CommonUtils::getSanitizedData($request);
+
+        $this->get('security')->checkRecipeOwner($formData['id'], true);
+
+        $this->get('logger')->addInfo("Duplicate " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
+        try {
+            $this->get('pdo')->beginTransaction();
+            $newId = $this->getDAO()->duplicate($formData['id'], $this->get('security')->getUserId(), __('app.common.duplicate_concat_text'));
+            LogService::save($this, 'app.log.action.duplicate', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
+            $this->get('pdo')->commit();
+        } catch (\Exception $e) {
+            $this->get('pdo')->rollback();
+            $this->get('logger')->addError($e);
+            $this->get('flash')->addMessage('danger', __('app.error.duplicate'));
+            return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+        }
+
+        $this->get('flash')->addMessage('success', __('app.controller.duplicate_ok'));
+        return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $newId);
     }
 };
