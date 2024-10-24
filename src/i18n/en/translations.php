@@ -423,6 +423,7 @@ return [
     'app.js.pin.text_consumer' => 'Contact the user and enter the PIN sent to their email',
     'app.js.pin.title' => 'The operation requires PIN validation',
     'app.js.pin.title_consumer' => 'There is a user with the entered ID card number',
+    'app.js.recipe.subproduct_already_selected' => '',
     'app.js.secondary' => 'Info',
     'app.js.select_city' => '- Select a city -',
     'app.js.success' => 'Success',
