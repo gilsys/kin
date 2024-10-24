@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\RecipeDAO;
+use App\Dao\UserDAO;
 use App\Exception\AuthException;
 
 class SecurityService extends BaseService {
@@ -66,14 +67,19 @@ class SecurityService extends BaseService {
         throw new AuthException();
     }
 
-    public function checkRecipeOwner($recipeId) {
+    public function checkRecipeOwner($recipeId, $readOnlyAccess = false) {
         if (empty($recipeId) || $this->isAdmin()) {
             return true;
         }
         $recipeDAO = new RecipeDAO($this->pdo);
         $creatorUserId = $recipeDAO->getSingleField($recipeId, 'creator_user_id');
 
-        if ($this->checkUser($creatorUserId)) {
+        if ($this->getUserId() == $creatorUserId) {
+            return true;
+        }
+
+        $userDAO = new UserDAO($this->pdo);
+        if ($readOnlyAccess && $userDAO->getSingleField($creatorUserId, 'user_profile_id') == UserProfile::Administrator) {
             return true;
         }
 

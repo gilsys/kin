@@ -442,6 +442,33 @@ $(document).ready(function () {
         JSONEditor.defaults.language = 'i18n';
     }
     JSONEditor.defaults.options.iconlib = "fontawesome5";
+    JSONEditor.defaults.callbacks.upload = {
+        "JSONEditorUploadHandler": function (jseditor, type, file, cbs) {
+            // Obtener el field
+            var field = type.split('.').slice(-1).pop();
+            var fd = new FormData();
+            fd.append('file', file);
+            fd.append('field', field);
+            AdminUtils.showLoading();
+            $.ajax({
+                url: '/app/file/upload_file',
+                type: 'post',
+                enctype: 'multipart/form-data',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    cbs.updateProgress(100);
+                    cbs.success('/app/file/get/' + response.filename);
+                    AdminUtils.hideLoading();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    cbs.failure(textStatus);
+                    AdminUtils.hideLoading();
+                }
+            });
+        }
+    }
 });
 function InitClamp() {
     ReloadClamp();
@@ -788,10 +815,10 @@ function formReadOnly(form, remove = true) {
     form.find('input[type="file"]').hide();
     if (remove) {
         form.find('[data-submit-mode]').closest('.dropdown').remove();
-        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode]').remove();
+        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode], .btn-delete-file').remove();
     } else {
         form.find('[data-submit-mode]').closest('.dropdown').hide();
-        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode]').hide();
+        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode], .btn-delete-file').hide();
     }
 }
 

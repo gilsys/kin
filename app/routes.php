@@ -70,6 +70,11 @@ return function (App $app) {
         $app->get('/{token}', [FileController::class, 'token']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]));
 
+    $app->group('/app/file', function (RouteCollectorProxy $app) {
+        $app->post('/upload_file', [FileController::class, 'uploadFile']);
+        $app->get('/get/{name}', [FileController::class, 'getUploadedFile']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]));
+
     // Profile
     $app->group('/app/profile', function (RouteCollectorProxy $app) {
         $app->get('', [ProfileController::class, 'form']);
@@ -171,5 +176,10 @@ return function (App $app) {
         $app->post('/app/recipe/save/{mode}', [RecipeController::class, 'save']);
         $app->post('/app/recipe/delete', [RecipeController::class, 'delete']);
         $app->get('/app/recipe/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [RecipeController::class, 'form']);
+        $app->post('/app/recipe/get_products', [RecipeController::class, 'getProducts']);
+        $app->get('/app/recipe/pdf/{id:[0-9]+}', [RecipeController::class, 'pdfPreview']);
+        $app->get('/app/recipe/pdf/file/{id:[0-9]+}', [RecipeController::class, 'pdfFile']);
+        $app->post('/app/recipe/pdf/delete/{id:[0-9]+}', [RecipeController::class, 'pdfDelete']);
+        $app->post('/app/recipe/duplicate', [RecipeController::class, 'duplicate']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };

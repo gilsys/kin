@@ -85,10 +85,15 @@ class ProductDAO extends BaseDAO {
                 FROM " . $this->table . " p 
                 INNER JOIN st_market_area ma ON ma.area_id = p.area_id AND ma.market_id = :marketId
                 ORDER BY p.name ASC";
-        $result = [];
-        foreach ($this->fetchAll($sql, compact('marketId')) as $row) {
-            $result[$row['id']] = $row;
-        }
-        return $result;
+        return $this->fetchAll($sql, compact('marketId'));
+    }
+
+    public function getProducts() {
+        $sql = "SELECT p.id, p.name
+                FROM " . $this->table . " p
+                INNER JOIN st_subproduct s ON s.product_id = p.id
+                GROUP BY p.id
+                ORDER BY p.name ASC";
+        return $this->fetchAll($sql);
     }
 }

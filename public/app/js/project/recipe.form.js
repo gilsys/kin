@@ -1,5 +1,7 @@
 class RecipeForm {
     jsonEditor = null;
+    products = null;
+    jsonData = null;
 
     ready() {
         var that = this;
@@ -28,6 +30,8 @@ class RecipeForm {
                     localStorage.setItem('active_recipe_tab', stepper.getCurrentStepIndex());
                 }
 
+                //console.log(that.jsonEditor.validate()); return false;
+
                 $(form).find("[name='json_data']").val(JSON.stringify(that.jsonEditor.getValue()));
 
                 return true;
@@ -35,12 +39,6 @@ class RecipeForm {
         });
 
         function changeStep(index, stepper) {
-            var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
-
-            if (!languageValid) {
-                return;
-            }
-
             stepper.goTo(index);
         }
 
@@ -69,76 +67,159 @@ class RecipeForm {
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
-                mForm.find("[name='recipe_layout_id']").val(data.recipe_layout_id).change();
+                mForm.find("[name='recipe_layout_id']").val(data.recipe_layout_id).trigger('change.select2');
 
-                that.jsonEditor.on('ready', function () {
-                    that.jsonEditor.setValue(data.json_data);
-                });
+                that.jsonData = data.json_data;
+                that.getProducts();
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
+
+                if (!userHasProfile(['A'])) {
+                    if (data.editable == '1') {
+                        formReadOnly(mForm.find('[name]:not([type="hidden"]):not([name="name"]):not([name^="root"])').closest('div'));
+                    } else {
+                        formReadOnly(mForm);
+                    }
+                }
 
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
             // Valores por defecto en registros nuevos  
+            that.getProducts();
             mForm.removeDisabledOptions();
             AdminUtils.showDelayedAfterLoad();
         }
     }
 
     initJsonEditor(layoutId) {
+        var firstInit = this.jsonEditor == null;
+
         if (this.jsonEditor != null) {
             this.jsonEditor.destroy();
         }
 
+        if (layoutId == null || layoutId == '') {
+            return;
+        }
+
+        var disableEdit = !userHasProfile(['A']);
+
+        $('#json-content-form').toggleClass('disable-edit', disableEdit);
+
+        window.JSONEditor.defaults.callbacks.template = {
+            "filterSubproducts": (jseditor, e) => {
+                return e.item.product_id == e.watched.productId;
+            }
+        };
+
         if (layoutId == 1) {
             var properties = {
+                "title": {
+                    "title": __('app.js.common.title'),
+                    "type": "string",
+                    "readonly": disableEdit,
+                    "options": {
+                        "grid_columns": 6
+                    },
+                },
+                "color": {
+                    "title": __('app.js.common.color'),
+                    "type": "string",
+                    "format": "color",
+                    "readonly": disableEdit,
+                    "options": {
+                        "grid_columns": 6
+                    }
+                },
+                "image": {
+                    "type": "string",
+                    "title": __('app.js.common.image'),
+                    "description": "<em>(" + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px)</em>",
+                    "format": "url",
+                    "readonly": disableEdit,
+                    "options": {
+                        "upload": {
+                            "title": __('app.js.common.upload_image'),
+                            "auto_upload": true,
+                            "upload_handler": "JSONEditorUploadHandler"
+                        },
+                        "containerAttributes": {
+                            "class": "col-md-12"
+                        }
+                    },
+                    "links": [
+                        {
+                            "href": "{{self}}"
+                        }
+                    ]
+                },
                 "product": {
-                    "title": "Product",
+                    "title": __('app.entity.product'),
                     "type": "integer",
-                    "enum": [1, 2, 3],
+                    "format": "select2",
+                    "enumSource": [{
+                        "source": this.products.products,
+                        "title": "{{item.name}}",
+                        "value": "{{item.id}}"
+                    }],
+                    "readonly": disableEdit,
                     "options": {
-                        "enum_titles": ["Product 1", "Product 2", "Product 3"],
-                        "grid_columns": 6
+                        "grid_columns": 4
                     }
                 },
-                "subproduct1": {
-                    "title": "Subproduct",
-                    "type": "integer",
-                    "enum": [1, 2, 3],
+                "subproducts": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "active": {
+                                "type": "boolean",
+                                "format": "checkbox",
+                                "default": true,
+                                "options": {
+                                    "hidden": !disableEdit
+                                }
+                            },
+                            "id": {
+                                "title": __('app.entity.subproduct'),
+                                "type": "integer",
+                                "format": "select2",
+                                "watch": {
+                                    "productId": "product"
+                                },
+                                "enumSource": [{
+                                    "source": this.products.subproducts,
+                                    "title": "{{item.name}}",
+                                    "value": "{{item.id}}",
+                                    "filter": "filterSubproducts"
+                                }],
+                                "readonly": disableEdit
+                            }
+                        }
+                    },
                     "options": {
-                        "enum_titles": ["Product 1 - 1", "Product 1 - 2", "Product 1 - 3"],
-                        "dependencies": {
-                            "product": 1
-                        },
-                        "grid_columns": 6
+                        "grid_columns": 8,
+                        "disable_array_add": disableEdit,
+                        "disable_array_delete": disableEdit,
+                        "disable_array_delete_all_rows": disableEdit,
+                        "disable_array_delete_last_row": disableEdit,
+                        "disable_array_reorder": disableEdit,
                     }
-                },
-                "subproduct2": {
-                    "title": "Subproduct",
-                    "type": "integer",
-                    "enum": [4, 5, 6],
+                }
+            };
+        } else if (layoutId == 2) {
+            var properties = {
+                "title": {
+                    "title": __('app.js.common.title'),
+                    "type": "string",
+                    "readonly": disableEdit,
                     "options": {
-                        "enum_titles": ["Product 2 - 1", "Product 2 - 2", "Product 2 - 3"],
-                        "dependencies": {
-                            "product": 2
-                        },
                         "grid_columns": 6
-                    }
-                },
-                "subproduct3": {
-                    "title": "Subproduct",
-                    "type": "integer",
-                    "enum": [7, 8, 9],
-                    "options": {
-                        "enum_titles": ["Product 3 - 1", "Product 3 - 2", "Product 3 - 3"],
-                        "dependencies": {
-                            "product": 3
-                        },
-                        "grid_columns": 6
-                    }
-                },
+                    },
+                }
             };
         }
 
@@ -151,10 +232,36 @@ class RecipeForm {
             //"disable_properties": true,
             "no_additional_properties": true,
             //"show_errors": "always",
+            "disable_array_delete_all_rows": true,
+            "disable_array_delete_last_row": true,
             "schema": {
                 "type": "object",
                 "format": "grid-strict",
                 "properties": properties
+            }
+        });
+
+        this.jsonEditor.on('ready', () => {
+            if (firstInit && this.jsonData != null) {
+                this.jsonEditor.setValue(this.jsonData);
+            }
+
+            if (disableEdit) {
+                setTimeout(() => {
+                    $('#json-content-form').find('select').addClass('readonly-disabled');
+                }, 0);
+            }
+        });
+    }
+
+    getProducts() {
+        var mForm = $('#mt-recipe-form');
+
+        $.post('/app/recipe/get_products', data => {
+            this.products = data;
+
+            if (this.jsonData != null) {
+                mForm.find("[name='recipe_layout_id']").change();
             }
         });
     }
