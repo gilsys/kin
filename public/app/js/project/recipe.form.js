@@ -162,7 +162,9 @@ class RecipeForm {
                     },
                     "links": [
                         {
-                            "href": "{{self}}"
+                            "href": "{{self}}",
+                            "mediaType": "image/*",
+                            "class": "uploaded-image"
                         }
                     ]
                 },

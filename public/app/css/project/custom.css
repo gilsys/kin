@@ -293,3 +293,21 @@ form.data-form .json-content-form .card{
 .json-content-form [data-schemapath="root"] .card-body{
     padding: 0;
 }
+
+.json-content-form .je-upload-preview {
+    display: none !important;
+}
+
+.json-content-form .je-upload-preview img{
+    max-height: 15rem  !important;
+    margin-top: 10px !important;
+}
+
+.json-content-form .progress{
+    display: none !important;
+}
+
+.uploaded-image img{
+    max-height: 15rem !important;
+    margin-top: 10px !important;
+}
