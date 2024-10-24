@@ -46,6 +46,7 @@ class BookletDAO extends BaseDAO {
             ['db' => 'main_language_id', 'dt' => 'main_language_id', 'exact' => true],
             ['db' => 'main_language', 'dt' => 'main_language'],
             ['db' => 'main_language_color', 'dt' => 'main_language_color', 'exact' => true],
+            ['db' => 'last_file_id', 'dt' => 'last_file_id', 'exact' => true],
             [
                 'db' => 'date_created',
                 'dt' => 'date_created',
@@ -90,7 +91,8 @@ class BookletDAO extends BaseDAO {
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.name")), 
                     " ", 
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
-                ) as creator_name
+                ) as creator_name,
+                (SELECT bf.file_id FROM st_booklet_file bf WHERE bf.booklet_id = b.id ORDER BY bf.file_id DESC LIMIT 1) AS last_file_id
             FROM
                 ' . $this->table . ' b
             INNER JOIN

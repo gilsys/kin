@@ -1,7 +1,8 @@
 class BookletDatatable {
     ready() {
         var routeEdit = '/app/booklet/form';
-        var routeDelete = 'app/booklet/delete'
+        var routeDelete = 'app/booklet/delete';
+        var routeDownload = '/app/booklet/pdf/file';
         var routeDatatable = '/app/booklet/datatable';
 
         var datatable = new CustomDatatable('#mt-booklet', {
@@ -56,7 +57,8 @@ class BookletDatatable {
                         var mRouteEdit = routeEdit + '/' + data.id;
                         var btnEdit = '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + mRouteEdit + '" title="' + __('app.js.common.edit') + '"><i class="fa-regular fa-pen-to-square fs-1 pb-1"></i></a>';
                         var btnDelete = '<a class="btn btn-icon btn-active-light btn-sm p-3" href="javascript:AdminUtils.confirmDelete(\'' + routeDelete + '\', ' + data.id + ')" title="' + __('app.js.common.delete') + '"><i class="fa-regular fa-trash-can fs-1 pb-1"></i></a>';
-                        return btnEdit + btnDelete;
+                        var btnDownload = data.last_file_id != null ? '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + routeDownload + '/' + data.last_file_id + '" target="_blank" title="' + __('app.js.common.download_last_pdf') + '"><i class="fa-regular fa-file fs-1 pb-1"></i></a>' : '';
+                        return btnEdit + btnDelete + btnDownload;
                     }
                 }
 

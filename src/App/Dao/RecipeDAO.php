@@ -63,6 +63,7 @@ class RecipeDAO extends BaseDAO {
             ['db' => 'main_language', 'dt' => 'main_language'],
             ['db' => 'main_language_color', 'dt' => 'main_language_color', 'exact' => true],
             ['db' => 'editable', 'dt' => 'editable', 'exact' => true],
+            ['db' => 'last_file_id', 'dt' => 'last_file_id', 'exact' => true],
             [
                 'db' => 'date_created',
                 'dt' => 'date_created',
@@ -105,7 +106,8 @@ class RecipeDAO extends BaseDAO {
                     " ", 
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
                 ) as creator_name,
-                ' . (!empty($userId) ? 'IF(r.creator_user_id = ' . $userId . ', 1, 0)' : 1) . ' AS editable
+                ' . (!empty($userId) ? 'IF(r.creator_user_id = ' . $userId . ', 1, 0)' : 1) . ' AS editable,
+                (SELECT rf.file_id FROM st_recipe_file rf WHERE rf.recipe_id = r.id ORDER BY rf.file_id DESC LIMIT 1) AS last_file_id
             FROM
                 ' . $this->table . ' r
             INNER JOIN

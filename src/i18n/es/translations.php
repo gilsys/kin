@@ -281,6 +281,7 @@ return [
     'app.js.common.details' => 'Detalles',
     'app.js.common.down' => 'Bajar',
     'app.js.common.download' => 'Descargar',
+    'app.js.common.download_last_pdf' => 'Descargar último PDF',
     'app.js.common.duplicate' => 'Duplicar',
     'app.js.common.edit' => 'Editar',
     'app.js.common.form_errors' => 'Existen errores en el formulario, revise los datos.',

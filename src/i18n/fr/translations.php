@@ -281,6 +281,7 @@ return [
     'app.js.common.details' => 'Detalls',
     'app.js.common.down' => 'Baixar',
     'app.js.common.download' => 'Descarregar',
+    'app.js.common.download_last_pdf' => '',
     'app.js.common.duplicate' => 'Duplicar',
     'app.js.common.edit' => 'Editar',
     'app.js.common.form_errors' => 'Hi ha errors al formulari, reviseu les dades.',
