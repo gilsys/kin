@@ -17,14 +17,11 @@ class ProductDatatable {
                     searchable: false,
                     className: 'text-center',
                     width: 150,
+                    export: false,
                     render: function (data, type, full, meta) {
-                        if (type === 'export') {
-                            return '';
-                        }
                         // Mostramos la imagen en la tabla
-                        return '<div style="background-image: url(\'/app/image/image_es_2/' + full.id + addDateUpdatedTimestampParam(full) + '\')" class="mt-datatable-image"></div>';
-                    },
-                    visible: false // La columna es visible en la vista normal
+                        return '<div style="background-image: url(\'/app/image/image_' + __('app.js.lang.code') + '_2/' + full.id + addDateUpdatedTimestampParam(full) + '\')" class="mt-datatable-image"></div>';
+                    }
                 },
                 { data: 'name' },
                 {

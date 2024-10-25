@@ -26,11 +26,28 @@ class RecipeForm {
                 stepperInvalidFormValidationHandler(validator, stepper);
             },
             submitHandler: function (form) {
+                var subproductsSelected = [];
+                $(form).find('#json-content-form select[name*="[subproducts]"]').each(function () {
+                    subproductsSelected.push($(this).val());
+                });
+                if (new Set(subproductsSelected).size !== subproductsSelected.length) {
+                    AdminUtils.hideLoading();
+                    showWarning(__('app.js.common.attention'), __('app.js.recipe.subproduct_already_selected_submit'));
+                    return false;
+                }
+
+                var noSelectedImages = $(form).find('#json-content-form .image-required > input[type="hidden"]').filter(function () {
+                    return $(this).val() == '';
+                }).length > 0;
+                if (noSelectedImages) {
+                    AdminUtils.hideLoading();
+                    showWarning(__('app.js.common.attention'), __('app.js.recipe.image_required'));
+                    return false;
+                }
+
                 if (jQuery.inArray($(form).attr('action').split('/').pop(), ['N', 'B']) === -1) {
                     localStorage.setItem('active_recipe_tab', stepper.getCurrentStepIndex());
                 }
-
-                //console.log(that.jsonEditor.validate()); return false;
 
                 $(form).find("[name='json_data']").val(JSON.stringify(that.jsonEditor.getValue()));
 
@@ -94,6 +111,7 @@ class RecipeForm {
     }
 
     initJsonEditor(layoutId) {
+        var mForm = $('#mt-recipe-form');
         var firstInit = this.jsonEditor == null;
 
         if (this.jsonEditor != null) {
@@ -106,7 +124,7 @@ class RecipeForm {
 
         var disableEdit = !userHasProfile(['A']);
 
-        $('#json-content-form').toggleClass('disable-edit', disableEdit);
+        mForm.find('#json-content-form').toggleClass('disable-edit', disableEdit);
 
         window.JSONEditor.defaults.callbacks.template = {
             "filterSubproducts": (jseditor, e) => {
@@ -132,8 +150,11 @@ class RecipeForm {
                     "type": "string",
                     "readonly": disableEdit,
                     "options": {
-                        "grid_columns": 6
-                    },
+                        "grid_columns": 6,
+                        "inputAttributes": {
+                            "required": true
+                        }
+                    }
                 },
                 "color": {
                     "title": __('app.js.common.color'),
@@ -141,13 +162,16 @@ class RecipeForm {
                     "format": "color",
                     "readonly": disableEdit,
                     "options": {
-                        "grid_columns": 6
+                        "grid_columns": 6,
+                        "inputAttributes": {
+                            "required": true
+                        }
                     }
                 },
                 "image": {
                     "type": "string",
                     "title": __('app.js.common.image'),
-                    "description": "<em>(" + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px)</em>",
+                    "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
                     "format": "url",
                     "readonly": disableEdit,
                     "options": {
@@ -157,7 +181,10 @@ class RecipeForm {
                             "upload_handler": "JSONEditorUploadHandler"
                         },
                         "containerAttributes": {
-                            "class": "col-md-12"
+                            "class": "col-md-12 image-required"
+                        },
+                        "inputAttributes": {
+                            "required": true
                         }
                     },
                     "links": [
@@ -180,7 +207,10 @@ class RecipeForm {
                     "readonly": disableEdit,
                     "options": {
                         "grid_columns": 4,
-                        "select2": select2options
+                        "select2": select2options,
+                        "inputAttributes": {
+                            "required": true
+                        }
                     }
                 },
                 "subproducts": {
@@ -212,7 +242,10 @@ class RecipeForm {
                                 }],
                                 "readonly": disableEdit,
                                 "options": {
-                                    "select2": select2options
+                                    "select2": select2options,
+                                    "inputAttributes": {
+                                        "required": true
+                                    }
                                 }
                             }
                         }
@@ -234,17 +267,21 @@ class RecipeForm {
                     "type": "string",
                     "readonly": disableEdit,
                     "options": {
-                        "grid_columns": 6
+                        "grid_columns": 6,
+                        "inputAttributes": {
+                            "required": true
+                        }
                     },
                 }
             };
         }
 
         // Initialize the editor with a JSON schema
-        this.jsonEditor = new JSONEditor(document.getElementById('json-content-form'), {
+        this.jsonEditor = new JSONEditor(mForm.find('#json-content-form')[0], {
             // Se añade para que en caso de ampliar el JSON, se carguen los campos que no estaban en la versión anterior. 
             // Realmente los campos NO son required.
             "required_by_default": true,
+            "display_required_only": false,
             "disable_edit_json": true,
             //"disable_properties": true,
             "no_additional_properties": true,
@@ -262,6 +299,8 @@ class RecipeForm {
         this.jsonEditor.on('ready', () => {
             if (firstInit && this.jsonData != null) {
                 this.jsonEditor.setValue(this.jsonData);
+            } else {
+                mForm.find('select[name*="[subproducts]"]').val('').change();
             }
 
             this.jsonEditor.on('addRow', editor => {
@@ -270,17 +309,17 @@ class RecipeForm {
 
             if (disableEdit) {
                 setTimeout(() => {
-                    $('#json-content-form').find('select').addClass('readonly-disabled');
+                    mForm.find('#json-content-form').find('select').addClass('readonly-disabled');
                 }, 0);
             }
         });
 
         this.jsonEditor.on('change', function () {
-            $('#json-content-form select[name*="[subproducts]"]:not(.change-init)').each(function () {
+            mForm.find('#json-content-form select[name*="[subproducts]"]:not(.change-init)').each(function () {
                 $(this).on('select2:selecting', function (e) {
                     var selectedValue = e.params.args.data.id;
 
-                    var exists = $('#json-content-form select[name*="[subproducts]"]').filter(function () {
+                    var exists = mForm.find('#json-content-form select[name*="[subproducts]"]').filter(function () {
                         return $(this).val() === selectedValue;
                     }).length > 0;
 
@@ -293,7 +332,7 @@ class RecipeForm {
                 $(this).addClass('change-init');
             });
 
-            $('#json-content-form select[name*="[product]"]:not(.change-init)').on('change', function (e) {
+            mForm.find('#json-content-form select[name*="[product]"]:not(.change-init)').on('change', function (e) {
                 $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('.json-editor-btntype-deleteall').click();
                 $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('select[name*="[subproducts]"]').val('').change();
             }).addClass('change-init');

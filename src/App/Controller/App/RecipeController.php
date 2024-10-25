@@ -182,7 +182,7 @@ class RecipeController extends BaseController {
         $data['products'] = $productDAO->getProducts();
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $data['subproducts'] = $subProductDAO->getSubProducts();
+        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang());
 
         return ResponseUtils::withJson($response, $data);
     }
