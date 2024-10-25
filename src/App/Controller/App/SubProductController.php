@@ -48,6 +48,13 @@ class SubProductController extends BaseController {
     }
 
     /**
+     * Obtiene los datos para mostrar la datatable
+     */
+    public function datatable(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($this->get('i18n')->getCurrentLang()));
+    }
+
+    /**
      * Prepara el formulario de crear/editar productos
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
@@ -61,5 +68,11 @@ class SubProductController extends BaseController {
 
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+
+    public function savePreSave($request, $response, $args, &$formData) {
+        foreach (['name', 'format'] as $jsonField) {
+            $formData[$jsonField] = json_encode($formData[$jsonField]);
+        }
     }
 }

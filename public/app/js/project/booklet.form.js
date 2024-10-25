@@ -249,10 +249,8 @@ class BookletForm {
         $.post('/app/booklet/get_products', params, data => {
             this.products = {};
             data.forEach((item) => {
-                console.log(item)
                 this.products['_' + item.id] = item;
             });
-            console.log(this.products)
             mForm.find('select.booklet-layout-select').change();
         });
     }

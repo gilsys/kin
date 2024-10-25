@@ -12,7 +12,7 @@ class SubProductDAO extends BaseDAO {
         parent::__construct($connection, 'st_subproduct');
     }
 
-    public function getRemoteDatatable() {
+    public function getRemoteDatatable($language) {
         // Columnas a tratar en el datatable
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
@@ -42,8 +42,8 @@ class SubProductDAO extends BaseDAO {
         $table = '(
             SELECT
                 sp.id,
-                sp.name,
-                sp.format,
+                JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
+                JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
                 sp.reference,
                 sp.product_id,
                 sp.date_created,
@@ -56,6 +56,11 @@ class SubProductDAO extends BaseDAO {
 
 
         return $this->datatablesSimple($table, 'id', $columns);
+    }
+
+    public function getById($id) {
+        $record = parent::getById($id);
+        return $this->getJsonFieldsValue($record, ['name', 'format']);
     }
 
     public function save($data) {
@@ -76,10 +81,10 @@ class SubProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
-    public function getSubProducts() {
-        $sql = "SELECT s.id, s.name, s.product_id
-                FROM " . $this->table . " s
-                ORDER BY s.product_id ASC, s.name ASC";
+    public function getSubProducts($language) {
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, s.product_id
+                FROM ' . $this->table . ' s
+                ORDER BY s.product_id ASC, s.name ASC';
         return $this->fetchAll($sql);
     }
 }

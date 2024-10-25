@@ -30,12 +30,6 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
-                    <div>
-                        <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
-                    </div>
-                </div>
-                <div class="col-md-6">
                     <label class="col-form-label required"><?php echo __('app.entity.product') ?></label>
                     <div>
                         <select name="product_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
@@ -49,12 +43,6 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label class="col-form-label required"><?php echo __('app.format') ?></label>
-                    <div>
-                        <input type="text" class="form-control" required placeholder="<?php echo __('app.format') ?>" name="format" maxlength="100" />
-                    </div>
-                </div>
-                <div class="col-md-6">
                     <label class="col-form-label required"><?php echo __('app.reference_code') ?></label>
                     <div>
                         <input type="text" class="form-control" required placeholder="<?php echo __('app.code') ?>" name="reference" maxlength="45" />
@@ -64,6 +52,32 @@
 
         </div>
     </div>
+
+    <?php foreach (['es' => __('app.language.spanish'), 'en' => __('app.language.english'), 'fr' => __('app.language.french')] as $lang => $title): ?>
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo $title ?></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name[<?php echo $lang ?>]" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.format') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.format') ?>" name="format[<?php echo $lang ?>]" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
 
     <?php if (!empty($data['id'])): ?>
         <?php $this->insert("inc/common/dates_info") ?>

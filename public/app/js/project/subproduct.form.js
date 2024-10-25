@@ -14,11 +14,13 @@ class SubProductForm {
 
         if (id.length) {
             $.post('/app/subproduct/' + id, function (data) {
-                console.log(data);
-                mForm.find("[name='name']").val(data.name);
                 mForm.find("[name='product_id']").val(data.product_id).change();
-                mForm.find("[name='format']").val(data.format);
                 mForm.find("[name='reference']").val(data.reference);
+
+                ['es', 'en', 'fr'].forEach(function (lang) {
+                    mForm.find("[name='name[" + lang + "]']").val(data.name[lang]);
+                    mForm.find("[name='format[" + lang + "]']").val(data.format[lang]);
+                });
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
