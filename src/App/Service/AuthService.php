@@ -294,7 +294,7 @@ class AuthService extends BaseService {
             'user' => $user,
             'url' => [
                 'url' => $url,
-                'caducity' => $this->params->getParam('PASSWORD_TOKEN_CADUCITY')
+                'caducity' => round(intval($this->params->getParam('PASSWORD_TOKEN_CADUCITY')) / 60)
             ]
         ];
 
