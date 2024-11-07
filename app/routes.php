@@ -101,9 +101,9 @@ return function (App $app) {
     $app->group('/app/user', function (RouteCollectorProxy $app) {
         $app->post('/datatable', [UserController::class, 'datatable']);
         $app->get('/form[/{id:[0-9]+}]', [UserController::class, 'form']);
-        $app->get('/logs/{id:[0-9]+}', [UserController::class, 'logs']);
+        /* $app->get('/logs/{id:[0-9]+}', [UserController::class, 'logs']);
         $app->post('/logs_auth/datatable/{id:[0-9]+}', [UserController::class, 'logsAuthDatatable']);
-        $app->post('/logs/datatable/{id:[0-9]+}', [UserController::class, 'logsDatatable']);
+        $app->post('/logs/datatable/{id:[0-9]+}', [UserController::class, 'logsDatatable']); */
         $app->post('/delete', [UserController::class, 'delete']);
         $app->post('/save/{mode}', [UserController::class, 'save']);
         $app->post('/status/{id:[0-9]+}/{userStatusId:[A-Z]}', [UserController::class, 'status']);
