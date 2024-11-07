@@ -59,13 +59,14 @@ class PdfService extends BaseService {
         $folderPrivate = $this->params->getParam('FOLDER_PRIVATE');
         $qrUrl = $this->params->getParam('KIN.URL');
 
-        if ($booklet['main_language_id'] == 'es') {
-        }
-
         $dompdf = new Dompdf();
         $options = new Options();
 
         $pages = [];
+
+        // TODO Cargar imagen de disco a base64
+        $imagePath = $folderPrivate . '/BP/' . $booklet['main_language_id'] . '.jpg';
+        $pages[1] = ['image' => FileUtils::getBase64Image($imagePath)];
 
         foreach ($bookletImages as $bookletImage) {
             if (empty($bookletImage['page'])) {
@@ -84,7 +85,6 @@ class PdfService extends BaseService {
         }
 
         $booklet['pages'] = $pages;
-
 
         $data = ['booklet' => $booklet];
 

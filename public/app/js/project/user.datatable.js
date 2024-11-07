@@ -30,30 +30,15 @@ class UserDatatable {
                     }
                 },
                 { data: 'id', width: 60 },
-                {
-                    data: 'name',
-                    render: function (data, type, full, meta) {
-                        if (type == 'export') {
-                            return full.name;
-                        }
-
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.color, 0.1) + '; color: ' + full.color + '">' + full.name + '</span>';
-                    }
-                },
-                {
-                    data: 'surnames',
-                    render: function (data, type, full, meta) {
-                        if (type == 'export') {
-                            return full.surnames;
-                        }
-
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.color, 0.1) + '; color: ' + full.color + '">' + full.surnames + '</span>';
-                    }
-                },
+                { data: 'name' },
+                { data: 'surnames' },
                 { data: 'nickname' },
                 {
                     data: 'market_name',
                     render: function (data, type, full, meta) {
+                        if(full.market_name == null || full.market_name == '') {
+                            return '';
+                        }
                         if (type == 'export') {
                             return full.market_name;
                         }
