@@ -123,11 +123,14 @@ return function (App $app) {
     $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/markets', [MarketController::class, 'list']);
         $app->post('/app/market/datatable', [MarketController::class, 'datatable']);
-        $app->post('/app/market/{id:[0-9]+}', [MarketController::class, 'load']);
         $app->get('/app/market/form[/{id:[0-9]+}]', [MarketController::class, 'form']);
         $app->post('/app/market/save/{mode}', [MarketController::class, 'save']);
         $app->post('/app/market/delete', [MarketController::class, 'delete']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->post('/app/market/{id:[0-9]+}', [MarketController::class, 'load']);
+    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
     // Products
     $app->group('', function (RouteCollectorProxy $app) {

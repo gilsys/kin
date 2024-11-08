@@ -154,13 +154,24 @@ class BookletForm {
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
+            if (mForm.attr('data-default-market-id') != '') {
+                $.post('/app/market/' + mForm.attr('data-default-market-id'), function (data) {
+                    mForm.find("[name='market_name']").val(data.name);
+                    mForm.find("[name='main_language_id']").val(data.main_language_id).change();
+                    mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+
+                    mForm.removeDisabledOptions();
+                    AdminUtils.showDelayedAfterLoad();
+                });
+            } else {
+                mForm.removeDisabledOptions();
+                AdminUtils.showDelayedAfterLoad();
+            }
+
             // Valores por defecto en registros nuevos        
             if (!userHasProfile(['A'])) {
                 that.getProducts();
             }
-
-            mForm.removeDisabledOptions();
-            AdminUtils.showDelayedAfterLoad();
         }
     }
 
@@ -169,8 +180,9 @@ class BookletForm {
         var tableHTML = '<table class="table table-bordered"><tbody>';
 
         var order = 0;
+        var trHeight = 100 / config.length;
         config.forEach(row => {
-            tableHTML += '<tr>';
+            tableHTML += '<tr style="height: ' + trHeight + '%">';
             if (row.length === 1) {
                 order++;
                 tableHTML += `<td colspan="2">` + this.getSelectProductHtml(page, order, row[0]) + `</td>`;
