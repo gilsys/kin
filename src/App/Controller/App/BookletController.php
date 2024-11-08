@@ -97,10 +97,7 @@ class BookletController extends BaseController {
         $marketId = $this->get('session')['user']['market_id'];
 
         if (!empty($marketId)) {
-            $marketData = $marketDAO->getById($marketId);
-            $data['data']['default_main_language'] = $marketData['main_language_id'];
-        } else {
-            $data['data']['default_main_language'] = null;
+            $data['data']['default_market_id'] = $marketId;
         }
 
         if (!empty($args['id'])) {
