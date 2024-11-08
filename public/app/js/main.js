@@ -438,9 +438,7 @@ $(document).ready(function () {
     });
 
     JSONEditor.defaults.options.theme = 'bootstrap5';
-    if (__('app.js.lang.code') != 'en') {
-        JSONEditor.defaults.language = 'i18n';
-    }
+    JSONEditor.defaults.language = 'i18n';
     JSONEditor.defaults.options.iconlib = "fontawesome5";
     JSONEditor.defaults.callbacks.upload = {
         "JSONEditorUploadHandler": function (jseditor, type, file, cbs) {
