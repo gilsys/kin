@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '' => '',
     'app.booklet.pdf_versions_info' => '',
     'app.code' => '',
     'app.common.about' => 'Sobre nosaltres',

@@ -82,7 +82,7 @@ class LoginForm {
             grecaptcha.reset(captchaItems[$('#login-forgot .login-step .recaptcha-field > div').attr('id')]);
         });
 
-        $('[name="pin"]').pincodeInput({inputs: PIN_LENGTH, hidedigits: false, inputtype: 'text', inputclass: 'form-control form-control-solid bg-white bg-opacity-50', change: (input, value, inputnumber) => {
+        $('[name="pin"]').pincodeInput({inputs: PIN_LENGTH, hidedigits: false, inputtype: 'text', inputclass: 'form-control form-control-solid bg-white border-primary rounded', change: (input, value, inputnumber) => {
                 $(input).closest('.pincode-input-container').siblings('[name="pin"]').blur();
             }});
 

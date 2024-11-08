@@ -311,3 +311,7 @@ form.data-form .json-content-form .card{
     max-height: 15rem !important;
     margin-top: 10px !important;
 }
+
+.pincode-input-container input {
+    border-width: 1px !important;
+}

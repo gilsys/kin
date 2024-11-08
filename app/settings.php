@@ -19,8 +19,8 @@ return function (ContainerBuilder $containerBuilder) {
             'route_cache' => __DIR__ . '/../var/routes.cache',
             'i18n' => [
                 'default_lang' => [
-                    'frontend' => 'es',
-                    'backoffice' => 'es'
+                    'frontend' => 'en',
+                    'backoffice' => 'en'
                 ],                
                 'translations_path' => __DIR__ . '/../src/i18n/',
                 'translations_path_app' => __DIR__ . '/../../app/src/lang/'

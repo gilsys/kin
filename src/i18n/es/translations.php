@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '' => '',
     'app.booklet.pdf_versions_info' => '<p>Pulsa "Generar PDF" para generar o previsualizar el folleto.</p><p>Desde este apartado, puedes consultar un histórico y descargar los folletos generados con anterioridad.</p>',
     'app.code' => 'Código',
     'app.common.about' => 'Sobre nosotros',
