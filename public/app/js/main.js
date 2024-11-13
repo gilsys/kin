@@ -436,6 +436,37 @@ $(document).ready(function () {
     $('[data-datatable-select-ajax]').each(function () {
         select2AjaxSearch($(this), $(this).attr('data-datatable-select-ajax'));
     });
+
+    JSONEditor.defaults.options.theme = 'bootstrap5';
+    JSONEditor.defaults.language = 'i18n';
+    JSONEditor.defaults.options.iconlib = "fontawesome5";
+    JSONEditor.defaults.callbacks.upload = {
+        "JSONEditorUploadHandler": function (jseditor, type, file, cbs) {
+            // Obtener el field
+            var field = type.split('.').slice(-1).pop();
+            var fd = new FormData();
+            fd.append('file', file);
+            fd.append('field', field);
+            AdminUtils.showLoading();
+            $.ajax({
+                url: '/app/file/upload_file',
+                type: 'post',
+                enctype: 'multipart/form-data',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    cbs.updateProgress(100);
+                    cbs.success('/app/file/get/' + response.filename);
+                    AdminUtils.hideLoading();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    cbs.failure(textStatus);
+                    AdminUtils.hideLoading();
+                }
+            });
+        }
+    }
 });
 function InitClamp() {
     ReloadClamp();
@@ -719,6 +750,15 @@ function defaultFormValidationHandler(event, validator) {
     }
 }
 
+function stepperInvalidFormValidationHandler(validator, stepper) {
+    AdminUtils.hideLoading();
+    if (validator.numberOfInvalids()) {
+        showWarning(__('app.js.common.attention'), __('app.js.common.form_errors'));
+        var stepIndex = $(validator.errorList[0].element).closest('[data-kt-stepper-element="content"]').index();
+        stepper.goTo(stepIndex + 1);
+    }
+}
+
 function addJsonEditorRemoveUploadBtn(editor, uploadFields = null) {
     var deleteFileBtn = '<button type="button" class="btn btn-sm btn-reset-upload json-editor-btn- btn-outline-secondary"><i class="fas fa-times-circle"></i></button>';
     if (uploadFields === null) {
@@ -773,10 +813,10 @@ function formReadOnly(form, remove = true) {
     form.find('input[type="file"]').hide();
     if (remove) {
         form.find('[data-submit-mode]').closest('.dropdown').remove();
-        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode]').remove();
+        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode], .btn-delete-file').remove();
     } else {
         form.find('[data-submit-mode]').closest('.dropdown').hide();
-        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode]').hide();
+        form.find('.card-footer, .image-input [data-kt-image-input-action="cancel"], .image-input [data-kt-image-input-action="change"], [data-submit-mode], .btn-delete-file').hide();
     }
 }
 
@@ -1231,4 +1271,23 @@ const select2Badge = (item) => {
     span.innerHTML = template;
 
     return $(span);
+}
+
+function initFileVersionsList(mForm, deleteUrl) {
+    mForm.find('.file-info-container .btn-delete-file').on('click', function () {
+        var fileContainer = $(this).closest('.file-container');
+        var fileId = $(this).attr('data-file-id');
+        
+        showConfirm(__('app.js.utils.delete_record'), __('app.js.utils.delete_record_text'), 'question', function () {
+            $.post(deleteUrl + fileId, function (data) {
+                if (typeof data.success != 'undefined' && data.success == '1') {
+                    var fileInfoContainer = fileContainer.closest('.file-info-container');
+                    fileContainer.remove();
+                    if (!fileInfoContainer.find('.btn-delete-file').length) {
+                        fileInfoContainer.find('.historical-title').remove();
+                    }
+                }
+            });
+        });
+    });
 }

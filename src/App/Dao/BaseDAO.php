@@ -402,4 +402,15 @@ class BaseDAO {
         return 'SELECT days.date AS date FROM (' . $result . ') days';
     }
 
+    public function getJsonFieldsValue($record, $jsonFields) {
+        foreach ($jsonFields as $jsonField) {
+            $jsonValue = !empty($record[$jsonField]) ? json_decode($record[$jsonField], true) : null;
+            if (!empty($jsonValue) && is_array($jsonValue)) {
+                $record[$jsonField] = $jsonValue;
+            }
+        }
+
+        return $record;
+    }
+
 }

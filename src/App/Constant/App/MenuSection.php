@@ -23,9 +23,12 @@ class MenuSection {
 
     const MenuMarket = 'MM';
 
-    const MenuProduct = 'MP';
+    const MenuProduct = 'P';
+    const MenuSubProduct = 'SP';
 
-    const MenuBooklet = 'MB';
+    const MenuBooklet = 'B';
+
+    const MenuRecipe = 'R';
 
 
     private static function constantExists($dynamicConstant) {

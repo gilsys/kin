@@ -21,7 +21,7 @@ class i18nController extends BaseController {
         $lastModifiedTime = $this->get('i18n')->getTranslationsFileLastModified();
         $etag = $this->get('i18n')->getTranslationsFileEtag();
         $response = ResponseUtils::withCache($response, $lastModifiedTime, $etag);
-        $translations = $this->get('i18n')->getTranslationsStartingWith(['app.js.', 'js.jquery_validate.', 'table.', 'js.lang.']);
+        $translations = $this->get('i18n')->getTranslationsStartingWith(['app.js.', 'js.jquery_validate.', 'table.', 'js.lang.', 'app.entity']);
         return ResponseUtils::withJson($response, $translations);
     }
 
