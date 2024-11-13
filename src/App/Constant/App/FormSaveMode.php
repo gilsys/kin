@@ -10,8 +10,7 @@ class FormSaveMode {
     const SaveAndBack = 'B';
     const SaveAndNew = 'N';
     const SaveAndAction = 'A';
-    
 
+    const SaveAndGenerate = 'W';
+    const SaveAndPreview = 'V';
 }
-
-

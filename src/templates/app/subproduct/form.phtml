@@ -1,0 +1,85 @@
+<form
+    id="mt-subproduct-form"
+    class="d-none data-form"
+    data-js="SubProductForm"
+    action="/app/subproduct/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
+    method="post"
+    autocomplete="off">
+    <?php
+    $this->insert(
+        "inc/common/subheader",
+        [
+            'entity' => 'subproduct',
+            'btnBack' => '/app/subproducts',
+            'btnSave' => true,
+            'menu' => $menu,
+            'breadcumb' => $breadcumb
+        ]
+    );
+    ?>
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php endif; ?>
+
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.main_information') ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.entity.product') ?></label>
+                    <div>
+                        <select name="product_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($data['products'] as $product): ?>
+                                <option value="<?php echo $product['id'] ?>">
+                                    <?php echo $product['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label required"><?php echo __('app.reference_code') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.code') ?>" name="reference" maxlength="45" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <?php foreach (['es' => __('app.language.spanish'), 'en' => __('app.language.english'), 'fr' => __('app.language.french')] as $lang => $title): ?>
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo $title ?></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name[<?php echo $lang ?>]" maxlength="100" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label required"><?php echo __('app.format') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.format') ?>" name="format[<?php echo $lang ?>]" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+
+    <?php if (!empty($data['id'])): ?>
+        <?php $this->insert("inc/common/dates_info") ?>
+    <?php endif; ?>
+</form>

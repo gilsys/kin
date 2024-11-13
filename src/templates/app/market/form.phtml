@@ -43,9 +43,9 @@
                     <div>
                         <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
                             <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                            <?php foreach ($data['languages'] as $language): ?>
+                            <?php foreach ($data['main_languages'] as $language): ?>
                                 <option value="<?php echo $language['id'] ?>">
-                                    <?php echo $language['name'] ?>
+                                    <?php echo __($language['name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -56,9 +56,9 @@
                     <div>
                         <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
                             <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                            <?php foreach ($data['languages'] as $language): ?>
+                            <?php foreach ($data['qr_languages'] as $language): ?>
                                 <option value="<?php echo $language['id'] ?>">
-                                    <?php echo $language['name'] ?>
+                                    <?php echo __($language['name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

@@ -30,13 +30,13 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
                     <div>
                         <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="col-form-label required"><?php echo __('app.entity.area') ?></label>
                     <div>
                         <select name="area_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
@@ -47,6 +47,13 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="col-form-label required"><?php echo __('app.slug') ?></label>
+                    <?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('app.slug.description')]); ?>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.slug') ?>" name="slug" maxlength="200" />
                     </div>
                 </div>
             </div>
@@ -63,13 +70,13 @@
         <div class="card-body text-center">
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_es_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_es_2', 'recommendedDimensions' => '2480px x 1754px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_es_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_es_3', 'recommendedDimensions' => '2480px x 1169px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_es_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_es_6', 'recommendedDimensions' => '1240px x 1169px']) ?>
                 </div>
             </div>
         </div>
@@ -84,13 +91,13 @@
         <div class="card-body text-center">
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_en_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_en_2', 'recommendedDimensions' => '2480px x 1754px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_en_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_en_3', 'recommendedDimensions' => '2480px x 1169px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_en_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_en_6', 'recommendedDimensions' => '1240px x 1169px']) ?>
                 </div>
             </div>
         </div>
@@ -106,13 +113,13 @@
         <div class="card-body text-center">
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_fr_2', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_fr_2', 'recommendedDimensions' => '2480px x 1754px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_fr_3', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_fr_3', 'recommendedDimensions' => '2480px x 1169px']) ?>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_fr_6', 'recommendedDimensions' => '1280px x 853px']) ?>
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_fr_6', 'recommendedDimensions' => '1240px x 1169px']) ?>
                 </div>
             </div>
         </div>

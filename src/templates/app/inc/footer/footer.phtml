@@ -30,11 +30,14 @@
 <script src="/app/js/lib/jscolor.min.js<?php echo '?v=' . RESOURCES_VERSION ?>" type="text/javascript"></script>
 
 <script src="/app/js/i18n.js<?php echo '?v=' . RESOURCES_VERSION ?>" type="text/javascript"></script>
+<script src="/app/js/lib/jsoneditor.i18n.js<?php echo '?v=' . RESOURCES_VERSION ?>" type="text/javascript"></script>
 
 <!-- Traducciones importadas directamente en CA -->
 <?php if (__('app.js.lang.code') == 'ca'): ?>
     <script src="/app/js/select2.ca.js" type="text/javascript"></script>
     <script src="/app/js/jquery.validator.ca.js" type="text/javascript"></script>
+<?php elseif (__('app.js.lang.code') == 'en'): ?>
+    <script src="/app/js/jquery.validator.en.js" type="text/javascript"></script>
 <?php endif; ?>
 
 <script src="/app/js/bootstrap-datepicker.i18n.js<?php echo '?v=' . RESOURCES_VERSION ?>" type="text/javascript"></script>

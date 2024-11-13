@@ -105,11 +105,12 @@ abstract class BaseController {
         $this->get('logger')->addInfo("Delete " . static::ENTITY_SINGULAR . " - id: " . $id);
         try {
             $this->get('pdo')->beginTransaction();
+            $nameForLogs = $this->getNameForLogs($id);
             $this->deletePreDelete($request, $response, $args, $formData);
             $dao = $this->getDAO();
             $dao->deleteById($id);
             $this->deletePostDelete($request, $response, $args, $formData);
-            LogService::save($this, 'app.log.action.delete', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($id)], $this->getDAO()->getTable(), $id);
+            LogService::save($this, 'app.log.action.delete', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $nameForLogs], $this->getDAO()->getTable(), $id);
             $this->get('pdo')->commit();
         } catch (\Exception $e) {
             $this->get('pdo')->rollback();

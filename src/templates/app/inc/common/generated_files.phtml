@@ -1,0 +1,34 @@
+<div class="file-info-container">
+    <div class="row">
+        <div class="col-12">
+            <div class="pb-1 border-bottom"><?php echo $info ?></div>
+        </div>
+
+        <?php if (!empty($files)): ?>
+            <?php foreach ($files as $i => $pdFile): ?>
+                <?php if ($i == 0): ?>
+                    <div class="col-12 mb-3 h4"><?php echo __('app.common.pdf_versions_last') ?></div>
+                <?php elseif ($i == 1): ?>
+                    <div class="col-12 mb-3 mt-5 h4 historical-title"><?php echo __('app.common.pdf_versions') ?></div>
+                <?php endif; ?>
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4 file-container">
+                    <a class="file-info d-block p-3 <?php if ($i == 0): ?>last-file<?php endif; ?>" href="<?php echo $downloadUrl ?><?php echo $pdFile['id'] ?>" target="_blank">
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="la la-file-pdf"></i>
+                            </div>
+                            <div class="col-9">
+                                <?php $fileDate = explode(' ', date('d/m/Y H:i:s', strtotime($pdFile['date']))) ?>
+                                <div><?php echo $fileDate[0] ?></div>
+                                <div><?php echo $fileDate[1] ?></div>
+                            </div>
+                        </div>
+                    </a>
+                    <?php if ($i > 0): ?>
+                        <a href="javascript:;" class="btn-delete-file" data-file-id="<?php echo $pdFile['id'] ?>"><i class="la la-trash"></i></a>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>

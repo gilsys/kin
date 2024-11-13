@@ -1,0 +1,21 @@
+<div class="card card-custom">
+    <div class="card-body py-4">
+        <div class="stepper-nav flex-start flex-wrap">
+            <?php foreach ($steps as $i => $step): ?>
+                <div class="stepper-item pe-lg-2 pe-xl-8 my-4<?php if ($i == 0): ?> current<?php endif; ?>" data-kt-stepper-element="nav" data-kt-stepper-action="step">
+                    <div class="stepper-wrapper d-flex align-items-center">
+                        <div class="stepper-icon w-40px h-40px">
+                            <span class="stepper-number"><?php echo $i + 1 ?></span>
+                        </div>
+                        <div class="stepper-label">
+                            <h3 class="stepper-title">
+                                <?php echo $step ?>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="stepper-line h-40px"></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>

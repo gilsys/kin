@@ -159,7 +159,7 @@ class UserDAO extends BaseDAO {
     FROM ' . $this->table . ' u
     INNER JOIN st_user_profile p ON u.user_profile_id = p.id and p.id IN (\'' . implode('\',\'', $profilesToShow) . '\')
     INNER JOIN st_user_status us ON u.user_status_id = us.id
-    INNER JOIN st_market m ON u.market_id = m.id
+    LEFT JOIN st_market m ON u.market_id = m.id
     ' . $userStatusSql . '
     GROUP BY u.id
     ) temp';

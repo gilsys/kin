@@ -1,0 +1,27 @@
+<div data-kt-stepper-element="content" data-booklet-page="<?php echo $pageNum ?>">
+    <div class="card card-custom card-sticky w-100">
+        <div class="card-header">
+            <div class="card-title">
+                <h2><?php echo __('app.common.step_page') . ' ' . $pageNum ?></h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <label class="col-form-label required"><?php echo __('app.layout') ?></label>
+                    <div>
+                        <select name="page<?php echo $pageNum ?>_booklet_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2 booklet-layout-select" required>
+                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                            <?php foreach ($layouts as $layout): ?>
+                                <option value="<?php echo $layout['id'] ?>">
+                                    <?php echo $layout['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 booklet-table-container"></div>
+            </div>
+        </div>
+    </div>
+</div>

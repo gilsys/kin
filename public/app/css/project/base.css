@@ -139,16 +139,12 @@ JSON Editor
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.json-content-form > div > .card-body {
-    background-color: transparent;
-    padding:0;
-    border: 0;
-}
 
 .json-content-form > .je-object__container > .je-object__controls{
-    display: block !important;
+    display: none !important;
 }
 
+.json-content-form .card-title.level-1.je-object__title,
 .json-content-form .je-object__controls{
     display: none !important;
 }
@@ -1326,6 +1322,10 @@ form.data-form .card, .form-extra-card
     display: none !important;
 }
 
+.form-readonly .json-content-form{
+    pointer-events: none;
+}
+
 .uppy-ImageCropper {
     pointer-events: none;
 }
@@ -1365,6 +1365,11 @@ form.data-form .card, .form-extra-card
     }
 }
 
-.select2-search.select2-search--inline{
-    width: 100% !important;
+.image-input.image-input-outline .image-input-wrapper{
+    background-size: contain;
+    background-position: center;
+}
+
+input[type="color"][readonly="true"] {
+    pointer-events: none;
 }

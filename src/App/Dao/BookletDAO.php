@@ -30,7 +30,7 @@ class BookletDAO extends BaseDAO {
         return $this->fetchRecord($sql, compact('id'));
     }
 
-    public function getRemoteDatatable() {
+    public function getRemoteDatatable($userId = null) {
         // Columnas a tratar en el datatable
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
@@ -41,9 +41,12 @@ class BookletDAO extends BaseDAO {
             ['db' => 'market_name', 'dt' => 'market_name'],
             ['db' => 'market_id', 'dt' => 'market_id', 'exact' => true],
             ['db' => 'qr_language_id', 'dt' => 'qr_language_id', 'exact' => true],
-            ['db' => 'qr_language_name', 'dt' => 'qr_language_name', 'exact' => true],
+            ['db' => 'qr_language', 'dt' => 'qr_language'],
+            ['db' => 'qr_language_color', 'dt' => 'qr_language_color', 'exact' => true],
             ['db' => 'main_language_id', 'dt' => 'main_language_id', 'exact' => true],
-            ['db' => 'main_language_name', 'dt' => 'main_language_name'],
+            ['db' => 'main_language', 'dt' => 'main_language'],
+            ['db' => 'main_language_color', 'dt' => 'main_language_color', 'exact' => true],
+            ['db' => 'last_file_id', 'dt' => 'last_file_id', 'exact' => true],
             [
                 'db' => 'date_created',
                 'dt' => 'date_created',
@@ -63,14 +66,21 @@ class BookletDAO extends BaseDAO {
 
         ];
 
+        $whereSql = '';
+        if(!empty($userId)) {
+            $whereSql .= ' AND b.creator_user_id = ' . intval($userId);
+        }
+
         $table = '(
             SELECT
                 b.id,
                 b.name,
                 b.date_created,
                 b.date_updated,
-                l1.name as main_language_name,
-                l2.name as qr_language_name,
+                l1.name as main_language,
+                l1.color as main_language_color,
+                l2.name as qr_language,
+                l2.color as qr_language_color,
                 b.main_language_id,
                 b.qr_language_id,
                 b.creator_user_id,
@@ -81,7 +91,8 @@ class BookletDAO extends BaseDAO {
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.name")), 
                     " ", 
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
-                ) as creator_name
+                ) as creator_name,
+                (SELECT bf.file_id FROM st_booklet_file bf WHERE bf.booklet_id = b.id ORDER BY bf.file_id DESC LIMIT 1) AS last_file_id
             FROM
                 ' . $this->table . ' b
             INNER JOIN
@@ -91,7 +102,8 @@ class BookletDAO extends BaseDAO {
             INNER JOIN
                 st_language l1 ON b.main_language_id = l1.id  
             INNER JOIN
-                st_language l2 ON b.qr_language_id = l2.id    
+                st_language l2 ON b.qr_language_id = l2.id  
+            WHERE 1 = 1' . $whereSql . '  
         ) temp';
 
 
@@ -117,5 +129,36 @@ class BookletDAO extends BaseDAO {
             page4_booklet_layout_id = :page4_booklet_layout_id
             WHERE id = :id';
         $this->query($query, $data);
+    }
+
+    public function getBookletImages($bookletId, $lang) {
+        $query = "SELECT
+                    bp.page, 
+                    bp.custom_order, 
+                    p.id as product_id, 
+                    f.id as image_id,
+                    display_mode,
+                    f.file,
+                    p.slug
+                FROM 
+                    st_booklet_product bp
+                INNER JOIN 
+                    st_booklet b ON b.id = bp.booklet_id
+                INNER JOIN 
+                    st_product p ON p.id = bp.product_id
+                LEFT JOIN 
+                    st_file f ON f.id = 
+                            CASE 
+                                WHEN bp.display_mode = 2 THEN p.image_" . $lang . "_2
+                                WHEN bp.display_mode = 3 THEN p.image_" . $lang . "_3
+                                WHEN bp.display_mode = 6 THEN p.image_" . $lang . "_6
+                            END                    
+                WHERE 
+                    bp.booklet_id = :bookletId
+                ORDER BY 
+                    bp.page ASC, 
+                    bp.custom_order ASC";
+
+        return $this->fetchAll($query, compact('bookletId'));
     }
 }

@@ -57,7 +57,7 @@ class MarketDatatable {
                         if (type == 'export') {
                             return full.main_language;
                         }
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.main_language_color, 0.1) + '; color: ' + full.main_language_color + '">' + full.main_language + '</span>';
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.main_language_color, 0.1) + '; color: ' + full.main_language_color + '">' + __(full.main_language) + '</span>';
                     }
                 },
                 {
@@ -66,7 +66,7 @@ class MarketDatatable {
                         if (type == 'export') {
                             return full.qr_language;
                         }
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.qr_language_color, 0.1) + '; color: ' + full.qr_language_color + '">' + full.qr_language + '</span>';
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.qr_language_color, 0.1) + '; color: ' + full.qr_language_color + '">' + __(full.qr_language) + '</span>';
                     }
                 },
                 { data: 'total_users' },

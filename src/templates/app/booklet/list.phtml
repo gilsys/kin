@@ -12,8 +12,8 @@
     <label class="form-label"><?= __('app.visuals_language') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="main_language_id">
         <option value=""></option>
-        <?php foreach ($data['languages'] as $lang) : ?>
-            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php foreach ($data['main_languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= __($lang['name']) ?></option>
         <?php endforeach; ?>
     </select>
 </div>
@@ -22,17 +22,16 @@
     <label class="form-label"><?= __('app.qr_language') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="qr_language_id">
         <option value=""></option>
-        <?php foreach ($data['languages'] as $lang) : ?>
-            <option value="<?= $lang['id'] ?>"><?= $lang['name'] ?></option>
+        <?php foreach ($data['qr_languages'] as $lang) : ?>
+            <option value="<?= $lang['id'] ?>"><?= __($lang['name']) ?></option>
         <?php endforeach; ?>
     </select>
 </div>
 
-<div class="col-sm-6 col-xl-3">
+<div class="profile-allow profile-A col-sm-6 col-xl-3">
     <label class="form-label"><?= __('app.creator') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="creator_user_id">
         <option value=""></option>
-        <?php var_dump($fullnames); ?>
         <?php foreach ($data['users'] as $user) : ?>
             <option value="<?= $user['id'] ?>"><?= $user['fullname'] ?></option>
         <?php endforeach; ?>

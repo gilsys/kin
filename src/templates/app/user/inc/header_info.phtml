@@ -25,14 +25,16 @@
             </div>
             <!--end::Info-->
         </div>
-        <!--begin::Navs-->
-        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x fs-3 text-primary">
-            <li class="nav-item mt-2">
-                <a class="nav-link text-active-primary ms-0 me-10 py-5 <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUserData, 'active'); ?>"  href="/app/<?php echo $entity ?>/form/<?php echo $userId ?>"><?php echo __('app.user.personal_information') ?></a>
-            </li>
-            <li class="nav-item mt-2">
-                <a class="nav-link text-active-primary ms-0 me-10 py-5 <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUserLogs, 'active'); ?>" href="/app/<?php echo $entity ?>/logs/<?php echo $userId ?>"><?php echo __('app.user.logs') ?></a>
-            </li>            
-        </ul>
+        <?php if(false): ?>
+            <!--begin::Navs-->
+            <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x fs-3 text-primary">
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUserData, 'active'); ?>"  href="/app/<?php echo $entity ?>/form/<?php echo $userId ?>"><?php echo __('app.user.personal_information') ?></a>
+                </li>
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuUserLogs, 'active'); ?>" href="/app/<?php echo $entity ?>/logs/<?php echo $userId ?>"><?php echo __('app.user.logs') ?></a>
+                </li>            
+            </ul>
+        <?php endif; ?>
     </div>
 </div>

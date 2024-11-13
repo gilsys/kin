@@ -13,14 +13,15 @@ class ProductForm {
         });
 
         if (id.length) {
-            $.post('/app/product/' + id, function (data) {    
+            $.post('/app/product/' + id, function (data) {
 
                 mForm.find("[name='name']").val(data.name);
-                mForm.find("[name='area_id']").val(data.area_id).change();             
+                mForm.find("[name='area_id']").val(data.area_id).change();
+                mForm.find("[name='slug']").val(data.slug);
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
-  
+
                 $('#file-image_es_2 input[type="file"]').setImageUploaded('/app/image/image_es_2/' + data.id + addDateUpdatedTimestampParam(data), false);
                 $('#file-image_es_3 input[type="file"]').setImageUploaded('/app/image/image_es_3/' + data.id + addDateUpdatedTimestampParam(data), false);
                 $('#file-image_es_6 input[type="file"]').setImageUploaded('/app/image/image_es_6/' + data.id + addDateUpdatedTimestampParam(data), false);
@@ -30,8 +31,8 @@ class ProductForm {
                 $('#file-image_fr_2 input[type="file"]').setImageUploaded('/app/image/image_fr_2/' + data.id + addDateUpdatedTimestampParam(data), false);
                 $('#file-image_fr_3 input[type="file"]').setImageUploaded('/app/image/image_fr_3/' + data.id + addDateUpdatedTimestampParam(data), false);
                 $('#file-image_fr_6 input[type="file"]').setImageUploaded('/app/image/image_fr_6/' + data.id + addDateUpdatedTimestampParam(data), false);
-                
-                
+
+
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
