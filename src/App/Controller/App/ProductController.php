@@ -52,7 +52,7 @@ class ProductController extends BaseController {
         $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data'] = [
-            'markets' => $marketDAO->getForSelect('id', 'name', 'name')
+            'markets' => $marketDAO->getForSelect()
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -66,7 +66,7 @@ class ProductController extends BaseController {
 
         // Obtenemos los valores a mostrar en los desplegables
         $marketDAO = new MarketDAO($this->get('pdo'));
-        $data['data']['markets'] = $marketDAO->getForSelect('id', 'name', 'name');
+        $data['data']['markets'] = $marketDAO->getForSelect();
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
