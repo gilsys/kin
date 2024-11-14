@@ -6,8 +6,8 @@ namespace App\Controller\App;
 
 use App\Constant\App\MenuSection;
 use App\Constant\FileType;
-use App\Constant\StaticListTable;
-use App\Dao\StaticListDAO;
+use App\Dao\MarketDAO;
+use App\Dao\MarketProductDAO;
 use App\Dao\ProductDAO;
 use App\Exception\AuthException;
 use App\Util\ResponseUtils;
@@ -30,6 +30,18 @@ class ProductController extends BaseController {
         return $this->getDAO()->getSingleField($id, 'name');
     }
 
+    public function load(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $data = $this->getDAO()->getById($args['id']);
+        if (empty($data)) {
+            throw new AuthException();
+        }
+
+        $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+        $data['market_ids'] = $marketProductDAO->getMarketsByProductId($args['id']);
+
+        return ResponseUtils::withJson($response, $data);
+    }
+
     /**
      * Página de listado de productos
      */
@@ -37,11 +49,10 @@ class ProductController extends BaseController {
         $data = $this->prepareList();
 
         // Carga selectores para filtros
-        $areaTypeEntity = StaticListTable::getEntity(StaticListTable::Area);
-        $areaTypeDAO = new StaticListDAO($this->get('pdo'), 'st_' . $areaTypeEntity);
+        $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data'] = [
-            'areas' => $areaTypeDAO->getForSelect()
+            'markets' => $marketDAO->getForSelect('id', 'name', 'name')
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -54,15 +65,35 @@ class ProductController extends BaseController {
         $data = $this->prepareForm($args);
 
         // Obtenemos los valores a mostrar en los desplegables
-        $areaTypeEntity = StaticListTable::getEntity(StaticListTable::Area);
-        $areaTypeDAO = new StaticListDAO($this->get('pdo'), 'st_' . $areaTypeEntity);
-        $data['data']['areas'] = $areaTypeDAO->getForSelect();
+        $marketDAO = new MarketDAO($this->get('pdo'));
+        $data['data']['markets'] = $marketDAO->getForSelect('id', 'name', 'name');
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
 
+    public function deletePreDelete($request, $response, $args, &$formData) {
+        $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+        $marketProductDAO->clear($formData['id']);
+    }
+
+    public function savePreSave($request, $response, $args, &$formData) {
+        if (!empty($formData['id'])) {
+            $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+            $marketProductDAO->clear($formData['id']);
+        }
+    }
+
     public function savePersist($request, $response, $args, &$formData) {
+        $marketIds = !empty($formData['market_ids']) ? $formData['market_ids'] : [];
+        unset($formData['market_ids']);
+
         parent::savePersist($request, $response, $args, $formData);
+
+        $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+        foreach ($marketIds as $marketId) {
+            $marketProductDAO->save(['product_id' => $formData['id'], 'market_id' => $marketId]);
+        }
+
         $this->saveFile($request, $formData['id'], 'image_es_2', 'image_es_2', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'image_es_3', 'image_es_3', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'image_es_6', 'image_es_6', FileType::ProductImage);
