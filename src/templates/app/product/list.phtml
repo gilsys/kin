@@ -1,10 +1,10 @@
 <?php $this->start('filters') ?>
 <div class="col-sm-6 col-xl-3">
-    <label class="form-label"><?= __('app.entity.area') ?></label>
-    <select data-placeholder="<?php __ss('app.entity.area') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="area_id">
+    <label class="form-label"><?= __('app.entity.market') ?></label>
+    <select data-placeholder="<?php __ss('app.entity.market') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_ids">
         <option value=""></option>
-        <?php foreach ($data['areas'] as $area) : ?>
-            <option value="<?= $area['id'] ?>"><?= $area['name'] ?></option>
+        <?php foreach ($data['markets'] as $market) : ?>
+            <option value="<?= $market['id'] ?>"><?= $market['name'] ?></option>
         <?php endforeach; ?>
     </select>
 </div>
@@ -19,7 +19,7 @@
 <th data-priority="5"><?php echo __('app.common.id') ?></th>
 <th data-priority="1"><?php echo __('app.common.image') ?></th>
 <th data-priority="3"><?= __ss('app.common.name') ?></th>
-<th data-priority="4"><?= __ss('app.entity.area') ?></th>
+<th data-priority="4"><?= __ss('app.entity.markets') ?></th>
 <th data-priority="6"><?= __ss('app.entity.booklets') ?></th>
 <th data-priority="6"><?= __ss('app.entity.subproducts') ?></th>
 <th data-priority="7"><?= __ss('app.common.date_created.short') ?></th>
