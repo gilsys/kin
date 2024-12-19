@@ -16,7 +16,6 @@ class MarketForm {
             $.post('/app/market/' + id, function (data) {                
                 mForm.find("[name='name']").val(data.name);
                 mForm.find("[name='color']").val(data.color)[0].jscolor.fromString(data.color);
-                mForm.find("[name='market_area_ids[]']").val(data.market_area_ids).change();
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
                 

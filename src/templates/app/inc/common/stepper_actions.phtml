@@ -7,19 +7,19 @@
 
     <div>
         <div class="dropdown project-dropdown" data-kt-stepper-action="submit">
-            <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="btn btn-primary btn rounded btn-rounded-grouped pe-2"><?php echo __('app.save.generate_pdf') ?></a><a href="javascript:;" class="btn btn-primary btn ms-0 ps-2 rounded btn-rounded-grouped dropdown-toggle" data-bs-toggle="dropdown">
+            <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="btn btn-primary btn rounded btn-rounded-grouped pe-2"><?php echo __('app.save.generate_pdf') ?></a><a href="javascript:;" class="btn btn-primary btn ms-0 ps-2 rounded btn-rounded-grouped dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="ki-outline ki-down fs-3 ms-1"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end border-1 border-primary p-3">
                 <li><span class="dropdown-item py-3 text-primary bg-white"><?php echo __('app.common.options') ?>:</span></li>
                 <li>
-                    <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="dropdown-item py-3">
+                    <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="dropdown-item py-3">
                         <i class="nav-icon la la-file-pdf"></i>
                         <span class="nav-text"><?php echo __('app.save.save_generate_pdf') ?></span>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndPreview ?>" class="dropdown-item py-3">
+                    <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndPreview ?>" class="dropdown-item py-3">
                         <i class="nav-icon la la-eye"></i>
                         <span class="nav-text"><?php echo __('app.save.save_preview_pdf') ?></span>
                     </a>

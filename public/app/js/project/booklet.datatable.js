@@ -17,6 +17,9 @@ class BookletDatatable {
                 {
                     data: 'market_name',
                     render: function (data, type, full, meta) {
+                        if(data == null) {
+                            return '';
+                        }
                         if (type == 'export') {
                             return full.market_name;
                         }
@@ -26,6 +29,9 @@ class BookletDatatable {
                 {
                     data: 'main_language',
                     render: function (data, type, full, meta) {
+                        if(data == null) {
+                            return '';
+                        }
                         if (type == 'export') {
                             return __(full.main_language);
                         }
@@ -35,6 +41,9 @@ class BookletDatatable {
                 {
                     data: 'qr_language',
                     render: function (data, type, full, meta) {
+                        if(data == null) {
+                            return '';
+                        }
                         if (type == 'export') {
                             return __(full.qr_language);
                         }

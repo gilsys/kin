@@ -332,6 +332,17 @@ class RecipeForm {
                 $(this).addClass('change-init');
             });
 
+            mForm.find('#json-content-form select[name*="[subproducts]"]').on('select2:open', function () {
+                setTimeout(() => {
+                    var selectedValues = mForm.find('#json-content-form select[name*="[subproducts]"]').not($(this)).map(function () {
+                        return $(this).val();
+                    }).get();
+
+                    $('.select2-results__option').each(function () {
+                        $(this).toggleClass('selected-other-select', selectedValues.includes($(this).attr('data-select2-id').split('-').pop()));
+                    });
+                }, 0);
+            });
             mForm.find('#json-content-form select[name*="[product]"]:not(.change-init)').on('change', function (e) {
                 $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('.json-editor-btntype-deleteall').click();
                 $(this).closest('[data-schemapath$=".product"]').next('[data-schemapath$=".subproducts"]').find('select[name*="[subproducts]"]').val('').change();

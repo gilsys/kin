@@ -24,10 +24,8 @@ class MarketDAO extends BaseDAO {
             ['db' => 'qr_language', 'dt' => 'qr_language'],
             ['db' => 'qr_language_color', 'dt' => 'qr_language_color'],
             ['db' => 'qr_language_id', 'dt' => 'qr_language_id', 'exact' => true],
+            ['db' => 'total_products', 'dt' => 'total_products', 'exact' => true],
             ['db' => 'total_users', 'dt' => 'total_users', 'exact' => true],
-            ['db' => 'area_names', 'dt' => 'area_names'],
-            ['db' => 'area_ids', 'dt' => 'area_ids'],
-
             [
                 'db' => 'date_created',
                 'dt' => 'date_created',
@@ -57,9 +55,8 @@ class MarketDAO extends BaseDAO {
             l1.color as main_language_color,
             l2.name as qr_language,
             l2.color as qr_language_color,
+            (SELECT COUNT(*) FROM st_market_product mp WHERE mp.market_id = m.id) as total_products,
             (SELECT COUNT(*) FROM st_user u WHERE u.market_id = m.id) as total_users,
-            GROUP_CONCAT(DISTINCT concat(a.name, "|", a.color) ORDER BY a.custom_order ASC SEPARATOR ", ") as area_names,
-            CONCAT("|", GROUP_CONCAT(DISTINCT a.id SEPARATOR "|") , "|") as area_ids,
             m.date_created,
             m.date_updated
 
@@ -67,10 +64,7 @@ class MarketDAO extends BaseDAO {
             ' . $this->table . ' m
             INNER JOIN `st_language` l1 ON l1.id = m.main_language_id
             INNER JOIN `st_language` l2 ON l2.id = m.qr_language_id
-            LEFT JOIN st_market_area ma ON ma.market_id = m.id
-            LEFT JOIN st_area a ON a.id = ma.area_id
             GROUP BY m.id
-
         ) temp';
 
         return $this->datatablesSimple($table, 'id', $columns);

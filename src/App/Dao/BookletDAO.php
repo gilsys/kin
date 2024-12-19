@@ -21,7 +21,7 @@ class BookletDAO extends BaseDAO {
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
                 ) as creator_name
                 FROM `' . $this->getTable() . '` b
-                INNER JOIN
+                LEFT JOIN
                     st_market m ON b.market_id = m.id
                 INNER JOIN
                     st_user u ON b.creator_user_id = u.id                
@@ -95,13 +95,13 @@ class BookletDAO extends BaseDAO {
                 (SELECT bf.file_id FROM st_booklet_file bf WHERE bf.booklet_id = b.id ORDER BY bf.file_id DESC LIMIT 1) AS last_file_id
             FROM
                 ' . $this->table . ' b
-            INNER JOIN
+            LEFT JOIN
                 st_market m ON b.market_id = m.id
             INNER JOIN
                 st_user u ON b.creator_user_id = u.id
-            INNER JOIN
+            LEFT JOIN
                 st_language l1 ON b.main_language_id = l1.id  
-            INNER JOIN
+            LEFT JOIN
                 st_language l2 ON b.qr_language_id = l2.id  
             WHERE 1 = 1' . $whereSql . '  
         ) temp';

@@ -25,19 +25,25 @@ class ProductDatatable {
                 },
                 { data: 'name' },
                 {
-                    data: 'area_name',
+                    data: 'market_names',
+                    orderable: false,
                     render: function (data, type, full, meta) {
-                        if (type == 'export') {
-                            return full.area_name;
+                        var result = '';
+                        for (var i = 0; i < data.length; i++) {
+                            if (type == 'export') {
+                                result += (result.length ? ', ' : '') + data[i];
+                            } else {
+                                result += '<span class="badge fw-lighter me-1 mb-1" style="background-color: ' + hexToRgbA(full.market_colors[i], 0.1) + '; color: ' + full.market_colors[i] + '">' + data[i] + '</span>';
+                            }
                         }
-                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.area_color, 0.1) + '; color: ' + full.area_color + '">' + full.area_name + '</span>';
+                        return result;
                     }
                 },
                 { data: 'total_booklets', },
                 { data: 'total_references', },
                 { data: 'date_created', },
                 // Incluimos campos invisibles, útiles para filtros   
-                { data: 'area_id', 'visible': false },
+                { data: 'market_ids', 'visible': false },
                 {
                     data: null,
                     orderable: false,
