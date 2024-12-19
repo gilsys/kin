@@ -315,3 +315,24 @@ form.data-form .json-content-form .card{
 .pincode-input-container input {
     border-width: 1px !important;
 }
+
+.select2-container--bootstrap5 .select2-dropdown .select2-results__option.selected-other-select,
+.select2-container--bootstrap5 .select2-dropdown .select2-results__option.selected-other-select:hover {
+    color: var(--bs-primary) !important;
+    background-color: transparent !important;
+    opacity: 0.5;
+    cursor: default;
+}
+
+.allow-save-invalid:after {
+    content: "*";
+    position: relative;
+    font-size: inherit;
+    color: var(--bs-primary);
+    padding-left: .25rem;
+    font-weight: 600;
+}
+
+label.error{
+    text-align: left;
+}

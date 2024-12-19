@@ -151,6 +151,7 @@ return [
     'app.common.select' => 'Seleccionar',
     'app.common.select_country' => '- Selecciona el país -',
     'app.common.select_language' => '- Selecciona el idioma -',
+    'app.common.select_multiple_info' => 'Pulsa la tecla control para seleccionar varios items a la vez.',
     'app.common.select_type' => '- Selecciona el tipo -',
     'app.common.select_user' => '- Selecciona el usuario -',
     'app.common.select_value' => '- Selecciona un valor -',

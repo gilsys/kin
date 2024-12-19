@@ -50,9 +50,9 @@
 
                             <?php if ($_SESSION['user']['user_profile_id'] == App\Constant\UserProfile::Administrator) : ?>
                                 <div class="col-md-6">
-                                    <label class="col-form-label required"><?php echo __('app.entity.market') ?></label>
+                                    <label class="col-form-label required allow-save-invalid"><?php echo __('app.entity.market') ?></label>
                                     <div>
-                                        <select name="market_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                        <select name="market_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required allow-save-invalid>
                                             <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                                             <?php foreach ($data['markets'] as $market): ?>
                                                 <option value="<?php echo $market['id'] ?>">
@@ -72,9 +72,9 @@
                             <?php endif ?>
 
                             <div class="col-md-6">
-                                <label class="col-form-label required"><?php echo __('app.visuals_language') ?></label>
+                                <label class="col-form-label required allow-save-invalid"><?php echo __('app.visuals_language') ?></label>
                                 <div>
-                                    <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                    <select name="main_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required allow-save-invalid>
                                         <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                                         <?php foreach ($data['main_languages'] as $lang): ?>
                                             <option value="<?php echo $lang['id'] ?>">
@@ -86,9 +86,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="col-form-label required"><?php echo __('app.qr_language') ?></label>
+                                <label class="col-form-label required allow-save-invalid"><?php echo __('app.qr_language') ?></label>
                                 <div>
-                                    <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                    <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required allow-save-invalid>
                                         <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                                         <?php foreach ($data['qr_languages'] as $lang): ?>
                                             <option value="<?php echo $lang['id'] ?>">

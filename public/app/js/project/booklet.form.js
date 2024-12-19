@@ -66,7 +66,7 @@ class BookletForm {
         var stepper = new KTStepper(mForm.find('#mt-booklet-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: "",
+            ignore: "form:not(.data-validate-all) [allow-save-invalid].empty-value",
             onkeyup: false,
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
@@ -79,9 +79,15 @@ class BookletForm {
             }
         });
 
+        mForm.find('[allow-save-invalid]').change(function () {
+            allowSaveInvalidCheckEmpty($(this));
+        });
+
         function changeStep(index, stepper) {
+            mForm.addClass('data-validate-all');
             var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
             var marketValid = !mForm.find("[name='market_id']").is(':visible') || mForm.find("[name='market_id']").valid();
+            mForm.removeClass('data-validate-all');
 
             if (!languageValid || !marketValid) {
                 return;
@@ -151,6 +157,8 @@ class BookletForm {
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
 
+                mForm.find("[allow-save-invalid]:not([name='market_id']):not([name='main_language_id']):not([name='qr_language_id']):not(.booklet-layout-select):not(.booklet-product-select)").change();
+
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
@@ -161,10 +169,12 @@ class BookletForm {
                     mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
                     mForm.removeDisabledOptions();
+                    mForm.find('[allow-save-invalid]').change();
                     AdminUtils.showDelayedAfterLoad();
                 });
             } else {
                 mForm.removeDisabledOptions();
+                mForm.find('[allow-save-invalid]').change();
                 AdminUtils.showDelayedAfterLoad();
             }
 
@@ -237,11 +247,31 @@ class BookletForm {
                     that.selectedProducts[page].push({ id: $(this).val(), order: $(this).attr('data-order') });
                 });
             });
+
+            $(this).on('select2:open', function () {
+                setTimeout(() => {
+                    var mForm = $('#mt-booklet-form');
+                    var selectedValues = mForm.find('select.booklet-product-select').not($(this)).map(function () {
+                        return $(this).val();
+                    }).get();
+
+                    $('.select2-results__option').each(function () {
+                        $(this).toggleClass('selected-other-select', selectedValues.includes($(this).attr('data-select2-id').split('-').pop()));
+                    });
+                }, 0);
+            });
         });
+
+        container.find('[allow-save-invalid]').each(function() {
+            $(this).on('change', function () {
+                allowSaveInvalidCheckEmpty($(this));
+            });
+            allowSaveInvalidCheckEmpty($(this));
+        })
     }
 
     getSelectProductHtml(page, order, displayMode) {
-        var html = `<div class="d-flex flex-column h-100"><select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-order="` + order + `" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required>
+        var html = `<div class="d-flex flex-column h-100"><select name="booklet_product[` + page + `][` + order + `][` + displayMode + `]" data-order="` + order + `" data-display-mode="` + displayMode + `" data-control="select2" data-placeholder="` + __('app.js.common.select_value') + `" class="form-select kt-select2 booklet-product-select" required allow-save-invalid>
                         <option disabled selected value>` + __('app.js.common.select_value') + `</option>`;
         Object.values(this.products).forEach(product => {
             html += `<option value="` + product.id + `">` + product.name + `</option>`;
