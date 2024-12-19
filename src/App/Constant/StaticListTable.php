@@ -6,8 +6,6 @@ namespace App\Constant;
 
 class StaticListTable
 {
-
-    const Area = 'AR';
     const Language = 'LN';
     const BookletLayout = 'BL';
     const RecipeLayout = 'RL';
@@ -15,7 +13,6 @@ class StaticListTable
     public static function getEntity($key)
     {
         $mapping = [
-            self::Area => 'area',
             self::Language => 'language',
             self::BookletLayout => 'booklet_layout',
             self::RecipeLayout => 'recipe_layout'

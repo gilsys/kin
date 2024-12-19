@@ -37,16 +37,16 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="col-form-label required"><?php echo __('app.entity.area') ?></label>
+                    <label class="col-form-label required"><?php echo __('app.entity.markets') ?></label>
                     <div>
-                        <select name="area_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
-                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                            <?php foreach ($data['areas'] as $area): ?>
-                                <option value="<?php echo $area['id'] ?>">
-                                    <?php echo $area['name'] ?>
+                        <select name="market_ids[]" required multiple data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2">
+                            <?php foreach ($data['markets'] as $market): ?>
+                                <option value="<?php echo $market['id'] ?>">
+                                    <?php echo $market['name'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                        <div class="form-text"><?php echo __('app.common.select_multiple_info') ?></div>
                     </div>
                 </div>
                 <div class="col-md-4">

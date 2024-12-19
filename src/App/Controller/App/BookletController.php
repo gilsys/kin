@@ -149,6 +149,13 @@ class BookletController extends BaseController {
             }
         }
 
+        $formData['qr_language_id'] = !empty($formData['qr_language_id']) ? $formData['qr_language_id'] : null;
+        $formData['main_language_id'] = !empty($formData['main_language_id']) ? $formData['main_language_id'] : null;
+        $formData['page2_booklet_layout_id'] = !empty($formData['page2_booklet_layout_id']) ? $formData['page2_booklet_layout_id'] : null;
+        $formData['page3_booklet_layout_id'] = !empty($formData['page3_booklet_layout_id']) ? $formData['page3_booklet_layout_id'] : null;
+        $formData['page4_booklet_layout_id'] = !empty($formData['page4_booklet_layout_id']) ? $formData['page4_booklet_layout_id'] : null;
+        $formData['market_id'] = !empty($formData['market_id']) ? $formData['market_id'] : null;
+
         if (!empty($formData['id'])) {
             $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
             $bookletProductDAO->clear($formData['id']);

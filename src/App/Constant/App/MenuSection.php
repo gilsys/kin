@@ -19,8 +19,6 @@ class MenuSection {
     const MenuAdminData = 'AD';
     const MenuAdminLogs = 'AL';
 
-    const MenuArea = 'MAR';
-
     const MenuMarket = 'MM';
 
     const MenuProduct = 'P';

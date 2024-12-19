@@ -8,9 +8,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <label class="col-form-label required"><?php echo __('app.layout') ?></label>
+                    <label class="col-form-label required allow-save-invalid"><?php echo __('app.layout') ?></label>
                     <div>
-                        <select name="page<?php echo $pageNum ?>_booklet_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2 booklet-layout-select" required>
+                        <select name="page<?php echo $pageNum ?>_booklet_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2 booklet-layout-select" required allow-save-invalid>
                             <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                             <?php foreach ($layouts as $layout): ?>
                                 <option value="<?php echo $layout['id'] ?>">
