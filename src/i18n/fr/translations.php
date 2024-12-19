@@ -151,6 +151,7 @@ return [
     'app.common.select' => 'Seleccionar',
     'app.common.select_country' => 'Selecciona el país',
     'app.common.select_language' => '- Selecciona l\'idioma -',
+    'app.common.select_multiple_info' => '',
     'app.common.select_type' => '- Selecciona el tipus -',
     'app.common.select_user' => '',
     'app.common.select_value' => '- Selecciona un valor -',

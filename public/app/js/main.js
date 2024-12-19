@@ -1256,7 +1256,7 @@ function allowSaveInvalidCheckEmpty(input) {
     if (input.is('[type="radio"]') || input.is('[type="checkbox"]')) {
         input.toggleClass('empty-value', !input.prop('checked'));
     } else {
-        input.toggleClass('empty-value', !input.val().length);
+        input.toggleClass('empty-value', input.val() == null || !input.val().length);
     }
 }
 
