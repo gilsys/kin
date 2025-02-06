@@ -55,7 +55,7 @@ class ProductDAO extends BaseDAO {
                 GROUP_CONCAT(m.name ORDER BY m.name ASC SEPARATOR "#|@") as market_names,
                 GROUP_CONCAT(m.color ORDER BY m.name ASC SEPARATOR "|") as market_colors,
                 CONCAT("|", GROUP_CONCAT(m.id ORDER BY m.name ASC SEPARATOR "|"), "|") as market_ids,
-                (SELECT COUNT(*) FROM st_booklet_product bp WHERE bp.product_id = p.id) as total_booklets,
+                (SELECT COUNT(DISTINCT bp.booklet_id) FROM st_booklet_product bp WHERE bp.product_id = p.id) as total_booklets,
                 (SELECT COUNT(*) FROM st_subproduct sp WHERE sp.product_id = p.id) as total_references
             FROM ' . $this->table . ' p
             INNER JOIN st_market_product mp ON mp.product_id = p.id
@@ -86,7 +86,9 @@ class ProductDAO extends BaseDAO {
         $sql = "SELECT p.id, p.name, p.date_updated
                 FROM " . $this->table . " p 
                 INNER JOIN st_market_product mp ON mp.product_id = p.id AND mp.market_id = :marketId
-                ORDER BY p.name ASC";
+                ORDER BY 
+                    CASE WHEN p.id = (SELECT value FROM st_param WHERE id = 'EMPTY_PRODUCT') THEN 0 ELSE 1 END, 
+                    p.name ASC";
         return $this->fetchAll($sql, compact('marketId'));
     }
 

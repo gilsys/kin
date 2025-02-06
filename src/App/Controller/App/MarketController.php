@@ -8,6 +8,7 @@ use App\Constant\App\MenuSection;
 use App\Constant\StaticListTable;
 use App\Dao\StaticListDAO;
 use App\Dao\MarketDAO;
+use App\Dao\MarketProductDAO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -49,5 +50,16 @@ class MarketController extends BaseController {
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
+    }
+
+    public function savePersist($request, $response, $args, &$formData) {
+        $isNew = empty($formData['id']);
+
+        parent::savePersist($request, $response, $args, $formData);
+
+        if ($isNew) {
+            $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+            $marketProductDAO->save(['product_id' => $this->get('params')->getParam('EMPTY_PRODUCT'), 'market_id' => $formData['id']]);
+        }
     }
 }
