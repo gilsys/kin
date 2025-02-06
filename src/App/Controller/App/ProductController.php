@@ -72,6 +72,10 @@ class ProductController extends BaseController {
     }
 
     public function deletePreDelete($request, $response, $args, &$formData) {
+        if ($formData['id'] == $this->get('params')->getParam('EMPTY_PRODUCT')) {
+            throw new AuthException();
+        }
+
         $marketProductDAO = new MarketProductDAO($this->get('pdo'));
         $marketProductDAO->clear($formData['id']);
     }
@@ -86,6 +90,11 @@ class ProductController extends BaseController {
     public function savePersist($request, $response, $args, &$formData) {
         $marketIds = !empty($formData['market_ids']) ? $formData['market_ids'] : [];
         unset($formData['market_ids']);
+
+        if ($formData['id'] == $this->get('params')->getParam('EMPTY_PRODUCT')) {
+            $marketDAO = new MarketDAO($this->get('pdo'));
+            $marketIds = array_column($marketDAO->getForSelect(), 'id');
+        }
 
         parent::savePersist($request, $response, $args, $formData);
 

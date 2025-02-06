@@ -221,7 +221,7 @@ class BookletForm {
                     return $(this).val() === selectedValue;
                 }).length > 0;
 
-                if (exists) {
+                if (exists && selectedValue != EMPTY_PRODUCT) {
                     e.preventDefault();
                     showWarning(__('app.js.common.attention'), __('app.js.booklet.product_already_selected'));
                 }
@@ -256,7 +256,8 @@ class BookletForm {
                     }).get();
 
                     $('.select2-results__option').each(function () {
-                        $(this).toggleClass('selected-other-select', selectedValues.includes($(this).attr('data-select2-id').split('-').pop()));
+                        var optionValue = $(this).attr('data-select2-id').split('-').pop();
+                        $(this).toggleClass('selected-other-select', selectedValues.includes(optionValue) && optionValue != EMPTY_PRODUCT);
                     });
                 }, 0);
             });

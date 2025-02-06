@@ -41,7 +41,7 @@ class SubProductController extends BaseController {
         $productDAO = new ProductDAO($this->get('pdo'));
 
         $data['data'] = [
-            'products' => $productDAO->getForSelect()
+            'products' => $productDAO->getForSelect('id', 'name', 'id', [$this->get('params')->getParam('EMPTY_PRODUCT')])
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -63,9 +63,7 @@ class SubProductController extends BaseController {
         // Carga selectores para filtros
         $productDAO = new ProductDAO($this->get('pdo'));
 
-        $data['data']['products'] =  $productDAO->getForSelect();
-
-
+        $data['data']['products'] =  $productDAO->getForSelect('id', 'name', 'id', [$this->get('params')->getParam('EMPTY_PRODUCT')]);
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }

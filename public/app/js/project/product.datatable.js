@@ -55,7 +55,7 @@ class ProductDatatable {
                         var btnEdit = '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + mRouteEdit + '" title="' + __('app.js.common.edit') + '"><i class="fa-regular fa-pen-to-square fs-1 pb-1"></i></a>';
                         var btnDelete = '<a class="btn btn-icon btn-active-light btn-sm p-3 profile-allow profile-A" href="javascript:AdminUtils.confirmDelete(\'' + routeDelete + '\', ' + data.id + ')" title="' + __('app.js.common.delete') + '"><i class="fa-regular fa-trash-can fs-1 pb-1"></i></a>';
 
-                        if (full.total_booklets != 0 || full.total_references != 0) {
+                        if (full.total_booklets != 0 || full.total_references != 0 || full.id == EMPTY_PRODUCT) {
                             btnDelete = '';
                         }
 

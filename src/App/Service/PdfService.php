@@ -79,7 +79,9 @@ class PdfService extends BaseService {
             $bookletImage['image'] = FileUtils::getBase64Image($imagePath);
 
             // Generar el QR code con la URL base, lenguaje y slug del producto en formato base64
-            $bookletImage['qr'] = $this->generateQrCode($qrUrl, $booklet['qr_language_id'], $bookletImage['slug']);
+            if($bookletImage['product_id'] != $this->params->getParam('EMPTY_PRODUCT')) {
+                $bookletImage['qr'] = $this->generateQrCode($qrUrl, $booklet['qr_language_id'], $bookletImage['slug']);
+            }
 
             $pages[$bookletImage['page']][] = $bookletImage;
         }
