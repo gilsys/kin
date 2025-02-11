@@ -342,6 +342,9 @@ class UserController extends BaseController {
         $formData = $request->getParsedBody();
         $userDAO = new UserDAO($this->get('pdo'));
         $id = !empty($args['id']) ? $args['id'] : null;
+        if($id == 'c') {
+            $id = $this->get('security')->getUserId();
+        }
         $result = ($userDAO->existsNickname($formData['nickname'], $id)) ? 1 : 0;
         return ResponseUtils::withJson($response, $result);
     }

@@ -60,5 +60,5 @@
 
 <?php $this->stop() ?>
 
-<?php $this->insert("inc/common/subheader", ['entity' => 'booklet', 'btnExport' => true, 'btnAdd' => true, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
-<?php $this->insert('inc/common/datatable', ['entity' => 'booklet', 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>
+<?php $this->insert("inc/common/subheader", ['entity' => 'booklet', 'btnExport' => true, 'btnAdd' => true, 'menu' => $menu, 'breadcumb' => $breadcumb, 'type' => $data['type']]); ?>
+<?php $this->insert('inc/common/datatable', ['entity' => 'booklet', 'columns' => $this->section('columns'), 'filters' => $this->section('filters'), 'attributes' => 'data-type="' . $data['type'] . '"']); ?>

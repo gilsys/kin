@@ -6,11 +6,12 @@ namespace App\Controller\App;
 
 use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
+use App\Constant\BookletType;
+use App\Constant\FileType;
 use App\Constant\StaticListTable;
 use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
-use App\Dao\BookletLayoutDAO;
 use App\Dao\BookletProductDAO;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
@@ -43,8 +44,15 @@ class BookletController extends BaseController {
     /**
      * Página de listado de booklets
      */
-    public function list(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+    public function list(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $type = !empty($args['type']) ? $args['type'] : BookletType::Booklet;
+
         $data = $this->prepareList();
+        if ($type == BookletType::Flyer) {
+            $data['menu'] = MenuSection::MenuFlyer;
+            $data['breadcumb'] = [ucfirst(__('table.booklet_type.' . $type . '.plural')), __('app.common.list_of', __('table.booklet_type.' . $type . '.plural'))];
+            $data['title'] = implode(' > ', $data['breadcumb']);
+        }
 
         // Carga selectores para filtros
         $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
@@ -55,7 +63,8 @@ class BookletController extends BaseController {
         $data['data'] = [
             'markets' => $marketDAO->getForSelect(),
             'qr_languages' => $languageDAO->getForSelect('id', 'name', 'custom_order'),
-            'users' => $userDAO->getForSelectFullname()
+            'users' => $userDAO->getForSelectFullname(),
+            'type' => $type
         ];
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
 
@@ -67,7 +76,7 @@ class BookletController extends BaseController {
      */
     public function datatable(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $userId = $this->get('security')->isUser() ? $this->get('security')->getUserId() : null;
-        return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($userId));
+        return ResponseUtils::withJson($response, $this->getDAO()->getRemoteDatatable($args['type'], $userId));
     }
 
     /**
@@ -76,9 +85,17 @@ class BookletController extends BaseController {
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         if (!empty($args['id'])) {
             $this->get('security')->checkBookletOwner($args['id']);
+            $type = $this->getDAO()->getSingleField($args['id'], 'booklet_type_id');
+        } else {
+            $type = $args['type'];
         }
 
         $data = $this->prepareForm($args);
+        if ($type == BookletType::Flyer) {
+            $data['menu'] = MenuSection::MenuFlyer;
+            $data['breadcumb'] = [ucfirst(__('table.booklet_type.' . $type . '.plural')), empty($data['data']['id']) ? __('app.common.form.add', __('table.booklet_type.' . $type)) : __('app.common.form.update', __('table.booklet_type.' . $type))];
+            $data['title'] = implode(' > ', $data['breadcumb']);
+        }
 
         // Obtenemos los valores a mostrar en los desplegables
         $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
@@ -87,6 +104,7 @@ class BookletController extends BaseController {
         $bookletLayoutEntity = StaticListTable::getEntity(StaticListTable::BookletLayout);
         $bookletLayoutDAO = new StaticListDAO($this->get('pdo'), 'st_' . $bookletLayoutEntity);
 
+        $data['data']['type'] = $type;
         $data['data']['markets'] = $marketDAO->getForSelect();
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
@@ -108,7 +126,7 @@ class BookletController extends BaseController {
         if (!empty($args['mode']) && !empty($args['id'])) {
             if ($args['mode'] == FormSaveMode::SaveAndPreview) {
                 $data['jscustom'] = 'window.open("/app/booklet/pdf/' . $args['id'] . '", "_blank")';
-            } else if ($args['mode'] == FormSaveMode::SaveAndGenerate) {
+            } else if (in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
                 if (!empty($data['data']['bookletFiles'])) {
                     $data['jscustom'] = 'window.open("/app/booklet/pdf/file/' . $data['data']['bookletFiles'][0]['id'] . '", "_blank")';
                 }
@@ -185,10 +203,11 @@ class BookletController extends BaseController {
             }
         }
 
-        if (!empty($args['mode']) && $args['mode'] == FormSaveMode::SaveAndGenerate) {
+        if (!empty($args['mode']) && in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
+            $pdfType = $args['mode'] == FormSaveMode::SaveAndGenerateCMYK && $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id') == BookletType::Booklet ? FileType::BookletFileCMYK : FileType::BookletFile;
             $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-            $pdfService->bookletPdf($formData['id'], true);
+            $pdfService->bookletPdf($formData['id'], true, $pdfType);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
         }
     }
@@ -196,18 +215,22 @@ class BookletController extends BaseController {
     public function savePostSave($request, $response, $args, &$formData) {
         $this->get('flash')->addMessage('success', __('app.controller.save_ok'));
 
+        $type = $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
+
         // Dependiendo de la selección del usuario, se redirige a una pantalla u otra
         switch ($args['mode']) {
+            case FormSaveMode::SaveAndGenerateCMYK:
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, false) . '/' . $args['mode']);
             case FormSaveMode::SaveAndGenerate:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id'] . '/' . $args['mode']);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, false) . '/' . $args['mode']);
             case FormSaveMode::SaveAndPreview:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id'] . '/' . $args['mode']);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, false) . '/' . $args['mode']);
             case FormSaveMode::SaveAndContinue:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id']);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, false));
             case FormSaveMode::SaveAndNew:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form');
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, true));
             default:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlList($formData));
         }
     }
 
@@ -239,7 +262,7 @@ class BookletController extends BaseController {
 
     public function pdfPreview(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $this->get('security')->checkBookletOwner($args['id']);
-        
+
         $this->get('logger')->addInfo("Preview PDF " . static::ENTITY_SINGULAR . " - id: " . $args['id']);
         $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
         $pdfService->bookletPdf($args['id'], false);
@@ -268,5 +291,27 @@ class BookletController extends BaseController {
         $bookletFileDAO->deleteByFileId($bookletFile['file_id']);
 
         return ResponseUtils::withJson($response, ['success' => 1]);
+    }
+
+    public function getRedirectUrlList($formData) {
+        $url = '/app/' . static::ENTITY_PLURAL;
+        if (!empty($formData['id'])) {
+            $url .= '/' . $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
+        }  else if (!empty($formData['booklet_type_id'])) {
+            $url .= '/' . $formData['booklet_type_id'];
+        }
+        return $url;
+    }
+
+    public function getRedirectUrlForm($formData, $new) {
+        $url = '/app/' . static::ENTITY_SINGULAR . '/form';
+        if (!$new && !empty($formData['id'])) {
+            $url .= '/' . $formData['id'];
+        } else if (!empty($formData['id'])) {
+            $url .= '/' . $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
+        }  else if (!empty($formData['booklet_type_id'])) {
+            $url .= '/' . $formData['booklet_type_id'];
+        }
+        return $url;
     }
 };

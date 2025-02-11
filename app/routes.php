@@ -115,7 +115,7 @@ return function (App $app) {
 
     $app->group('/app/user', function (RouteCollectorProxy $app) {
         $app->get('/avatar/{id:[0-9]+}', [UserController::class, 'avatar']);
-        $app->post('/check_nickname[/{id:[0-9]+}]', [UserController::class, 'checkNickname']);
+        $app->post('/check_nickname[/{id}]', [UserController::class, 'checkNickname']);
         $app->post('/check_password_current', [UserController::class, 'checkCurrentPassword']);
     })->add(new ProfileMiddleware())->add('csrf');
 
@@ -158,10 +158,11 @@ return function (App $app) {
 
     // Booklets
     $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/booklets', [BookletController::class, 'list']);
-        $app->post('/app/booklet/datatable', [BookletController::class, 'datatable']);
+        $app->get('/app/booklets[/{type:[A-Z]}]', [BookletController::class, 'list']);
+        $app->post('/app/booklet/datatable/{type:[A-Z]}', [BookletController::class, 'datatable']);
         $app->post('/app/booklet/{id:[0-9]+}', [BookletController::class, 'load']);
-        $app->get('/app/booklet/form[/{id:[0-9]+}[/{mode:[A-Z]+}]]', [BookletController::class, 'form']);
+        $app->get('/app/booklet/form/{type:[A-Z]}', [BookletController::class, 'form']);
+        $app->get('/app/booklet/form/{id:[0-9]+}[/{mode:[A-Z]+}]', [BookletController::class, 'form']);
         $app->post('/app/booklet/save/{mode}', [BookletController::class, 'save']);
         $app->post('/app/booklet/delete', [BookletController::class, 'delete']);
         $app->post('/app/booklet/get_products', [BookletController::class, 'getProducts']);

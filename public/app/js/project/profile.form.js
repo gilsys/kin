@@ -2,7 +2,6 @@ class ProfileForm {
     ready() {
         // Atención, está reutilizado para la pantalla de logs para cargar la información de cabecera
         var mForm = $('#mt-profile-form');
-        var id = mForm.find('[name="id"]').val()
         
         var errorMsg = '';
         $.validator.addMethod('checkPasswordCurrent', function (value, element, param) {
@@ -40,10 +39,7 @@ class ProfileForm {
             }
 
             if (errorMsg.length === 0) {
-                var url = "/app/user/check_nickname";
-                if (id.length) {
-                    url += "/" + id;
-                }
+                var url = "/app/user/check_nickname/c";
 
                 var dataParams = {"nickname": value};
                 $.post({

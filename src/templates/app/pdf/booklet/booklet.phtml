@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
-        .page-1,
-        .page-2,
-        .page-3 {
+        .page {
             page-break-after: always;
+            padding: <?php echo $pageMargin ?>;
+        }
+
+        .page:last-child {
+            page-break-after: unset;
         }
 
         html {
@@ -17,8 +20,12 @@
 
         .product,
         .bg-image {
-            position: fixed;
-            /* border: 1px solid red; */
+            position: absolute;
+        }
+
+        .bg-image {
+            width: 100%;
+            height: 100%;
         }
 
         .position-2 {
@@ -28,30 +35,177 @@
 
         .position-3 {
             width: 100%;
-            height: 33.33333%;
+            height: calc(100% / 3);
         }
 
         .position-6 {
             width: 50%;
-            height: 33.33333%;
+            height: calc(100% / 3);
         }
 
         .qr {
-            width: 66px;
-            height: 66px;
+            width: 206px;
+            height: 206px;
             position: absolute;
             z-index: 9999999;
-            bottom: 100px;
-            padding: 5px;
+            bottom: 93px;
+            right: 93px;
+            padding: 15px;
             background-color: white;
-            bottom: 30px;
-            right: 30px;
         }
 
-        .product img,
-        .bg-image img {
+        .product .qr img {
             width: 100%;
             height: 100%;
+        }
+
+        .product-img,
+        .bg-image-img {
+            position: absolute;
+            left: -<?php echo $border ?>;
+            top: -<?php echo $border ?>;
+            width: calc(100% + 2 * <?php echo $border ?>);
+            height: calc(100% + 2 * <?php echo $border ?>);
+        }
+
+        .type-CMYK .visible-area {
+            position: relative;
+            top: <?php echo $border ?>;
+            left: <?php echo $border ?>;
+            width: calc(100% - 2 * <?php echo $border ?>);
+            height: calc(100% - 2 * <?php echo $border ?>);
+        }
+
+        .cut-mark {
+            position: absolute;
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.top-right,
+        .cut-mark.bottom-left,
+        .cut-mark.bottom-right {
+            background-color: red;
+            width: calc(0.5 * <?php echo $pageMargin ?>);
+            height: 6px;
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.top-right {
+            top: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.bottom-left,
+        .cut-mark.bottom-right {
+            bottom: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.bottom-left {
+            left: 0;
+        }
+
+        .cut-mark.top-right,
+        .cut-mark.bottom-right {
+            right: 0;
+        }
+
+        .cut-mark.left-top,
+        .cut-mark.left-bottom,
+        .cut-mark.right-top,
+        .cut-mark.right-bottom {
+            background-color: red;
+            height: calc(0.5 * <?php echo $pageMargin ?>);
+            width: 6px;
+        }
+
+        .cut-mark.left-top,
+        .cut-mark.left-bottom {
+            left: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.right-top,
+        .cut-mark.right-bottom {
+            right: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.right-top,
+        .cut-mark.left-top {
+            top: 0;
+        }
+
+        .cut-mark.left-bottom,
+        .cut-mark.right-bottom {
+            bottom: 0;
+        }
+
+        .type-RGB .cut-mark {
+            display: none;
+        }
+
+        .type-RGB .product,
+        .type-RGB .bg-image {
+            overflow: hidden;
+        }
+
+        .type-CMYK .product-img-container {
+            overflow: hidden;
+        }
+
+        /* Position 2 */
+        .type-CMYK .position-2 .product-img-container {
+            margin-left: -<?php echo $border ?>;
+            width: calc(100% + 2 * <?php echo $border ?>);
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-2:first-child .product-img-container {
+            margin-top: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-2:last-child .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+        }
+
+        /* Position 3 */
+        .type-CMYK .position-3 .product-img-container {
+            margin-left: -<?php echo $border ?>;
+            width: calc(100% + 2 * <?php echo $border ?>);
+            height: 100%;
+        }
+
+        .type-CMYK .position-3:first-child .product-img-container {
+            margin-top: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-3:last-child .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        /* Position 6 */
+        .type-CMYK .position-6 .product-img-container {
+            width: calc(100% + <?php echo $border ?>);
+            height: 100%;
+        }
+
+        .type-CMYK .position-6.position-6-l .product-img-container {
+            margin-left: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-6.position-6-r .product-img-container {
+            margin-right: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-6:nth-child(1) .product-img-container,
+        .type-CMYK .position-6:nth-child(2) .product-img-container {
+            margin-top: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-6.position-6-last-row .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
         }
     </style>
 </head>
@@ -60,14 +214,14 @@ $positions = [
     '2_1' => ['x' => '0', 'y' => '0'],
     '2_2' => ['x' => '0', 'y' => '50%'],
     '3_1' => ['x' => '0', 'y' => '0'],
-    '3_2' => ['x' => '0', 'y' => '33.33333%'],
-    '3_3' => ['x' => '0', 'y' => '66.666666%'],
+    '3_2' => ['x' => '0', 'y' => 'calc(100% / 3)'],
+    '3_3' => ['x' => '0', 'y' => 'calc(100% / 3 * 2)'],
     '6_1' => ['x' => '0', 'y' => '0'],
     '6_2' => ['x' => '50%', 'y' => '0'],
-    '6_3' => ['x' => '0', 'y' => '33.33333%'],
-    '6_4' => ['x' => '50%', 'y' => '33.33333%'],
-    '6_5' => ['x' => '0', 'y' => '66.666666%'],
-    '6_6' => ['x' => '50%', 'y' => '66.666666%'],
+    '6_3' => ['x' => '0', 'y' => 'calc(100% / 3)'],
+    '6_4' => ['x' => '50%', 'y' => 'calc(100% / 3)'],
+    '6_5' => ['x' => '0', 'y' => 'calc(100% / 3 * 2)'],
+    '6_6' => ['x' => '50%', 'y' => 'calc(100% / 3 * 2)'],
 ];
 
 $layouts = [];
@@ -84,27 +238,41 @@ $layouts[9] = ['3_1', '3_2', '6_5', '6_6']; // 1/3 + 1/3 + 1/3x2
 ?>
 
 
-<body>
-    <div class="page-1">
-        <div class="bg-image">
-            <img src='<?php echo $booklet['pages'][1]['image'] ?>'>
-        </div>
-    </div>
-    <?php for ($page = 2; $page <= 4; $page++): ?>
-        <div class="page-<?php echo $page ?>">
-            <?php $currentLayout = $booklet['page' . $page . '_booklet_layout_id']; ?>
-            <?php foreach ($booklet['pages'][$page] as $i => $product): ?>
-                <?php $currentPosition = $layouts[$currentLayout][$i]; ?>
-                <?php $position = $positions[$currentPosition] ?>
-                <div class="product position-<?php echo $currentPosition[0] ?>" style="top: <?php echo $position['y'] ?>; left: <?php echo $position['x'] ?>">
-                    <?php if(!empty($product['qr'])): ?>
-                        <div class="qr">
-                            <img src='<?php echo $product['qr']; ?>'>
+<body class="type-<?php echo $type ?>">
+    <?php for ($page = array_key_first($booklet['pages']); $page <= array_key_last($booklet['pages']); $page++): ?>
+        <div class="page page-<?php echo $page ?>">
+            <div class="visible-area">
+                <?php if (!empty($booklet['pages'][$page]['image'])): ?>
+                    <div class="bg-image">
+                        <img class="bg-image-img" src='<?php echo $booklet['pages'][1]['image'] ?>'>
+                    </div>
+                <?php else: ?>
+                    <?php $currentLayout = $booklet['page' . $page . '_booklet_layout_id']; ?>
+                    <?php foreach ($booklet['pages'][$page] as $i => $product): ?>
+                        <?php $currentPosition = $layouts[$currentLayout][$i]; ?>
+                        <?php $position = $positions[$currentPosition] ?>
+                        <div class="product position-<?php echo $currentPosition[0] ?> <?php if ($currentPosition[0] == '6'): ?>position-6-<?php echo intval($currentPosition[2]) % 2 == 0 ? 'r' : 'l' ?><?php if ($i >= (count($booklet['pages'][$page]) - 2)): ?> position-6-last-row<?php endif; ?><?php endif; ?>" style="top: <?php echo $position['y'] ?>; left: <?php echo $position['x'] ?>">
+                            <?php if (!empty($product['qr'])): ?>
+                                <div class="qr">
+                                    <img src='<?php echo $product['qr']; ?>'>
+                                </div>
+                            <?php endif; ?>
+                            <div class="product-img-container">
+                                <img class="product-img" src='<?php echo $product['image'] ?>'>
+                            </div>
                         </div>
-                    <?php endif; ?>
-                    <img src='<?php echo $product['image'] ?>'>
-                </div>
-            <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+            <span class="cut-mark top-left"></span>
+            <span class="cut-mark top-right"></span>
+            <span class="cut-mark bottom-left"></span>
+            <span class="cut-mark bottom-right"></span>
+            <span class="cut-mark left-top"></span>
+            <span class="cut-mark left-bottom"></span>
+            <span class="cut-mark right-top"></span>
+            <span class="cut-mark right-bottom"></span>
         </div>
     <?php endfor; ?>
 </body>

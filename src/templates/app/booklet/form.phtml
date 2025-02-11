@@ -18,18 +18,30 @@
         ]
     );
     ?>
+    
     <?php if (!empty($data['id'])): ?>
         <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+    <?php else: ?>
+        <input type="hidden" name="booklet_type_id" value="<?php echo $data['type'] ?>" />
     <?php endif; ?>
 
     <div class="stepper stepper-pills first" id="mt-booklet-stepper">
-        <?php $this->insert("inc/common/stepper_nav", ['steps' => [
-            __('app.common.step_info'),
-            __('app.common.step_page') . ' ' . 2,
-            __('app.common.step_page') . ' ' . 3,
-            __('app.common.step_page') . ' ' . 4,
-            __('app.common.step_generate_pdf')
-        ]]) ?>
+        <?php if($data['type'] == App\Constant\BookletType::Flyer): ?>
+            <?php $this->insert("inc/common/stepper_nav", ['steps' => [
+                __('app.common.step_info'),
+                __('app.common.step_page') . ' ' . 1,
+                __('app.common.step_page') . ' ' . 2,
+                __('app.common.step_generate_pdf')
+            ]]) ?>
+        <?php else: ?>
+            <?php $this->insert("inc/common/stepper_nav", ['steps' => [
+                __('app.common.step_info'),
+                __('app.common.step_page') . ' ' . 2,
+                __('app.common.step_page') . ' ' . 3,
+                __('app.common.step_page') . ' ' . 4,
+                __('app.common.step_generate_pdf')
+            ]]) ?>
+        <?php endif; ?>
 
         <div>
             <div class="current flex-column" data-kt-stepper-element="content">
@@ -148,9 +160,11 @@
                 <?php endif; ?>
             </div>
 
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 2, 'layouts' => $data['layouts']]) ?>
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 3, 'layouts' => $data['layouts']]) ?>
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 4, 'layouts' => $data['layouts']]) ?>
+            <?php $this->insert("booklet/inc/page", ['pageNum' => 2, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>
+            <?php $this->insert("booklet/inc/page", ['pageNum' => 3, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>
+            <?php if($data['type'] != App\Constant\BookletType::Flyer): ?>
+                <?php $this->insert("booklet/inc/page", ['pageNum' => 4, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>
+            <?php endif; ?>
 
             <div data-kt-stepper-element="content">
                 <div class="card card-custom card-sticky w-100">
@@ -170,6 +184,6 @@
             </div>
         </div>
 
-        <?php $this->insert("inc/common/stepper_actions") ?>
+        <?php $this->insert("inc/common/stepper_actions", ['cmyk' => $data['type'] == App\Constant\BookletType::Booklet]) ?>
     </div>
 </form>

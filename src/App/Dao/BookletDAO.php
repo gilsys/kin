@@ -30,7 +30,7 @@ class BookletDAO extends BaseDAO {
         return $this->fetchRecord($sql, compact('id'));
     }
 
-    public function getRemoteDatatable($userId = null) {
+    public function getRemoteDatatable($type, $userId = null) {
         // Columnas a tratar en el datatable
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
@@ -66,7 +66,7 @@ class BookletDAO extends BaseDAO {
 
         ];
 
-        $whereSql = '';
+        $whereSql = ' AND b.booklet_type_id = "' . substr($type, 0, 1) . '"';
         if(!empty($userId)) {
             $whereSql .= ' AND b.creator_user_id = ' . intval($userId);
         }
@@ -111,8 +111,8 @@ class BookletDAO extends BaseDAO {
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, page2_booklet_layout_id, page3_booklet_layout_id, page4_booklet_layout_id, market_id, creator_user_id) '
-            . 'VALUES (:name, :qr_language_id, :main_language_id, :page2_booklet_layout_id, :page3_booklet_layout_id, :page4_booklet_layout_id, :market_id, :creator_user_id)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, page2_booklet_layout_id, page3_booklet_layout_id, page4_booklet_layout_id, market_id, creator_user_id, booklet_type_id) '
+            . 'VALUES (:name, :qr_language_id, :main_language_id, :page2_booklet_layout_id, :page3_booklet_layout_id, :page4_booklet_layout_id, :market_id, :creator_user_id, :booklet_type_id)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
