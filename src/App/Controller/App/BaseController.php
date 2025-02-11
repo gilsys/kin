@@ -102,6 +102,7 @@ abstract class BaseController {
     public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $formData = CommonUtils::getSanitizedData($request);
         $id = $formData['id'];
+        $redirectUrl = $this->getRedirectUrlList($formData);
         $this->get('logger')->addInfo("Delete " . static::ENTITY_SINGULAR . " - id: " . $id);
         try {
             $this->get('pdo')->beginTransaction();
@@ -116,11 +117,11 @@ abstract class BaseController {
             $this->get('pdo')->rollback();
             $this->get('logger')->addError($e);
             $this->get('flash')->addMessage('danger', __('app.error.delete_dependencies'));
-            return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+            return $response->withStatus(302)->withHeader('Location', $redirectUrl);
         }
 
         $this->get('flash')->addMessage('success', __('app.controller.delete_ok'));
-        return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+        return $response->withStatus(302)->withHeader('Location', $redirectUrl);
     }
 
     /**
@@ -178,11 +179,11 @@ abstract class BaseController {
         // Dependiendo de la selección del usuario, se redirige a una pantalla u otra
         switch ($args['mode']) {
             case FormSaveMode::SaveAndContinue:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id']);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, false));
             case FormSaveMode::SaveAndNew:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form');
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlForm($formData, true));
             default:
-                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+                return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlList($formData));
         }
     }
 
@@ -201,7 +202,7 @@ abstract class BaseController {
             $this->get('logger')->addError($e);
             $errorMsg = ($e instanceof CustomException) ? $e->getMessage() : __('app.error.save');
             $this->get('flash')->addMessage('danger', $errorMsg);
-            return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_PLURAL);
+            return $response->withStatus(302)->withHeader('Location', $this->getRedirectUrlList($formData));
         }
 
         return $this->savePostSave($request, $response, $args, $formData);
@@ -247,5 +248,17 @@ abstract class BaseController {
             return $response;
         }
         throw new \Exception(__('app.error.file_not_found'), 404);
+    }
+
+    public function getRedirectUrlList($formData) {
+        return '/app/' . static::ENTITY_PLURAL;
+    }
+
+    public function getRedirectUrlForm($formData, $new) {
+        $url = '/app/' . static::ENTITY_SINGULAR . '/form';
+        if (!$new && !empty($formData['id'])) {
+            $url .= '/' . $formData['id'];
+        }
+        return $url;
     }
 }

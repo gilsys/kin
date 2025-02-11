@@ -117,12 +117,28 @@ class BookletForm {
         mForm.find('select.booklet-layout-select').on('change', function () {
             var tableContainer = $(this).closest('[data-booklet-page]').find('.booklet-table-container');
             var page = $(this).closest('[data-booklet-page]').attr('data-booklet-page');
+            $(this).parent().find('.booklet-layouts [data-booklet-layout]').removeClass('active');
             if ($(this).val() != null && $(this).val() != '') {
                 that.generateTable(page, $(this).val(), tableContainer);
                 that.selectProducts(page);
+                $(this).parent().find('.booklet-layouts [data-booklet-layout="' + $(this).val() + '"]').addClass('active');
             } else {
                 tableContainer.html('');
             }
+        });
+
+        mForm.find('.booklet-layouts [data-booklet-layout]').on('click', function() {
+            var bookletLayouts = $(this).closest('.booklet-layouts');
+
+            if($(this).hasClass('active')) {
+                $(this).removeClass('active');
+            } else {
+                bookletLayouts.find('.active').removeClass('active');
+                $(this).addClass('active');
+            }
+
+            var currentLayout = bookletLayouts.find('.active').length > 0 ? bookletLayouts.find('.active').attr('data-booklet-layout') : '';
+            bookletLayouts.parent().find('select.booklet-layout-select').val(currentLayout).change();
         });
 
         initFileVersionsList(mForm, '/app/booklet/pdf/delete/');

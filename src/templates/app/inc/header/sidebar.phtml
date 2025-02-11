@@ -13,9 +13,19 @@
                 <!--begin::Navbar item-->
                 <li class="nav-item py-1">
                     <!--begin::Navbar link-->
-                    <a href="/app/booklets" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); ?>">
+                    <a href="/app/booklets/<?php echo App\Constant\BookletType::Booklet ?>" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuBooklet, 'active'); ?>">
                         <?php $this->insert("inc/common/icon/booklet") ?>
                         <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('app.entity.plural.booklet') ?></span>
+                    </a>
+                    <!--end::Navbar link-->
+                </li>
+                <!--end::Navbar item-->
+                <!--begin::Navbar item-->
+                <li class="nav-item py-1">
+                    <!--begin::Navbar link-->
+                    <a href="/app/booklets/<?php echo App\Constant\BookletType::Flyer ?>" class="nav-link py-4 px-1 btn <?php App\Util\CommonUtils::checkActive($menu, App\Constant\App\MenuSection::MenuFlyer, 'active'); ?>">
+                        <?php $this->insert("inc/common/icon/booklet") ?>
+                        <span class="pt-2 fs-9 fs-lg-7 fw-bold"><?php echo __('table.booklet_type.F.plural') ?></span>
                     </a>
                     <!--end::Navbar link-->
                 </li>

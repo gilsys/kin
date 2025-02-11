@@ -2,14 +2,22 @@
     <div class="card card-custom card-sticky w-100">
         <div class="card-header">
             <div class="card-title">
-                <h2><?php echo __('app.common.step_page') . ' ' . $pageNum ?></h2>
+                <h2><?php echo __('app.common.step_page') . ' ' . ($type == App\Constant\BookletType::Flyer ? intval($pageNum) - 1 : $pageNum) ?></h2>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <label class="col-form-label required allow-save-invalid"><?php echo __('app.layout') ?></label>
+                    <label class="col-form-label required allow-save-invalid"><?php echo __('app.layout_select') ?></label>
                     <div>
+                        <div class="booklet-layouts d-flex flex-wrap">
+                            <?php foreach ($layouts as $layout): ?>
+                                <a class="mx-1 mx-md-4 my-2" href="javascript:;" data-booklet-layout="<?php echo $layout['id'] ?>" title="<?php echo $layout['name'] ?>">
+                                    <?php $this->insert("inc/common/icon/booklet_layout_" . $layout['id']) ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+
                         <select name="page<?php echo $pageNum ?>_booklet_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2 booklet-layout-select" required allow-save-invalid>
                             <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
                             <?php foreach ($layouts as $layout): ?>

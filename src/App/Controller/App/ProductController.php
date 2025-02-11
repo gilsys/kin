@@ -68,6 +68,13 @@ class ProductController extends BaseController {
         $marketDAO = new MarketDAO($this->get('pdo'));
         $data['data']['markets'] = $marketDAO->getForSelect();
 
+        $cmykBorder = intval($this->get('params')->getParam('CMYK_BORDER')) * 2;
+        $data['data']['recommendedDimensions'] = [
+            2 => (2480 + $cmykBorder) . 'px x ' . (1754 + $cmykBorder) . 'px',
+            3 => (2480 + $cmykBorder) . 'px x ' . (1169 + $cmykBorder) . 'px',
+            6 => (1240 + $cmykBorder) . 'px x ' . (1169 + $cmykBorder) . 'px'
+        ];
+
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
 

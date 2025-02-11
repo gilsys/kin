@@ -24,7 +24,8 @@ class MenuSection {
     const MenuProduct = 'P';
     const MenuSubProduct = 'SP';
 
-    const MenuBooklet = 'B';
+    const MenuBooklet = 'BB';
+    const MenuFlyer = 'BF';
 
     const MenuRecipe = 'R';
 

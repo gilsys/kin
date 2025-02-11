@@ -27,7 +27,7 @@ class BookletFileDAO extends BaseDAO {
     }
 
     public function getFilesByBookletId($bookletId) {
-        $sql = "SELECT f.id, f.date_created AS date
+        $sql = "SELECT f.id, f.date_created AS date, f.file_type_id
                 FROM " . $this->table . " bf
                 INNER JOIN st_file f ON f.id = bf.file_id
                 WHERE bf.booklet_id = :bookletId

@@ -11,6 +11,7 @@ class FormSaveMode {
     const SaveAndNew = 'N';
     const SaveAndAction = 'A';
 
+    const SaveAndGenerateCMYK = 'WC';
     const SaveAndGenerate = 'W';
     const SaveAndPreview = 'V';
 }

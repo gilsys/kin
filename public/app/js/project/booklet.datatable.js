@@ -1,9 +1,10 @@
 class BookletDatatable {
     ready() {
+        var type = $('#mt-booklet').attr('data-type');
         var routeEdit = '/app/booklet/form';
-        var routeDelete = 'app/booklet/delete';
+        var routeDelete = '/app/booklet/delete';
         var routeDownload = '/app/booklet/pdf/file';
-        var routeDatatable = '/app/booklet/datatable';
+        var routeDatatable = '/app/booklet/datatable/' + type;
 
         var datatable = new CustomDatatable('#mt-booklet', {
             ajax: {

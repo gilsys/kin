@@ -17,9 +17,9 @@
     <?php $this->insert('/inc/common/button_export', compact('datatableId')) ?>
 <?php endif; ?>
 <?php if (isset($btnAdd) && $btnAdd !== false) : ?>
-    <a href="<?php if (isset($btnAddUrl)) : ?><?php echo $btnAddUrl ?><?php elseif ($btnAdd === true) : ?>/app/<?= $entity ?>/form<?php else : ?><?= $btnAdd ?><?php endif; ?>" class="btn btn-primary ms-3">
+    <a href="<?php if (isset($btnAddUrl)) : ?><?php echo $btnAddUrl ?><?php elseif ($btnAdd === true) : ?>/app/<?= $entity ?>/form<?= !empty($type) ? '/' . $type : '' ?><?php else : ?><?= $btnAdd ?><?php endif; ?>" class="btn btn-primary ms-3">
         <i class="ki-outline ki-plus fs-2"></i>
-        <?= $this->e(__('app.common.form.add', lcfirst(__('app.entity.' . App\Util\CommonUtils::camelCaseToUnderscore($entity))))) ?>
+        <?= $this->e(__('app.common.form.add', !empty($type) ? lcfirst(__('table.' . $entity . '_type.' . $type)) : lcfirst(__('app.entity.' . App\Util\CommonUtils::camelCaseToUnderscore($entity))))) ?>
     </a>
 <?php endif; ?>
 <?php $this->stop() ?>

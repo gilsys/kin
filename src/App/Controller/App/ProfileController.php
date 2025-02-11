@@ -71,6 +71,7 @@ class ProfileController extends BaseController {
         $formData = CommonUtils::getSanitizedData($request);
 
         $id = $this->get('session')['user']['id'];
+        $formData['id'] = $id;
 
         try {
             $this->get('pdo')->beginTransaction();

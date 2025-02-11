@@ -12,16 +12,24 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end border-1 border-primary p-3">
                 <li><span class="dropdown-item py-3 text-primary bg-white"><?php echo __('app.common.options') ?>:</span></li>
+                <?php if(!empty($cmyk)): ?>
+                    <li>
+                    <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerateCMYK ?>" class="dropdown-item py-3">
+                        <i class="nav-icon la la-file-pdf"></i>
+                        <span class="nav-text"><?php echo __('app.save.save_generate_pdf') . ' ' . __('app.common.CMYK') ?></span>
+                    </a>
+                </li>
+                <?php endif; ?>
                 <li>
                     <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndGenerate ?>" class="dropdown-item py-3">
                         <i class="nav-icon la la-file-pdf"></i>
-                        <span class="nav-text"><?php echo __('app.save.save_generate_pdf') ?></span>
+                        <span class="nav-text"><?php echo __('app.save.save_generate_pdf') . ' ' . __('app.common.RGB') ?></span>
                     </a>
                 </li>
                 <li>
                     <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndPreview ?>" class="dropdown-item py-3">
                         <i class="nav-icon la la-eye"></i>
-                        <span class="nav-text"><?php echo __('app.save.save_preview_pdf') ?></span>
+                        <span class="nav-text"><?php echo __('app.save.save_preview_pdf') . ' ' . __('app.common.RGB') ?></span>
                     </a>
                 </li>
             </ul>

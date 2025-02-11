@@ -336,3 +336,15 @@ form.data-form .json-content-form .card{
 label.error{
     text-align: left;
 }
+
+.booklet-layouts .icon-booklet-layout {
+    width: 40px;
+}
+
+.booklet-layouts [data-booklet-layout].active svg .cls-1 {
+    fill: var(--bs-primary);
+}
+
+.booklet-layouts ~ .select2 {
+    display: none;
+}
