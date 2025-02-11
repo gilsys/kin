@@ -97,7 +97,7 @@ class PdfService extends BaseService {
         $data['border'] = intval($this->params->getParam('CMYK_BORDER')) . 'px';
         $data['type'] = $fileType == FileType::BookletFileCMYK ? 'CMYK' : 'RGB';
 
-        if($fileType == FileType::BookletFileCMYK) {
+        if ($fileType == FileType::BookletFileCMYK) {
             $data['pageMargin'] = '100px';
             $pxPt = 0.24;
             $widthPt = (2480 + 2 * intval($data['border']) + 2 * intval($data['pageMargin'])) * $pxPt;
@@ -129,20 +129,15 @@ class PdfService extends BaseService {
             $directory = $this->params->getParam('FOLDER_PRIVATE');
             FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
 
-            if(false && $fileType == FileType::BookletFileCMYK) {
+            if ($fileType == FileType::BookletFileCMYK) {
                 $filePath = FileUtils::getLocalFilepath($outputFile, $directory . DIRECTORY_SEPARATOR . $fileType, $fileId, 'file');
                 $filePathTmp = $filePath . '_temp.pdf';
-                
-                $gsCommand = (strtoupper(PHP_OS_FAMILY) === 'WINDOWS' ? 'gswin64c.exe' : 'gs') . ' -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sDEVICE=pdfwrite -sProcessColorModel=DeviceCMYK -sColorConversionStrategy=CMYK -sOutputFile="' . $filePathTmp . '" "' . $filePath . '"';
-                
-//                 exec($gsCommand . " 2>&1", $output, $returnVar);
-// echo "Código de salida: $returnVar\n";
-// print_r($output);
-// exit();
-                
-                
+
+                $gsCommand = 'gs -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sDEVICE=pdfwrite -sProcessColorModel=DeviceCMYK -sColorConversionStrategy=CMYK -sOutputFile="' . $filePathTmp . '" "' . $filePath . '"';
                 exec($gsCommand);
-                //rename($filePathTmp, $filePath);
+                if (file_exists($filePathTmp)) {
+                    rename($filePathTmp, $filePath);
+                }
             }
         } else {
             $dompdf->stream($outputFile, ["Attachment" => '0']);
