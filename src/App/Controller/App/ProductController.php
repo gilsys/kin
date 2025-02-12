@@ -98,12 +98,12 @@ class ProductController extends BaseController {
         $marketIds = !empty($formData['market_ids']) ? $formData['market_ids'] : [];
         unset($formData['market_ids']);
 
+        parent::savePersist($request, $response, $args, $formData);
+
         if ($formData['id'] == $this->get('params')->getParam('EMPTY_PRODUCT')) {
             $marketDAO = new MarketDAO($this->get('pdo'));
             $marketIds = array_column($marketDAO->getForSelect(), 'id');
         }
-
-        parent::savePersist($request, $response, $args, $formData);
 
         $marketProductDAO = new MarketProductDAO($this->get('pdo'));
         foreach ($marketIds as $marketId) {

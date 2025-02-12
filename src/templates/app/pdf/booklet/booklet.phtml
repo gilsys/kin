@@ -198,7 +198,7 @@
         }
 
         .type-CMYK .position-6:nth-child(1) .product-img-container,
-        .type-CMYK .position-6:nth-child(2) .product-img-container {
+        .type-CMYK .position-6:nth-child(1) + .position-6:nth-child(2) .product-img-container {
             margin-top: -<?php echo $border ?>;
             height: calc(100% + <?php echo $border ?>);
         }
@@ -229,7 +229,7 @@ $layouts[1] = ['2_1', '2_2']; // 1/2 + 1/2
 $layouts[2] = ['3_1', '3_2', '3_3']; // 1/3 + 1/3 + 1/3
 $layouts[3] = ['6_1', '6_2', '3_2', '3_3']; // 1/3x2 + 1/3 + 1/3
 $layouts[4] = ['6_1', '6_2', '6_3', '6_4', '3_3']; // 1/3x2 + 1/3x2 + 1/3
-$layouts[5] = ['6_1', '6,2', '3_2', '6_5', '6_6']; // 1/3x2 + 1/3 + 1/3x2
+$layouts[5] = ['6_1', '6_2', '3_2', '6_5', '6_6']; // 1/3x2 + 1/3 + 1/3x2
 $layouts[6] = ['6_1', '6_2', '6_3', '6_4', '6_5', '6_6']; // 1/3x2 + 1/3x2 + 1/3x2
 $layouts[7] = ['3_1', '6_3', '6_4', '3_3']; // 1/3 + 1/3x2 + 1/3
 $layouts[8] = ['3_1', '6_3', '6_4', '6_5', '6_6']; // 1/3 + 1/3x2 + 1/3x2
@@ -251,7 +251,12 @@ $layouts[9] = ['3_1', '3_2', '6_5', '6_6']; // 1/3 + 1/3 + 1/3x2
                     <?php foreach ($booklet['pages'][$page] as $i => $product): ?>
                         <?php $currentPosition = $layouts[$currentLayout][$i]; ?>
                         <?php $position = $positions[$currentPosition] ?>
-                        <div class="product position-<?php echo $currentPosition[0] ?> <?php if ($currentPosition[0] == '6'): ?>position-6-<?php echo intval($currentPosition[2]) % 2 == 0 ? 'r' : 'l' ?><?php if ($i >= (count($booklet['pages'][$page]) - 2)): ?> position-6-last-row<?php endif; ?><?php endif; ?>" style="top: <?php echo $position['y'] ?>; left: <?php echo $position['x'] ?>">
+                        <div style="top: <?php echo $position['y'] ?>; left: <?php echo $position['x'] ?>" class="product position-<?php echo $currentPosition[0] ?> 
+                            <?php if ($currentPosition[0] == '6'): ?>
+                                position-6-<?php echo intval($currentPosition[2]) % 2 == 0 ? 'r' : 'l' ?>
+                                <?php if (($i == (count($booklet['pages'][$page]) - 2) && intval($currentPosition[2]) % 2 != 0) || ($i == (count($booklet['pages'][$page]) - 1) && intval($currentPosition[2]) % 2 == 0)): ?> position-6-last-row<?php endif; ?>
+                            <?php endif; ?>" 
+                        >
                             <?php if (!empty($product['qr'])): ?>
                                 <div class="qr">
                                     <img src='<?php echo $product['qr']; ?>'>
