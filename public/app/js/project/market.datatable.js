@@ -11,6 +11,7 @@ class MarketDatatable {
             columns: [
                 // Añadimos todas las columnas con las que queremos trabajar
                 { data: 'id', width: 60 },
+                { data: 'wp_id', width: 60 },
                 {
                     data: 'name',
                     render: function (data, type, full, meta) {

@@ -530,4 +530,15 @@ class CommonUtils {
         return $result;
     }
 
+    public static function getBaseDomainFromUrl($url) {
+        $host = parse_url($url, PHP_URL_HOST);
+        $parts = explode('.', $host);
+        $numParts = count($parts);
+    
+        if ($numParts >= 3) {
+            return '.' . implode('.', array_slice($parts, -2));
+        }
+        return '.' . $host;
+    }
+
 }

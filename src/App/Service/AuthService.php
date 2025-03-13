@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Constant\StatusEvent;
 use App\Constant\UserStatus;
 use App\Dao\UserDAO;
+use App\Exception\WPAutoLoginException;
 use App\Util\CommonUtils;
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 use Exception;
@@ -196,7 +197,7 @@ class AuthService extends BaseService {
         }
     }
 
-    public function logout($destroySession = true) {
+    public function logout($destroySession = true, $deleteWpSessionCookie = false) {
         $this->deleteRememberCookie();
 
         if ($destroySession) {
@@ -204,6 +205,14 @@ class AuthService extends BaseService {
         } else {
             foreach (array_keys($_SESSION) as $key) {
                 unset($_SESSION[$key]);
+            }
+        }
+
+        if ($deleteWpSessionCookie) {
+            $cookies = $_COOKIE;
+            $wpSessionCookie = $this->params->getParam('WP_AUTOLOGIN_SESSION_COOKIE');
+            if (!empty($cookies[$wpSessionCookie])) {
+                setcookie($wpSessionCookie, '', time() - 3600, '/', CommonUtils::getBaseDomainFromUrl($this->params->getParam('WP_AUTOLOGIN_URL')));
             }
         }
     }
@@ -262,12 +271,12 @@ class AuthService extends BaseService {
      * @return boolean
      * @throws Exception
      */
-    public function authByUserId($userId) {
+    public function authByUserId($userId, $WPAutoLogin = false) {
         $userDAO = new UserDAO($this->pdo);
         $user = $userDAO->getById($userId);
 
         try {
-            if (empty($user)) {
+            if (empty($user) || $user['user_status_id'] == UserStatus::Deleted) {
                 throw new Exception(__('service.auth.user_not_valid'));
             }
 
@@ -276,13 +285,18 @@ class AuthService extends BaseService {
             }
 
             // Update "intentos_realizados" and "fecha ultimo acceso"
+            LogService::saveAuth($this, 'app.log.action.auth.success', $user['id']);
             $userDAO->loginSuccess($user['id']);
-            $this->reload($user);
         } catch (Exception $e) {
+            if($WPAutoLogin) {
+                throw new WPAutoLoginException($e->getMessage(), 403);
+            }
+
             $this->flash->addMessage('danger', $e->getMessage());
             return false;
         }
         $this->session['user'] = $user;
+        $this->reload($user);
         return true;
     }
 
@@ -304,5 +318,4 @@ class AuthService extends BaseService {
 
         return true;
     }
-
 }

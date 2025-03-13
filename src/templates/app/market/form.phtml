@@ -65,6 +65,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label"><?php echo __('app.market.wp_id') ?><?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('app.market.wp_id_text')]); ?></label>
+                    <div>
+                        <input type="number" class="form-control" placeholder="<?php echo __('app.market.wp_id') ?>" name="wp_id" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <?php if (!empty($data['id'])): ?>

@@ -2,6 +2,7 @@
 <!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
 <!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
 <th data-priority="1"><?php echo __('app.common.id') ?></th>
+<th data-priority="6"><span class="d-none"><?= __ss('app.common.wp_id') ?></span><i title="<?= __ss('app.common.wp_id') ?>" class="fab fa-wordpress-simple fs-3"></i></th>
 <th data-priority="1"><?= __ss('app.common.name') ?></th>
 <th data-priority="2"><?= __ss('app.main_language') ?></th>
 <th data-priority="3"><?= __ss('app.qr_language') ?></th>

@@ -62,4 +62,14 @@ class MarketController extends BaseController {
             $marketProductDAO->save(['product_id' => $this->get('params')->getParam('EMPTY_PRODUCT'), 'market_id' => $formData['id']]);
         }
     }
+
+    public function deletePreDelete($request, $response, $args, &$formData) {
+        $marketProductDAO = new MarketProductDAO($this->get('pdo'));
+        $marketProducts = $marketProductDAO->getProductsByMarketId($formData['id']);
+        $emptyProductId = $this->get('params')->getParam('EMPTY_PRODUCT');
+
+        if (count($marketProducts) == 1 && $marketProducts[0] == $emptyProductId) {
+            $marketProductDAO->deleteByMarketIdProductId($formData['id'], $emptyProductId);
+        }
+    }
 }

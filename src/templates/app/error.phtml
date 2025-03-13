@@ -14,12 +14,12 @@
             <div class="d-flex flex-column flex-column-fluid">
                 <div class="d-flex flex-column flex-column-fluid text-center p-10 py-lg-15">
                     <a href="/" class="mb-10 pt-lg-10">
-                        <img src="/app/img/logo.png" class="img-fluid h-200px">
+                        <img src="/app/img/logo.png" class="img-fluid h-50px">
                     </a>
                     <div class="pt-lg-10 mb-10">
                         <h1 class="fw-bolder fs-2qx text-gray-800 mb-10"><?php echo $exception->getCode(); ?></h1>
                         <div class="fw-bold fs-3 text-muted mb-15">
-                            <?php if ($displayErrorDetails): ?>
+                            <?php if ($displayErrorDetails || $exception instanceof App\Exception\CustomException || $exception instanceof App\Exception\WPAutoLoginException): ?>
                                 <?php echo $exception->getMessage(); ?> 
                             <?php endif; ?>
                         </div>
@@ -30,7 +30,7 @@
                             </div>
                         <?php endif; ?>
                         <div class="text-center">
-                            <a href="/" class="btn btn-primary btn-lg ms-3"><?php echo __('app.common.go_home') ?></a>
+                            <a href="<?php echo $exception instanceof App\Exception\WPAutoLoginException ? parse_url($params['WP_AUTOLOGIN_URL'], PHP_URL_SCHEME) . '://' . parse_url($params['WP_AUTOLOGIN_URL'], PHP_URL_HOST) : '/' ?>" class="btn btn-secondary btn-lg ms-3"><?php echo __('app.common.go_home') ?></a>
                         </div>
                     </div>
                 </div>
