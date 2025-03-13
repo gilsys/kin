@@ -164,7 +164,7 @@ class LoginController extends BaseController {
             return $response->withStatus(302)->withHeader('Location', '/');
         }
 
-        $authService = new AuthService($this->get('pdo'), $this->get('session'));
+        $authService = new AuthService($this->get('pdo'), $this->get('session'), $this->get('params'));
         if (!empty($this->get('session')['user'])) {
             $authService->logout();
             return $response->withStatus(302)->withHeader('Location', '/app/public/enter_password/' . $args['token']);
@@ -203,7 +203,7 @@ class LoginController extends BaseController {
         }
 
         try {
-            $authService = new AuthService($this->get('pdo'), $this->get('session'));
+            $authService = new AuthService($this->get('pdo'), $this->get('session'), $this->get('params'));
             $user = $authService->getUserFromEncryptedUserToken($formData['token'], intval($this->get('params')->getParam('PASSWORD_TOKEN_CADUCITY')));
 
             $this->get('logger')->addInfo("Enter password for user with login " . $user['nickname']);
@@ -232,11 +232,11 @@ class LoginController extends BaseController {
      * Cierre de sesión
      */
     public function logout(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
-        $authService = new AuthService();
+        $authService = new AuthService($this->get('pdo'), $this->get('session'), $this->get('params'));
         if (!empty($this->get('session')['user'])) {
             LogService::saveAuth($this, 'app.log.action.auth.logout', $this->get('session')['user']['id']);
         }
-        $authService->logout();
+        $authService->logout(true, true);
         return $response->withStatus(302)->withHeader('Location', '/app/public/login');
     }
 

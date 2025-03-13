@@ -121,7 +121,9 @@ class CustomDatatable {
                                 if (typeof that.settings.exportHeader != 'undefined') {
                                     return that.settings.exportHeader(data, columnIdx);
                                 }
-                                return data;
+                                
+                                const parsed = $.parseHTML(data);
+                                return parsed ? $(parsed).text() : data;
                             }
                         }
                     },

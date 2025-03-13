@@ -6,6 +6,7 @@ use App\Middleware\AccessControlMiddleware;
 use App\Middleware\AuthCookieMiddleware;
 use App\Middleware\ConsoleMiddleware;
 use App\Middleware\PrivateCommonMiddleware;
+use App\Middleware\WPAutoLoginMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\App;
@@ -17,6 +18,7 @@ return function (App $app) {
 
     // Global middlewares
     // ATENCIÓN, se ejecutan en orden inverso al que se incluyen.
+    $app->add(new WPAutoLoginMiddleware($app->getContainer()));
     $app->add(new ConsoleMiddleware($app->getContainer()));
     $app->add(new AccessControlMiddleware());
     $app->add(new AuthCookieMiddleware($app->getContainer()));

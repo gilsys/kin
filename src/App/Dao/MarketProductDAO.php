@@ -26,4 +26,14 @@ class MarketProductDAO extends BaseDAO {
         return array_column($this->fetchAll($sql, compact('productId')), 'market_id');
     }
 
+    public function getProductsByMarketId($marketId) {
+        $sql = "SELECT product_id FROM " . $this->table . " WHERE market_id = :marketId";
+        return array_column($this->fetchAll($sql, compact('marketId')), 'product_id');
+    }
+
+    public function deleteByMarketIdProductId($marketId, $productId) {
+        $query = "DELETE FROM " . $this->table . " WHERE market_id = :marketId AND product_id = :productId";
+        $this->query($query, compact('marketId', 'productId'));
+    }
+
 }

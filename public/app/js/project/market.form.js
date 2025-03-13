@@ -18,6 +18,7 @@ class MarketForm {
                 mForm.find("[name='color']").val(data.color)[0].jscolor.fromString(data.color);
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+                mForm.find("[name='wp_id']").val(data.wp_id);
                 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));

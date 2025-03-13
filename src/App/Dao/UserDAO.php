@@ -127,7 +127,8 @@ class UserDAO extends BaseDAO {
             ['db' => 'market_id', 'dt' => 'market_id', 'exact' => true],
             ['db' => 'market_name', 'dt' => 'market_name'],
             ['db' => 'market_color', 'dt' => 'market_color', 'exact' => true],
-            ['db' => 'date_updated', 'dt' => 'date_updated']
+            ['db' => 'date_updated', 'dt' => 'date_updated'],
+            ['db' => 'wp_id', 'dt' => 'wp_id', 'exact' => true],
 
         ];
 
@@ -155,7 +156,8 @@ class UserDAO extends BaseDAO {
       m.id as market_id,
       m.color as market_color,
       p.color as user_profile_color,
-      us.color as user_status_color
+      us.color as user_status_color,
+      u.wp_id
     FROM ' . $this->table . ' u
     INNER JOIN st_user_profile p ON u.user_profile_id = p.id and p.id IN (\'' . implode('\',\'', $profilesToShow) . '\')
     INNER JOIN st_user_status us ON u.user_status_id = us.id

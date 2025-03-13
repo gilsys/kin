@@ -30,6 +30,7 @@ class UserDatatable {
                     }
                 },
                 { data: 'id', width: 60 },
+                { data: 'wp_id', width: 60 },
                 { data: 'name' },
                 { data: 'surnames' },
                 { data: 'nickname' },
