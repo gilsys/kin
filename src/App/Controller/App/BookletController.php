@@ -205,7 +205,7 @@ class BookletController extends BaseController {
 
         if (!empty($args['mode']) && in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
-            $pdfType = $args['mode'] == FormSaveMode::SaveAndGenerateCMYK && $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id') == BookletType::Booklet ? FileType::BookletFileCMYK : FileType::BookletFile;
+            $pdfType = $args['mode'] == FormSaveMode::SaveAndGenerateCMYK ? FileType::BookletFileCMYK : FileType::BookletFile;
             $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
             $pdfService->bookletPdf($formData['id'], true, $pdfType);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
