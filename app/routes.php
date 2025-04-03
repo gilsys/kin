@@ -140,6 +140,7 @@ return function (App $app) {
         $app->get('/app/product/form[/{id:[0-9]+}]', [ProductController::class, 'form']);
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
+        $app->post('/app/product/restore', [ProductController::class, 'restore']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     // Subproducts

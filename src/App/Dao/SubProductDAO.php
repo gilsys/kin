@@ -51,7 +51,8 @@ class SubProductDAO extends BaseDAO {
                 p.name as product_name
             FROM
                 ' . $this->table . ' sp
-                INNER JOIN st_product p ON sp.product_id = p.id            
+                INNER JOIN st_product p ON sp.product_id = p.id       
+            WHERE p.date_deleted IS NULL     
         ) temp';
 
 
@@ -81,10 +82,20 @@ class SubProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
-    public function getSubProducts($language) {
+    public function getSubProducts($language, $recipeId = null) {
+        $data = [];
+
+        $whereSql = '';
+        if(!empty($recipeId)) {
+            $whereSql .= ' OR p.id IN (SELECT JSON_UNQUOTE(JSON_EXTRACT(r.json_data, "$.product")) FROM st_recipe r WHERE r.id = :recipeId)';
+            $data['recipeId'] = $recipeId;
+        }
+
         $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, s.product_id
                 FROM ' . $this->table . ' s
+                INNER JOIN st_product p ON p.id = s.product_id
+                WHERE p.date_deleted IS NULL' . $whereSql . '
                 ORDER BY s.product_id ASC, s.name ASC';
-        return $this->fetchAll($sql);
+        return $this->fetchAll($sql, $data);
     }
 }

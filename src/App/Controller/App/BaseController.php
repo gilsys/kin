@@ -107,9 +107,13 @@ abstract class BaseController {
         try {
             $this->get('pdo')->beginTransaction();
             $nameForLogs = $this->getNameForLogs($id);
-            $this->deletePreDelete($request, $response, $args, $formData);
-            $dao = $this->getDAO();
-            $dao->deleteById($id);
+            $skipDelete = $this->deletePreDelete($request, $response, $args, $formData);
+
+            if(empty($skipDelete)) {
+                $dao = $this->getDAO();
+                $dao->deleteById($id);
+            }
+
             $this->deletePostDelete($request, $response, $args, $formData);
             LogService::save($this, 'app.log.action.delete', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $nameForLogs], $this->getDAO()->getTable(), $id);
             $this->get('pdo')->commit();
@@ -121,6 +125,31 @@ abstract class BaseController {
         }
 
         $this->get('flash')->addMessage('success', __('app.controller.delete_ok'));
+        return $response->withStatus(302)->withHeader('Location', $redirectUrl);
+    }
+
+    /**
+     * Restaurar registro
+     */
+    public function restore(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $formData = CommonUtils::getSanitizedData($request);
+        $id = $formData['id'];
+        $redirectUrl = $this->getRedirectUrlList($formData);
+        $this->get('logger')->addInfo("Restore " . static::ENTITY_SINGULAR . " - id: " . $id);
+        try {
+            $this->get('pdo')->beginTransaction();
+            $this->getDAO()->updateSingleField($id, 'date_deleted', null);
+            $nameForLogs = $this->getNameForLogs($id);
+            LogService::save($this, 'app.log.action.restore', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $nameForLogs], $this->getDAO()->getTable(), $id);
+            $this->get('pdo')->commit();
+        } catch (\Exception $e) {
+            $this->get('pdo')->rollback();
+            $this->get('logger')->addError($e);
+            $this->get('flash')->addMessage('danger', __('app.error.restore'));
+            return $response->withStatus(302)->withHeader('Location', $redirectUrl);
+        }
+
+        $this->get('flash')->addMessage('success', __('app.controller.restore_ok'));
         return $response->withStatus(302)->withHeader('Location', $redirectUrl);
     }
 

@@ -353,7 +353,11 @@ class RecipeForm {
     getProducts() {
         var mForm = $('#mt-recipe-form');
 
-        $.post('/app/recipe/get_products', data => {
+        var params = {
+            'id': mForm.find("[name='id']").val()
+        };
+
+        $.post('/app/recipe/get_products', params, data => {
             this.products = data;
 
             if (this.jsonData != null) {

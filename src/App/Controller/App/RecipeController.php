@@ -178,11 +178,14 @@ class RecipeController extends BaseController {
     }
 
     public function getProducts(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $formData = CommonUtils::getSanitizedData($request);
+        $recipeId = !empty($formData['id']) ? $formData['id'] : null;
+        
         $productDAO = new ProductDAO($this->get('pdo'));
-        $data['products'] = $productDAO->getProducts();
+        $data['products'] = $productDAO->getProducts($recipeId);
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang());
+        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang(), $recipeId);
 
         return ResponseUtils::withJson($response, $data);
     }

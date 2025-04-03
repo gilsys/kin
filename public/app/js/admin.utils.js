@@ -21,6 +21,16 @@ AdminUtils.confirmDelete = function (url, id) {
     });
 };
 
+AdminUtils.confirmRestore = function (url, id) {
+    showConfirm(__('app.js.utils.restore_record'), __('app.js.utils.restore_record_text'), 'question', function () {
+        // Create a form and send the data by post
+        var cForm = $('<form action="' + url + '" method="post"><input type="hidden" name="id" value="' + id + '"></form>').appendTo($('body'));
+        CSRFToForm();
+        AdminUtils.showLoading();
+        cForm.submit();
+    });
+};
+
 AdminUtils.confirmDuplicate = function (url, id) {
     showConfirm(__('app.js.utils.duplicate_record'), __('app.js.utils.duplicate_record_text'), 'question', function () {
         // Create a form and send the data by post
