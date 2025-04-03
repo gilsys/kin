@@ -6,6 +6,7 @@ namespace App\Controller\App;
 
 use App\Constant\App\MenuSection;
 use App\Constant\FileType;
+use App\Constant\ProductStatus;
 use App\Dao\MarketDAO;
 use App\Dao\MarketProductDAO;
 use App\Dao\ProductDAO;
@@ -52,7 +53,8 @@ class ProductController extends BaseController {
         $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data'] = [
-            'markets' => $marketDAO->getForSelect()
+            'markets' => $marketDAO->getForSelect(),
+            'productStatus' => ProductStatus::getAll()
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -81,6 +83,11 @@ class ProductController extends BaseController {
     public function deletePreDelete($request, $response, $args, &$formData) {
         if ($formData['id'] == $this->get('params')->getParam('EMPTY_PRODUCT')) {
             throw new AuthException();
+        }
+
+        if(!$this->getDAO()->canDeleteProduct($formData['id'])) {
+            $this->getDAO()->updateSingleField($formData['id'], 'date_deleted', date('Y-m-d H:i:s'));
+            return true;
         }
 
         $marketProductDAO = new MarketProductDAO($this->get('pdo'));

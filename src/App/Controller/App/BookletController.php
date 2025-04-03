@@ -173,11 +173,6 @@ class BookletController extends BaseController {
         $formData['page3_booklet_layout_id'] = !empty($formData['page3_booklet_layout_id']) ? $formData['page3_booklet_layout_id'] : null;
         $formData['page4_booklet_layout_id'] = !empty($formData['page4_booklet_layout_id']) ? $formData['page4_booklet_layout_id'] : null;
         $formData['market_id'] = !empty($formData['market_id']) ? $formData['market_id'] : null;
-
-        if (!empty($formData['id'])) {
-            $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
-            $bookletProductDAO->clear($formData['id']);
-        }
     }
 
     public function savePersist($request, $response, $args, &$formData) {
@@ -187,9 +182,11 @@ class BookletController extends BaseController {
         parent::savePersist($request, $response, $args, $formData);
 
         $productDAO = new ProductDAO($this->get('pdo'));
-        $productIds = array_column($productDAO->getByMarketId($formData['market_id']), 'id');
+        $productIds = array_column($productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null), 'id');
 
         $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
+        $bookletProductDAO->clear($formData['id']);
+
         foreach ($bookletProducts as $page => $pageItems) {
             foreach ($pageItems as $order => $product) {
                 $displayMode = key($product);
@@ -255,7 +252,7 @@ class BookletController extends BaseController {
         }
 
         $productDAO = new ProductDAO($this->get('pdo'));
-        $products = $productDAO->getByMarketId($formData['market_id']);
+        $products = $productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null);
 
         return ResponseUtils::withJson($response, $products);
     }
