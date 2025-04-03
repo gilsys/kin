@@ -4,7 +4,7 @@
     <select data-placeholder="<?php __ss('app.entity.market') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_ids">
         <option value=""></option>
         <?php foreach ($data['markets'] as $market) : ?>
-            <option value="<?= $market['id'] ?>"><?= $market['name'] ?></option>
+            <option value="|<?= $market['id'] ?>|"><?= $market['name'] ?></option>
         <?php endforeach; ?>
     </select>
 </div>
