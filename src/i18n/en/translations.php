@@ -266,6 +266,7 @@ return [
     'app.header.hello' => 'Hello',
     'app.header.logout' => 'Logout',
     'app.header.profile' => 'My profile',
+    'app.header.project_title' => 'Design Tool',
     'app.header.quick_links.title' => 'Quick Links',
     'app.home' => 'Home',
     'app.js.account.select_city' => '- Select a city -',
