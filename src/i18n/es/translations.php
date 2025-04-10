@@ -266,6 +266,7 @@ return [
     'app.header.hello' => 'Hola',
     'app.header.logout' => 'Salir',
     'app.header.profile' => 'Mi perfil',
+    'app.header.project_title' => 'Herramienta de diseño',
     'app.header.quick_links.title' => 'Atajos',
     'app.home' => 'Inicio',
     'app.js.account.select_city' => '- Selecciona una población -',
