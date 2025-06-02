@@ -40,10 +40,14 @@ body.profile-B .profile-deny.profile-B {
     background-color: var(--bs-primary-active) !important;
 }
 
-.button-filter.btn-light-primary, .button-filter.btn-light-primary i,
-.app-header .btn-back-wp, .app-header .btn-back-wp i {
+.button-filter.btn-light-primary, .button-filter.btn-light-primary i {
     background-color: var(--bs-primary);
     color: var(--bs-primary-light);
+}
+
+.app-header .btn-back-wp, .app-header .btn-back-wp i {
+    background-color: var(--bs-primary) !important;
+    color: var(--bs-primary-light) !important;
 }
 
 .form-check-input:checked {

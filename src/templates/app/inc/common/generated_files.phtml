@@ -21,7 +21,7 @@
                                 <?php $fileDate = explode(' ', date('d/m/Y H:i:s', strtotime($pdFile['date']))) ?>
                                 <div><?php echo $fileDate[0] ?></div>
                                 <div><?php echo $fileDate[1] ?></div>
-                                <div class="text-end pe-2 fw-600 text-muted"><?php echo $pdFile['file_type_id'] == App\Constant\FileType::BookletFileCMYK ? __('app.common.CMYK') : __('app.common.RGB') ?></div>
+                                <div class="text-end pe-2 fw-600 text-muted"><?php echo in_array($pdFile['file_type_id'], [App\Constant\FileType::BookletFileCMYK, App\Constant\FileType::RecipeFileCMYK]) ? __('app.common.CMYK') : __('app.common.RGB') ?></div>
                             </div>
                         </div>
                     </a>
