@@ -70,6 +70,11 @@ class RecipeController extends BaseController {
      * Prepara el formulario de crear/editar
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        // TODO Eliminar
+        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+        $pdfService->recipePdf($args['id'], false);
+        exit();
+        
         if (!empty($args['id'])) {
             $this->get('security')->checkRecipeOwner($args['id'], true);
         }

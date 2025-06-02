@@ -10,5 +10,6 @@ class FileType {
     const BookletFile = 'BF';
     const BookletFileCMYK = 'BC';
     const RecipeFile = 'RF';
+    const RecipeFileCMYK = 'RC';
     
 }
