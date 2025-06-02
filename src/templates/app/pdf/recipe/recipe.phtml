@@ -23,22 +23,6 @@
             background-image: url(/app/img/recipe.jpg);
         }
 
-        .qr {
-            width: 155px;
-            height: 155px;
-            position: absolute;
-            z-index: 9999999;
-            bottom: 93px;
-            right: 93px;
-            padding: 15px;
-            background-color: white;
-        }
-
-        .product .qr img {
-            width: 100%;
-            height: 100%;
-        }
-
         .type-CMYK .visible-area {
             position: relative;
             top: <?php echo $border ?>;
@@ -122,70 +106,47 @@
             overflow: hidden;
         }
 
-        /* Position 2 */
-        .type-CMYK .position-2 .product-img-container {
-            margin-left: -<?php echo $border ?>;
-            width: calc(100% + 2 * <?php echo $border ?>);
-            height: calc(100% + <?php echo $border ?>);
-        }
-
-        .type-CMYK .position-2:first-child .product-img-container {
-            margin-top: -<?php echo $border ?>;
-        }
-
-        .type-CMYK .position-2:last-child .product-img-container {
-            margin-bottom: -<?php echo $border ?>;
-        }
-
-        /* Position 3 */
-        .type-CMYK .position-3 .product-img-container {
-            margin-left: -<?php echo $border ?>;
-            width: calc(100% + 2 * <?php echo $border ?>);
-            height: 100%;
-        }
-
-        .type-CMYK .position-3:first-child .product-img-container {
-            margin-top: -<?php echo $border ?>;
-            height: calc(100% + <?php echo $border ?>);
-        }
-
-        .type-CMYK .position-3:last-child .product-img-container {
-            margin-bottom: -<?php echo $border ?>;
-            height: calc(100% + <?php echo $border ?>);
-        }
-
-        /* Position 6 */
-        .type-CMYK .position-6 .product-img-container {
-            width: calc(100% + <?php echo $border ?>);
-            height: 100%;
-        }
-
-        .type-CMYK .position-6.position-6-l .product-img-container {
-            margin-left: -<?php echo $border ?>;
-        }
-
-        .type-CMYK .position-6.position-6-r .product-img-container {
-            margin-right: -<?php echo $border ?>;
-        }
-
-        .type-CMYK .position-6:nth-child(1) .product-img-container,
-        .type-CMYK .position-6:nth-child(1)+.position-6:nth-child(2) .product-img-container {
-            margin-top: -<?php echo $border ?>;
-            height: calc(100% + <?php echo $border ?>);
-        }
-
-        .type-CMYK .position-6.position-6-last-row .product-img-container {
-            margin-bottom: -<?php echo $border ?>;
-            height: calc(100% + <?php echo $border ?>);
-        }
-
-
         /* Estilos receta */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: red;
+        }
+
+        .container>.div-1 {
+            position: absolute;
+            left: -500px;
+            padding-left: 500px;
+            right: 50%;
+            height: 900px;
+            background-color: green;
+        }
+
+        .container>.div-2 {
+            position: absolute;
+            right: -500px;
+            padding-right: 500px;
+            left: 50%;
+            height: 900px;
+            background-color: orange;
+        }
+
+        .container>.div-1>div,
+        .container>.div-2>div {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0.2;
+        }
 
         .header-top {
             background-color: #164070;
-            padding: 40px;
             width: 100%;
+        }
+
+        .header-top>div {
+            padding: 40px;
         }
 
         .header-logo,
@@ -234,24 +195,36 @@
         }
     </style>
 </head>
+
 <body class="type-<?php echo $type ?>">
     <?php for ($page = array_key_first($recipe['pages']); $page <= array_key_last($recipe['pages']); $page++): ?>
         <div class="page page-<?php echo $page ?>">
             <div class="visible-area">
-                <div class="header-top">
-                    <div class="header-logo"></div>
-                    <div class="header-offer"></div>
-                    <div class="header-patient">
-                        <div class="patient-row">
-                            <div class="patient-row">
-                                <span class="patient-label">Nombre paciente</span>
-                                <div class="patient-field"></div>
+                <div class="container">
+                    <div class="header-top">
+                        <div>
+                            <div class="header-logo"></div>
+                            <div class="header-offer"></div>
+                            <div class="header-patient">
+                                <div class="patient-row">
+                                    <div class="patient-row">
+                                        <span class="patient-label">Nombre paciente</span>
+                                        <div class="patient-field"></div>
+                                    </div>
+                                </div>
+                                <div class="patient-row">
+                                    <div class="patient-label">Próxima visita</div>
+                                    <div class="patient-field"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="patient-row">
-                            <div class="patient-label">Próxima visita</div>
-                            <div class="patient-field"></div>
-                        </div>
+                    </div>
+
+                    <div class="div-1">
+                        <div>Test</div>
+                    </div>
+                    <div class="div-2">
+                        <div>Test</div>
                     </div>
                 </div>
             </div>
@@ -266,4 +239,5 @@
         </div>
     <?php endfor; ?>
 </body>
+
 </html>

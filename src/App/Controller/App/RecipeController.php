@@ -6,6 +6,7 @@ namespace App\Controller\App;
 
 use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
+use App\Constant\FileType;
 use App\Constant\StaticListTable;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
@@ -70,11 +71,6 @@ class RecipeController extends BaseController {
      * Prepara el formulario de crear/editar
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-        // TODO Eliminar
-        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-        $pdfService->recipePdf($args['id'], false);
-        exit();
-        
         if (!empty($args['id'])) {
             $this->get('security')->checkRecipeOwner($args['id'], true);
         }
@@ -104,7 +100,7 @@ class RecipeController extends BaseController {
         if (!empty($args['mode']) && !empty($args['id'])) {
             if ($args['mode'] == FormSaveMode::SaveAndPreview) {
                 $data['jscustom'] = 'window.open("/app/recipe/pdf/' . $args['id'] . '", "_blank")';
-            } else if ($args['mode'] == FormSaveMode::SaveAndGenerate) {
+            } else if (in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
                 if (!empty($data['data']['recipeFiles'])) {
                     $data['jscustom'] = 'window.open("/app/recipe/pdf/file/' . $data['data']['recipeFiles'][0]['id'] . '", "_blank")';
                 }
@@ -149,10 +145,11 @@ class RecipeController extends BaseController {
     public function savePersist($request, $response, $args, &$formData) {
         parent::savePersist($request, $response, $args, $formData);
 
-        if (!empty($args['mode']) && $args['mode'] == FormSaveMode::SaveAndGenerate) {
+        if (!empty($args['mode']) && in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
+            $pdfType = $args['mode'] == FormSaveMode::SaveAndGenerateCMYK ? FileType::RecipeFileCMYK : FileType::RecipeFile;
             $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
-            $pdfService->recipePdf($formData['id'], true);
+            $pdfService->recipePdf($formData['id'], true, $pdfType);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
         }
     }
@@ -162,6 +159,8 @@ class RecipeController extends BaseController {
 
         // Dependiendo de la selección del usuario, se redirige a una pantalla u otra
         switch ($args['mode']) {
+            case FormSaveMode::SaveAndGenerateCMYK:
+                return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id'] . '/' . $args['mode']);
             case FormSaveMode::SaveAndGenerate:
                 return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $formData['id'] . '/' . $args['mode']);
             case FormSaveMode::SaveAndPreview:
@@ -185,7 +184,7 @@ class RecipeController extends BaseController {
     public function getProducts(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $formData = CommonUtils::getSanitizedData($request);
         $recipeId = !empty($formData['id']) ? $formData['id'] : null;
-        
+
         $productDAO = new ProductDAO($this->get('pdo'));
         $data['products'] = $productDAO->getProducts($recipeId);
 

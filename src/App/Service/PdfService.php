@@ -144,7 +144,7 @@ class PdfService extends BaseService {
         }
     }
 
-    public function recipePdf($recipeId, $save, $fileType = FileType::BookletFile) {
+    public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFileCMYK) {
         $recipeDAO = new RecipeDAO($this->pdo);
         $recipe = $recipeDAO->getFullById($recipeId);
         //$recipeImages = $recipeDAO->getRecipeImages($recipeId, $recipe['main_language_id']);
@@ -166,6 +166,8 @@ class PdfService extends BaseService {
             //$recipeImages[$recipeImage['file_id'] ] = $recipeImage;
         }
 
+        $recipe['pages'] = [[], []];
+
         $data = ['recipe' => $recipe];
 
         $data['border'] = intval($this->params->getParam('CMYK_BORDER')) . 'px';
@@ -183,7 +185,7 @@ class PdfService extends BaseService {
             $paper = 'A4';
         }
 
-        $html = $this->renderer->fetch("/pdf/booklet/recipe.phtml", $data);
+        $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", $data);
         $dompdf->loadHtml($html);
 
         $dompdf->setPaper($paper, 'landscape');
@@ -198,7 +200,7 @@ class PdfService extends BaseService {
             $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
 
             $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
-            $recipeFileDAO->save(['recipe_id' => $recipeId['id'], 'file_id' => $fileId]);
+            $recipeFileDAO->save(['recipe_id' => $recipe['id'], 'file_id' => $fileId]);
 
             $directory = $this->params->getParam('FOLDER_PRIVATE');
             FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
