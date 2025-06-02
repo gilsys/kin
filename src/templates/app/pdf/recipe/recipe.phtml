@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        .page {
+            page-break-after: always;
+            padding: <?php echo $pageMargin ?>;
+        }
+
+        .page:last-child {
+            page-break-after: unset;
+        }
+
+        html {
+            margin: 0;
+        }
+
+        body {
+            font-family: Poppins, sans-serif;
+            background-image: url(/app/img/recipe.jpg);
+        }
+
+        .qr {
+            width: 155px;
+            height: 155px;
+            position: absolute;
+            z-index: 9999999;
+            bottom: 93px;
+            right: 93px;
+            padding: 15px;
+            background-color: white;
+        }
+
+        .product .qr img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .type-CMYK .visible-area {
+            position: relative;
+            top: <?php echo $border ?>;
+            left: <?php echo $border ?>;
+            width: calc(100% - 2 * <?php echo $border ?>);
+            height: calc(100% - 2 * <?php echo $border ?>);
+        }
+
+        .cut-mark {
+            position: absolute;
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.top-right,
+        .cut-mark.bottom-left,
+        .cut-mark.bottom-right {
+            background-color: red;
+            width: calc(0.5 * <?php echo $pageMargin ?>);
+            height: 6px;
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.top-right {
+            top: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.bottom-left,
+        .cut-mark.bottom-right {
+            bottom: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.top-left,
+        .cut-mark.bottom-left {
+            left: 0;
+        }
+
+        .cut-mark.top-right,
+        .cut-mark.bottom-right {
+            right: 0;
+        }
+
+        .cut-mark.left-top,
+        .cut-mark.left-bottom,
+        .cut-mark.right-top,
+        .cut-mark.right-bottom {
+            background-color: red;
+            height: calc(0.5 * <?php echo $pageMargin ?>);
+            width: 6px;
+        }
+
+        .cut-mark.left-top,
+        .cut-mark.left-bottom {
+            left: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.right-top,
+        .cut-mark.right-bottom {
+            right: calc(<?php echo $pageMargin ?> + <?php echo $border ?>);
+        }
+
+        .cut-mark.right-top,
+        .cut-mark.left-top {
+            top: 0;
+        }
+
+        .cut-mark.left-bottom,
+        .cut-mark.right-bottom {
+            bottom: 0;
+        }
+
+        .type-RGB .cut-mark {
+            display: none;
+        }
+
+        .type-RGB .product,
+        .type-RGB .bg-image {
+            overflow: hidden;
+        }
+
+        .type-CMYK .product-img-container {
+            overflow: hidden;
+        }
+
+        /* Position 2 */
+        .type-CMYK .position-2 .product-img-container {
+            margin-left: -<?php echo $border ?>;
+            width: calc(100% + 2 * <?php echo $border ?>);
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-2:first-child .product-img-container {
+            margin-top: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-2:last-child .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+        }
+
+        /* Position 3 */
+        .type-CMYK .position-3 .product-img-container {
+            margin-left: -<?php echo $border ?>;
+            width: calc(100% + 2 * <?php echo $border ?>);
+            height: 100%;
+        }
+
+        .type-CMYK .position-3:first-child .product-img-container {
+            margin-top: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-3:last-child .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        /* Position 6 */
+        .type-CMYK .position-6 .product-img-container {
+            width: calc(100% + <?php echo $border ?>);
+            height: 100%;
+        }
+
+        .type-CMYK .position-6.position-6-l .product-img-container {
+            margin-left: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-6.position-6-r .product-img-container {
+            margin-right: -<?php echo $border ?>;
+        }
+
+        .type-CMYK .position-6:nth-child(1) .product-img-container,
+        .type-CMYK .position-6:nth-child(1)+.position-6:nth-child(2) .product-img-container {
+            margin-top: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+        .type-CMYK .position-6.position-6-last-row .product-img-container {
+            margin-bottom: -<?php echo $border ?>;
+            height: calc(100% + <?php echo $border ?>);
+        }
+
+
+        /* Estilos receta */
+
+        .header-top {
+            background-color: #164070;
+            padding: 40px;
+            width: 100%;
+        }
+
+        .header-logo,
+        .header-offer,
+        .header-patient {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+        }
+
+        .header-offer {
+            width: 220px;
+            height: 30px;
+            background-color: red;
+            margin: 10px 20px 0 20px;
+        }
+
+        .header-patient {}
+
+        .patient-row {
+            margin-bottom: 14px;
+            white-space: nowrap;
+        }
+
+        .patient-label {
+            display: inline-block;
+            width: 360px;
+            color: white;
+            font-size: 40px;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+
+        .patient-field {
+            display: inline-block;
+            background-color: white;
+            border-radius: 38px;
+            height: 80px;
+            width: 1000px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="type-<?php echo $type ?>">
+    <?php for ($page = array_key_first($recipe['pages']); $page <= array_key_last($recipe['pages']); $page++): ?>
+        <div class="page page-<?php echo $page ?>">
+            <div class="visible-area">
+                <div class="header-top">
+                    <div class="header-logo"></div>
+                    <div class="header-offer"></div>
+                    <div class="header-patient">
+                        <div class="patient-row">
+                            <div class="patient-row">
+                                <span class="patient-label">Nombre paciente</span>
+                                <div class="patient-field"></div>
+                            </div>
+                        </div>
+                        <div class="patient-row">
+                            <div class="patient-label">Próxima visita</div>
+                            <div class="patient-field"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="cut-mark top-left"></span>
+            <span class="cut-mark top-right"></span>
+            <span class="cut-mark bottom-left"></span>
+            <span class="cut-mark bottom-right"></span>
+            <span class="cut-mark left-top"></span>
+            <span class="cut-mark left-bottom"></span>
+            <span class="cut-mark right-top"></span>
+            <span class="cut-mark right-bottom"></span>
+        </div>
+    <?php endfor; ?>
+</body>
+</html>

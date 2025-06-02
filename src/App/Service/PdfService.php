@@ -144,6 +144,83 @@ class PdfService extends BaseService {
         }
     }
 
+    public function recipePdf($recipeId, $save, $fileType = FileType::BookletFile) {
+        $recipeDAO = new RecipeDAO($this->pdo);
+        $recipe = $recipeDAO->getFullById($recipeId);
+        //$recipeImages = $recipeDAO->getRecipeImages($recipeId, $recipe['main_language_id']);
+        $folderPrivate = $this->params->getParam('FOLDER_PRIVATE');
+        $qrUrl = $this->params->getParam('KIN.URL');
+
+        $options = new Options();
+        $options->setDpi(300);
+
+        $dompdf = new Dompdf($options);
+
+        $recipeImages = [];
+
+        // TODO
+        foreach ($recipeImages as $recipeImage) {
+            // Cargar imagen de disco a base64
+            //$imagePath = $folderPrivate . '/' . FileType::ProductImage . '/image_' . $recipe['main_language_id'] . '_' . $recipeImage['display_mode'] . '_' . $recipeImage['image_id'] . '.' . pathinfo($recipeImage['file'], PATHINFO_EXTENSION);
+            //$recipeImage['image'] = FileUtils::getBase64Image($imagePath);
+            //$recipeImages[$recipeImage['file_id'] ] = $recipeImage;
+        }
+
+        $data = ['recipe' => $recipe];
+
+        $data['border'] = intval($this->params->getParam('CMYK_BORDER')) . 'px';
+        $data['type'] = $fileType == FileType::RecipeFileCMYK ? 'CMYK' : 'RGB';
+
+        if ($fileType == FileType::RecipeFileCMYK) {
+            $data['pageMargin'] = '100px';
+            $pxPt = 0.24;
+            $widthPt = (2480 + 2 * intval($data['border']) + 2 * intval($data['pageMargin'])) * $pxPt;
+            $heightPt = (3508 + 2 * intval($data['border']) + 2 * intval($data['pageMargin'])) * $pxPt;
+
+            $paper = [0, 0, $widthPt, $heightPt];
+        } else {
+            $data['pageMargin'] = '0';
+            $paper = 'A4';
+        }
+
+        $html = $this->renderer->fetch("/pdf/booklet/recipe.phtml", $data);
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper($paper, 'landscape');
+
+        // Renderizamos el HTML como PDF
+        $dompdf->render();
+
+        $outputFile = $recipeId . '_' . date('YmdHis') . '.pdf';
+
+        if ($save) {
+            $fileDAO = new FileDAO($this->pdo);
+            $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
+
+            $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
+            $recipeFileDAO->save(['recipe_id' => $recipeId['id'], 'file_id' => $fileId]);
+
+            $directory = $this->params->getParam('FOLDER_PRIVATE');
+            FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
+
+            if ($fileType == FileType::BookletFileCMYK) {
+                $filePath = FileUtils::getLocalFilepath($outputFile, $directory . DIRECTORY_SEPARATOR . $fileType, $fileId, 'file');
+                $filePathTmp = $filePath . '_temp.pdf';
+
+                $gsCommand = 'gs -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sDEVICE=pdfwrite -sProcessColorModel=DeviceCMYK -sColorConversionStrategy=CMYK -sOutputFile="' . $filePathTmp . '" "' . $filePath . '"';
+                exec($gsCommand);
+                if (file_exists($filePathTmp)) {
+                    rename($filePathTmp, $filePath);
+                }
+            }
+        } else {
+            $dompdf->stream($outputFile, ["Attachment" => '0']);
+        }
+    }
+
+
+    /*
+
     public function recipePdf($recipeId, $save) {
         $recipeDAO = new RecipeDAO($this->pdo);
         $recipe = $recipeDAO->getFullById($recipeId);
@@ -153,10 +230,10 @@ class PdfService extends BaseService {
 
         $dompdf = new Dompdf($options);
 
-        $html = "test";
+         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", []);
         $dompdf->loadHtml($html);
 
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
 
         // Renderizamos el HTML como PDF
         $dompdf->render();
@@ -177,5 +254,5 @@ class PdfService extends BaseService {
         } else {
             $dompdf->stream($outputFile, ["Attachment" => '0']);
         }
-    }
+    }*/
 }
