@@ -20,7 +20,6 @@
 
         body {
             font-family: Poppins, sans-serif;
-            background-image: url(/app/img/recipe.jpg);
         }
 
         .type-CMYK .visible-area {
@@ -111,76 +110,150 @@
             width: 100%;
             height: 100%;
             position: relative;
-            background-color: red;
+            background-color: yellow;
         }
 
-        .container>.div-1 {
+        .container>.col-left {
             position: absolute;
-            left: -500px;
-            padding-left: 500px;
+            left: -50px;
+            padding-left: 50px;
             right: 50%;
-            height: 900px;
-            background-color: green;
+            padding-bottom: 50px;
+            padding-right: 40px;
+
         }
 
-        .container>.div-2 {
+        .container>.col-right {
             position: absolute;
-            right: -500px;
-            padding-right: 500px;
+            right: -50px;
             left: 50%;
-            height: 900px;
-            background-color: orange;
+            margin-left: 40px;
+            padding-bottom: 50px;
         }
 
-        .container>.div-1>div,
-        .container>.div-2>div {
+        .container>.col-left>div,
+        .container>.col-right>div {
             width: 100%;
-            height: 100%;
-            background-color: white;
-            opacity: 0.2;
+        }
+
+        .container>.col-left>.group-title {
+            margin-left: -50px;
+            padding-left: 50px;
+            background-color: #793b97;
+            border: 50px;
+            border-radius: 50px;
+            height: 60px;
+            z-index: 4;
+        }
+
+        .container>.col-left>.group-title img {
+            position: absolute;
+            left: 75px;
+            top: -30px;
+            width: 130px;
+        }
+
+        .container>.col-left>.group-title .title {
+            font-size: 36px;
+            color: white;
+            text-transform: uppercase;
+            display: block;
+            text-align: left;
+            margin-left: 180px;
+            padding-top: 6px;
+        }
+
+        .container>.col-left>.group-content {
+            padding-left: 150px;
+            width: calc(100% - 20px);
+        }
+
+        .container>.col-right>.group-content {
+            padding-right: 140px;
+            padding-left: 30px;
+            margin-left: 20px;
+        }
+
+
+        .container>.col-right>.group-title {
+            margin-right: -50px;
+            background-color: #f58e3a;
+            border: 50px;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+            height: 60px;
+            z-index: 1;
+        }
+
+        .container>.col-right>.group-title img {
+            position: absolute;
+            right: 65px;
+            top: -30px;
+            width: 130px;
+        }
+
+        .container>.col-right>.group-title .title {
+            font-size: 36px;
+            color: white;
+            text-transform: uppercase;
+            display: block;
+            text-align: right;
+            padding-right: 220px;
+            padding-top: 6px;
         }
 
         .header-top {
             background-color: #164070;
             width: 100%;
+            height: 210px;
+            margin-left: -50px;
+            padding-right: 100px;
+            margin-bottom: 30px;
+            margin-top: -50px;
+            padding-top: 50px;
         }
 
         .header-top>div {
             padding: 40px;
         }
 
-        .header-logo,
-        .header-offer,
-        .header-patient {
-            display: inline-block;
-            vertical-align: top;
+        .header-logo {
+            position: absolute;
+            left: 150px;
+            top: 50px;
+            width: 340px;
         }
 
-        .header-logo {
-            width: 50px;
-            height: 50px;
-            background-color: white;
+        .header-logo img,
+        .header-offer img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .header-offer {
-            width: 220px;
-            height: 30px;
-            background-color: red;
-            margin: 10px 20px 0 20px;
+            position: absolute;
+            left: 640px;
+            top: 80px;
+            width: 860px;
         }
 
-        .header-patient {}
+        .header-patient {
+            position: absolute;
+            right: 120px;
+            top: 80px;
+        }
 
         .patient-row {
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             white-space: nowrap;
         }
 
         .patient-label {
             display: inline-block;
-            width: 360px;
+            width: 350px;
             color: white;
-            font-size: 40px;
+            font-size: 36px;
             font-weight: 700;
             vertical-align: middle;
         }
@@ -189,22 +262,230 @@
             display: inline-block;
             background-color: white;
             border-radius: 38px;
-            height: 80px;
-            width: 1000px;
+            height: 76px;
+            width: 1300px;
             vertical-align: middle;
+            position: relative;
+            left: -28px;
+        }
+
+        .design {
+            position: absolute;
+            opacity: 0.2;
+            top: 0;
+            left: 0;
+            width: 3500px;
+            margin-left: 140px;
+            top: 140px;
+        }
+
+        .group-content {
+            display: table;
+            width: 100%;
+            color: #164070;
+            margin-top: 20px;
+            font-size: 28px;
+            padding-top: 50px;
+            margin-top: -20px;
+            padding-bottom: 16px;
+        }
+
+        .bottom-dotted-line {
+            border-bottom: 5px dotted #164070;
+            width: calc(100% + 100px);
+            margin-top: -20px;
+        }
+
+        .col-right .bottom-dotted-line {
+            width: 100%;
+            margin-left: 40px;
+        }
+
+        .col-left .bottom-dotted-line {
+            margin-left: -50px;
+        }
+
+        .group-block {
+            display: table-cell;
+        }
+
+        .info-column {
+            width: 50%;
+        }
+
+        .image-column {
+            width: 35%;
+        }
+
+        .qr-column {
+            width: 15%;
+        }
+
+        .col-right .group-content .qr-column {
+            transform: translateX(-42px);
+        }
+
+        .product-subtitle {
+            margin: 35px 0;
+            font-size: 36px;
+        }
+
+        .product-title {
+            max-height: 50px;
+        }
+
+        .product-title-image-container {
+            width: 645px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .product-title-image-container img {
+            max-width: 100%;
+            max-height: 100px;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+
+        .product-treatment {
+            font-weight: 700;
+            border: 3px solid #164070;
+            border-radius: 12px;
+            width: 145px;
+            font-size: 19px;
+            display: inline;
+            padding: 7px 5px;
+            position: absolute;
+            text-align: center;
+            margin-top: -5px;
+        }
+
+        .group-reference {
+            position: relative;
+            top: -20px;
+            left: 5px;
+        }
+
+        .group-reference.columns {
+            display: table;
+            width: 100%;
+        }
+
+        .group-reference.columns .column {
+            display: table-cell;
+            vertical-align: top;
+            padding-right: 20px;
+            width: 50%;
+        }
+
+        .group-reference .reference {
+            font-weight: 700;
+        }
+
+        .group-reference.columns .column div {
+            margin-bottom: 1px;
+        }
+
+        .reference-row {
+            display: table;
+            margin-bottom: 16px;
+        }
+
+        .radio-cell,
+        .text-cell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+
+        .reference {
+            font-weight: 700;
+            margin-left: 16px;
+        }
+
+        .text-cell .reference-name {
+            font-size: 24px;
+            margin-left: 0px;
+            letter-spacing: 0;
+        }
+
+        .radio-cell {
+            padding-right: 12px;
+            width: 26px;
+        }
+
+        .radio-circle {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 2.5px solid #164070;
+            border-radius: 50%;
+        }
+
+
+        .qr-column {
+            vertical-align: top;
+            text-align: center;
+        }
+
+        .qr-column img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-qr img {
+            width: 160px;
+            position: relative;
+            top: -12px;
+            left: 10px;
+        }
+
+        .product-frequency img {
+            width: 140px;
+            position: relative;
+            top: -12px;
+            left: 12px;
+        }
+
+        .group-block.image-column {
+            vertical-align: top;
+            text-align: center;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            width: auto;
+            height: 220px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .product-image {
+            max-width: 400px;
+            margin: 0 auto;
+            display: inline-block;
+            vertical-align: top;
         }
     </style>
 </head>
 
 <body class="type-<?php echo $type ?>">
+
+    <img src="<?php echo $recipe['design'] ?>" class="design">
+
     <?php for ($page = array_key_first($recipe['pages']); $page <= array_key_last($recipe['pages']); $page++): ?>
         <div class="page page-<?php echo $page ?>">
             <div class="visible-area">
                 <div class="container">
                     <div class="header-top">
                         <div>
-                            <div class="header-logo"></div>
-                            <div class="header-offer"></div>
+                            <div class="header-logo">
+                                <img src="<?php echo $recipe['logo-kin'] ?>">
+                            </div>
+                            <div class="header-offer">
+                                <img src="<?php echo $recipe['mas-es'] ?>">
+                            </div>
                             <div class="header-patient">
                                 <div class="patient-row">
                                     <div class="patient-row">
@@ -220,14 +501,119 @@
                         </div>
                     </div>
 
-                    <div class="div-1">
-                        <div>Test</div>
+                    <div class="col-left">
+                        <div class="group-title">
+                            <img src="<?php echo $recipe['product_localized_icon_es'] ?>">
+                            <div class="title">Cuidado <b>Localizado</b></div>
+                        </div>
+                        <div class="group-label" style="background-color: #fff9f5; padding-left: 150px; width: calc(100% - 170px); z-index: 3;">
+                            <div>
+                                <span style="display:inline-block; font-size: 26px; margin-top: 8px; color:#164070; font-weight: 700; padding: 0;">TÍTULO</span>
+                                <div style="height: 8px; background-color: red; margin-left: -200px; width: calc(100% + 180px); margin-top: -14px;"></div>
+                            </div>
+                        </div>
+                        <div class="group-content" style="background-color: #fff9f5;">
+                            <div class="group-block info-column">
+                                <div class="product-title">
+                                    <div class="product-title-image-container">
+                                        <img src="<?php echo $recipe['product_title'] ?>">
+                                    </div>
+                                    <div class="product-treatment">1-2 SEMANAS</div>
+                                </div>
+                                <div class="product-subtitle">
+                                    Clorhexidina DG 0,20% + Ácido Hialurónico 1%
+                                </div>
+                                <div class="group-reference columns">
+                                    <?php foreach ($recipe['referenceChunks'] as $col): ?>
+                                        <div class="column">
+                                            <?php foreach ($col as $ref): ?>
+                                                <div class="reference-row">
+                                                    <span class="radio-cell">
+                                                        <span class="radio-circle"></span>
+                                                    </span>
+                                                    <span class="text-cell">
+                                                        <span class="reference"><?= $ref['code'] ?></span> <span class="reference-name"><?= $ref['name'] ?> </span>
+                                                    </span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+
+                            </div>
+                            <div class="group-block image-column">
+                                <div class="product-image">
+                                    <img src="<?php echo $recipe['product_image'] ?>">
+                                </div>
+                            </div>
+                            <div class="group-block qr-column">
+                                <div class="product-qr">
+                                    <img src="<?php echo $recipe['product_qr'] ?>">
+                                </div>
+                                <div class="product-frequency">
+                                    <img src="<?php echo $recipe['product_frequency'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-dotted-line"></div>
                     </div>
-                    <div class="div-2">
-                        <div>Test</div>
+
+
+                    <div class="col-right">
+                        <div class="group-title">
+                            <img src="<?php echo $recipe['product_localized_icon_es'] ?>">
+                            <div class="title">Cuidado <b>DIARIO</b></div>
+
+                        </div>
+                        <div class="group-content" style="background-color: #fff9f5;">
+                            <div class="group-block info-column">
+                                <div class="product-title">
+                                    <div class="product-title-image-container">
+                                        <img src="<?php echo $recipe['product_title'] ?>">
+                                    </div>
+                                    <div class="product-treatment">1-2 SEMANAS</div>
+                                </div>
+                                <div class="product-subtitle">
+                                    Clorhexidina DG 0,20% + Ácido Hialurónico 1%
+                                </div>
+                                <div class="group-reference columns">
+                                    <?php foreach ($recipe['referenceChunks'] as $col): ?>
+                                        <div class="column">
+                                            <?php foreach ($col as $ref): ?>
+                                                <div class="reference-row">
+                                                    <span class="radio-cell">
+                                                        <span class="radio-circle"></span>
+                                                    </span>
+                                                    <span class="text-cell">
+                                                        <span class="reference"><?= $ref['code'] ?></span> <span class="reference-name"><?= $ref['name'] ?> </span>
+                                                    </span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <div class="group-block image-column">
+                                <div class="product-image">
+                                    <img src="<?php echo $recipe['product_image'] ?>">
+                                </div>
+                            </div>
+                            <div class="group-block qr-column">
+                                <div class="product-qr">
+                                    <img src="<?php echo $recipe['product_qr'] ?>">
+                                </div>
+                                <div class="product-frequency">
+                                    <img src="<?php echo $recipe['product_frequency'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-dotted-line"></div>
                     </div>
                 </div>
             </div>
+
+
+
             <span class="cut-mark top-left"></span>
             <span class="cut-mark top-right"></span>
             <span class="cut-mark bottom-left"></span>
@@ -236,6 +622,7 @@
             <span class="cut-mark left-bottom"></span>
             <span class="cut-mark right-top"></span>
             <span class="cut-mark right-bottom"></span>
+        </div>
         </div>
     <?php endfor; ?>
 </body>
