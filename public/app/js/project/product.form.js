@@ -19,6 +19,20 @@ class ProductForm {
                 mForm.find("[name='market_ids[]']").val(data.market_ids).change();
                 mForm.find("[name='slug']").val(data.slug);
 
+                mForm.find("[name='subtitle_es']").val(data.subtitle_es);
+                mForm.find("[name='subtitle_en']").val(data.subtitle_en);
+                mForm.find("[name='subtitle_fr']").val(data.subtitle_fr);
+                mForm.find("[name='periodicity_es']").val(data.periodicity_es);
+                mForm.find("[name='periodicity_en']").val(data.periodicity_en);
+                mForm.find("[name='periodicity_fr']").val(data.periodicity_fr);
+
+                $('#logo_es input[type="file"]').setImageUploaded('/app/image/logo_es/' + data.id + addDateUpdatedTimestampParam(data), false);
+                $('#photo_es input[type="file"]').setImageUploaded('/app/image/photo_es/' + data.id + addDateUpdatedTimestampParam(data), false);
+                $('#logo_fr input[type="file"]').setImageUploaded('/app/image/logo_fr/' + data.id + addDateUpdatedTimestampParam(data), false);
+                $('#photo_fr input[type="file"]').setImageUploaded('/app/image/photo_fr/' + data.id + addDateUpdatedTimestampParam(data), false);
+                $('#logo_en input[type="file"]').setImageUploaded('/app/image/logo_en/' + data.id + addDateUpdatedTimestampParam(data), false);
+                $('#photo_en input[type="file"]').setImageUploaded('/app/image/photo_en/' + data.id + addDateUpdatedTimestampParam(data), false);
+
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
 
