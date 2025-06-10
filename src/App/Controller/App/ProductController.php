@@ -85,7 +85,7 @@ class ProductController extends BaseController {
             throw new AuthException();
         }
 
-        if(!$this->getDAO()->canDeleteProduct($formData['id'])) {
+        if (!$this->getDAO()->canDeleteProduct($formData['id'])) {
             $this->getDAO()->updateSingleField($formData['id'], 'date_deleted', date('Y-m-d H:i:s'));
             return true;
         }
@@ -126,6 +126,14 @@ class ProductController extends BaseController {
         $this->saveFile($request, $formData['id'], 'image_fr_2', 'image_fr_2', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'image_fr_3', 'image_fr_3', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'image_fr_6', 'image_fr_6', FileType::ProductImage);
+
+        $this->saveFile($request, $formData['id'], 'logo_es', 'logo_es', FileType::ProductImage);
+        $this->saveFile($request, $formData['id'], 'logo_en', 'logo_en', FileType::ProductImage);
+        $this->saveFile($request, $formData['id'], 'logo_fr', 'logo_fr', FileType::ProductImage);
+
+        $this->saveFile($request, $formData['id'], 'photo_es', 'photo_es', FileType::ProductImage);
+        $this->saveFile($request, $formData['id'], 'photo_en', 'photo_en', FileType::ProductImage);
+        $this->saveFile($request, $formData['id'], 'photo_fr', 'photo_fr', FileType::ProductImage);
     }
 
     public function image(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {

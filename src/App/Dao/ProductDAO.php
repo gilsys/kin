@@ -44,7 +44,13 @@ class ProductDAO extends BaseDAO {
                 }
             ],
             ['db' => 'slug', 'dt' => 'slug'],
-            ['db' => 'product_status', 'dt' => 'product_status', 'exact' => true]
+            ['db' => 'product_status', 'dt' => 'product_status', 'exact' => true],
+            ['db' => 'subtitle_es', 'dt' => 'subtitle_es'],
+            ['db' => 'subtitle_en', 'dt' => 'subtitle_en'],
+            ['db' => 'subtitle_fr', 'dt' => 'subtitle_fr'],
+            ['db' => 'periodicity_es', 'dt' => 'periodicity_es'],
+            ['db' => 'periodicity_en', 'dt' => 'periodicity_en'],
+            ['db' => 'periodicity_fr', 'dt' => 'periodicity_fr']
         ];
 
         $showDeleted = !empty($_POST['columns'][8]['search']['value']) && $_POST['columns'][8]['search']['value'] == ProductStatus::Deleted;
@@ -57,6 +63,12 @@ class ProductDAO extends BaseDAO {
                 p.date_created,
                 p.date_updated,
                 p.slug,
+                p.subtitle_es,
+                p.subtitle_en,
+                p.subtitle_fr,
+                p.periodicity_es,
+                p.periodicity_en,
+                p.periodicity_fr,
                 GROUP_CONCAT(m.name ORDER BY m.name ASC SEPARATOR "#|@") as market_names,
                 GROUP_CONCAT(m.color ORDER BY m.name ASC SEPARATOR "|") as market_colors,
                 CONCAT("|", GROUP_CONCAT(m.id ORDER BY m.name ASC SEPARATOR "|"), "|") as market_ids,
@@ -74,8 +86,8 @@ class ProductDAO extends BaseDAO {
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, slug) '
-            . 'VALUES (:name, :slug)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, slug, subtitle_es, subtitle_en, subtitle_fr, periodicity_es, periodicity_en, periodicity_fr) '
+            . 'VALUES (:name, :slug, :subtitle_es, :subtitle_en, :subtitle_fr, :periodicity_es, :periodicity_en, :periodicity_fr)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
@@ -83,17 +95,24 @@ class ProductDAO extends BaseDAO {
 
     public function update($data) {
         $query = 'UPDATE ' . $this->table . ' SET 
-            name = :name,
-            slug = :slug
-            WHERE id = :id';
+        name = :name,
+        slug = :slug,
+        subtitle_es = :subtitle_es,
+        subtitle_en = :subtitle_en,
+        subtitle_fr = :subtitle_fr,
+        periodicity_es = :periodicity_es,
+        periodicity_en = :periodicity_en,
+        periodicity_fr = :periodicity_fr
+        WHERE id = :id';
         $this->query($query, $data);
     }
+
 
     public function getByMarketId($marketId, $bookletId = null) {
         $data = compact('marketId');
 
         $whereSql = "";
-        if(!empty($bookletId)) {
+        if (!empty($bookletId)) {
             $whereSql .= " OR p.id IN (SELECT bp.product_id FROM st_booklet_product bp WHERE bp.booklet_id = :bookletId)";
             $data['bookletId'] = $bookletId;
         }
@@ -112,7 +131,7 @@ class ProductDAO extends BaseDAO {
         $data = [];
 
         $whereSql = "";
-        if(!empty($recipeId)) {
+        if (!empty($recipeId)) {
             $whereSql .= " OR p.id IN (SELECT JSON_UNQUOTE(JSON_EXTRACT(r.json_data, '$.product')) FROM st_recipe r WHERE r.id = :recipeId)";
             $data['recipeId'] = $recipeId;
         }
@@ -141,7 +160,7 @@ class ProductDAO extends BaseDAO {
             $excludeSql .= ' AND NOT FIND_IN_SET(' . $id . ', :excludeIds)';
             $params = ['excludeIds' => implode(',', $exclude)];
         }
-        if(!$deleted) {
+        if (!$deleted) {
             $excludeSql .= ' AND date_deleted IS NULL';
         }
         $sql = "SELECT " . $id . ", " . $name . " FROM " . $this->table . " WHERE 1 = 1" . $excludeSql . " ORDER BY " . $orderBy . " ASC";

@@ -57,75 +57,58 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <div class="card card-custom card-sticky">
-        <div class="card-header">
-            <div class="card-title">
-                <h3><?php echo __('app.language.spanish') ?></h3>
-            </div>
-        </div>
-        <div class="card-body text-center">
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_es_2', 'recommendedDimensions' => $data['recommendedDimensions'][2]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_es_3', 'recommendedDimensions' => $data['recommendedDimensions'][3]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_es_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_es_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
+    <?php foreach (['es', 'en', 'fr'] as $lang): ?>
+        <div class="card card-custom card-sticky">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3><?php echo __('app.language.' . $lang) ?></h3>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="card card-custom card-sticky">
-        <div class="card-header">
-            <div class="card-title">
-                <h3><?php echo __('app.language.english') ?></h3>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h4><?php echo __('app.product.recipe_info') ?></h4>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="col-form-label required"><?php echo __('app.product.subtitle') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.product.subtitle') ?>" name="subtitle_<?= $lang ?>" maxlength="200" />
+                        </div>
+                        <div>
+                            <label class="col-form-label required"><?php echo __('app.product.periodicity') ?></label>
+                            <div>
+                                <input type="text" class="form-control" required placeholder="<?php echo __('app.product.periodicity') ?>" name="periodicity_<?= $lang ?>" maxlength="100" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <?php $this->insert("inc/common/image_upload", ['id' => 'logo_' . $lang, 'title' => __('app.product.title'), 'inputName' => 'logo_' . $lang, 'recommendedDimensions' => ""]) ?>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <?php $this->insert("inc/common/image_upload", ['id' => 'photo_' . $lang, 'title' => __('app.product.photo'), 'inputName' => 'photo_' . $lang, 'recommendedDimensions' => ""]) ?>
+                    </div>
+                </div>
+                <div class="row mt-4 border-top pt-4">
+                    <div class="col-12 mt-8">
+                        <h4><?= __('app.product.fyler_booklet_info') ?></h4>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                        <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_' . $lang . '_2', 'recommendedDimensions' => $data['recommendedDimensions'][2]]) ?>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                        <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_' . $lang . '_3', 'recommendedDimensions' => $data['recommendedDimensions'][3]]) ?>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                        <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_' . $lang . '_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body text-center">
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_en_2', 'recommendedDimensions' => $data['recommendedDimensions'][2]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_en_3', 'recommendedDimensions' => $data['recommendedDimensions'][3]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_en_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_en_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="card card-custom card-sticky">
-        <div class="card-header">
-            <div class="card-title">
-                <h3><?php echo __('app.language.french') ?></h3>
-            </div>
-        </div>
-        <div class="card-body text-center">
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_fr_2', 'recommendedDimensions' => $data['recommendedDimensions'][2]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_fr_3', 'recommendedDimensions' => $data['recommendedDimensions'][3]]) ?>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_fr_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_fr_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    <?php endforeach; ?>
     <?php if (!empty($data['id'])): ?>
         <?php $this->insert("inc/common/dates_info") ?>
     <?php endif; ?>
