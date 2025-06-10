@@ -166,8 +166,40 @@ class PdfService extends BaseService {
             //$recipeImages[$recipeImage['file_id'] ] = $recipeImage;
         }
 
+        $references = [
+            ['code' => '193495.6', 'name' => 'PerioKIN Hyaluronic 1% Gel 30 ml'],
+            // ['code' => '155549.6', 'name' => 'KIN Medio'],
+            // ['code' => '318626.1', 'name' => 'KIN Suave'],
+            // ['code' => '318642.1', 'name' => 'KIN Extra-Suave'],
+            // ['code' => '171725.2', 'name' => 'KIN Encías'],
+            // ['code' => '335687.9', 'name' => 'KIN Postquirúrgico'],
+            // ['code' => '335695.4', 'name' => 'KIN Ortodoncia'],
+        ];
+
+        $columnCount = 2;
+        $chunks = array_chunk($references, ceil(count($references) / $columnCount));
+        $recipe['referenceChunks'] = $chunks;
+
+        //TODO: Rutes absolutes, passar idioma i ruta (privada?) correcte
+
+        // Test background
+        $recipe['design'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\recipe.jpg');
+
+        // Header assets
+        $recipe['logo-kin'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\logo-kin.svg');
+        $recipe['mas-es'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\mas-ES.svg');
+
+        // Product assets
+        $recipe['product_localized_icon_es'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\piezas-07.svg');
+        $recipe['product_title'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_product_title.png');
+        $recipe['product_image'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_product.svg');
+        $recipe['product_qr'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_qr.svg');
+        $recipe['product_frequency'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_frequency.png');
+
+
         $recipe['pages'] = [[], []];
 
+        
         $data = ['recipe' => $recipe];
 
         $data['border'] = intval($this->params->getParam('CMYK_BORDER')) . 'px';
