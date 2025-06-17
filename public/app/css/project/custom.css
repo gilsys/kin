@@ -233,16 +233,26 @@ form.data-form .json-content-form .card {
     height: 43.5px;
 } 
 
-.json-content-form [data-schematype="array"] [data-schematype="object"] .btn-group{
+.json-content-form [data-schematype="array"] [data-schematype="object"] > .btn-group{
     border-radius: 0.55rem !important;
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: 43.5px;
     margin-top: 27px;
+    position: absolute;
+    
+    position: absolute;
+    right: 10px;
+    top: -16px;
 }
 
 .json-content-form [data-schematype="array"] [data-schematype="object"]{
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
+}
+
+.json-content-form [data-schematype="array"] tr[data-schematype="object"] {
+    display: table-row;
 }
 
 
@@ -382,7 +392,7 @@ label.error{
 }
 .card-title.level-4 label,
 .card-title.level-6 label{
-    font-size: 30px;
+    font-size: 24px;
     color: var(--bs-primary);
     position: relative;
     top: 0;
@@ -402,8 +412,13 @@ label.error{
 }
 
 
-.json-content-form [data-schemapath^="root.group"] > .card-title{
+.json-content-form [data-schematype="array"] .card-title.level-2{
     display: none !important;
+}
+
+.json-content-form [data-schemapath^="root.group"] > .card-title{
+ /*   display: none !important;*/
+ /* TODO REVISAR AQUÍ*/
 }
 
 
@@ -476,3 +491,11 @@ form.data-form .json-content-form .card{
     width: 100px;
     height: 100px;
 }
+
+h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
+    top: 2px;
+}
+
+
+
+

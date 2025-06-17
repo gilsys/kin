@@ -36,22 +36,6 @@ class RecipeForm {
                     return false;
                 }
 
-                console.log("entra");
-
-
-
-                /* TODO Revisar
-                var noSelectedImages = $(form).find('#json-content-form .image-required > input[type="hidden"]').filter(function () {
-                    return $(this).val() == '';
-                }).length > 0;
-
-                if (noSelectedImages) {
-                    AdminUtils.hideLoading();
-                    showWarning(__('app.js.common.attention'), __('app.js.recipe.image_required'));
-                    return false;
-                }
-                */
-
                 if (jQuery.inArray($(form).attr('action').split('/').pop(), ['N', 'B']) === -1) {
                     localStorage.setItem('active_recipe_tab', stepper.getCurrentStepIndex());
                 }
@@ -175,18 +159,18 @@ class RecipeForm {
             "page": page,
             "type": "array",
             "title": __('app.js.common.group'),
-            "format": "grid",
-            "items": {
+            "format": "grid-strict",
+            "items": 
+            {
                 "type": "object",
                 "title": __('app.js.common.group'),
-                "format": "grid",
+                "format": "grid-strict",
 
                 "required": [
                     "group_title",
                     "products"
                 ],
-
-                "properties": {
+                "properties": {                                        
                     "icon": {
                         "title": __('app.js.group_icon'),
                         "type": "integer",
@@ -198,21 +182,23 @@ class RecipeForm {
                         }],
                         "readonly": disableEdit,
                         "options": {
-                            "grid_columns": 3,
+                            "grid_columns": 6,
                             "select2": select2IconOptions,
+                            
                             /*"inputAttributes": {
                                 "required": true
                             }*/
                         }
                     },
-
                     "image": {
                         "type": "string",
-                        "title": __('app.js.common.image'),
+                        "title": __('app.js.group_icon.image_override'),
                         "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
                         "format": "url",
                         "readonly": disableEdit,
+                        
                         "options": {
+                            "grid_columns": 6,
                             "upload": {
                                 "title": __('app.js.common.upload_image'),
                                 "auto_upload": true,
@@ -238,10 +224,11 @@ class RecipeForm {
                         "type": "string",
                         "readonly": disableEdit,
                         "options": {
-                            "grid_columns": 6,
+                            "grid_columns": 9,
                             "inputAttributes": {
                                 "required": true
-                            }
+                            },
+                            
                         }
                     },
                     "title_bg_color": {
@@ -250,7 +237,8 @@ class RecipeForm {
                         "format": "color",
                         "readonly": disableEdit,
                         "options": {
-                            "grid_columns": 2,
+                            "grid_columns": 3,
+                            
                             /*"inputAttributes": {
                                 "required": true
                             }*/
@@ -262,7 +250,8 @@ class RecipeForm {
                         "format": "color",
                         "readonly": disableEdit,
                         "options": {
-                            "grid_columns": 2,
+                            "grid_columns": 3,
+                           
                             /*"inputAttributes": {
                                 "required": true
                             }*/
@@ -274,7 +263,7 @@ class RecipeForm {
                         "items": {
                             "type": "object",
                             "title": __('app.entity.product'),
-                            "format": "grid",
+                            "format": "grid-strict",
                             "properties": {
                                 "product": {
                                     "title": __('app.entity.product'),
@@ -287,7 +276,7 @@ class RecipeForm {
                                     }],
                                     "readonly": disableEdit,
                                     "options": {
-                                        "grid_columns": 4,
+                                        "grid_columns": 6,
                                         "select2": select2options,
                                         "inputAttributes": {
                                             "required": true
@@ -296,11 +285,12 @@ class RecipeForm {
                                 },
                                 "product_image": {
                                     "type": "string",
-                                    "title": __('app.js.common.product_image'),
+                                    "title": __('app.js.common.product_image_override'),
                                     "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
                                     "format": "url",
                                     "readonly": disableEdit,
                                     "options": {
+                                        "grid_columns": 12,
                                         "upload": {
                                             "title": __('app.js.common.upload_image'),
                                             "auto_upload": true,
@@ -308,10 +298,7 @@ class RecipeForm {
                                         },
                                         "containerAttributes": {
                                             "class": "col-md-12 image-required"
-                                        },
-                                        /*"inputAttributes": {
-                                            "required": true
-                                        }*/
+                                        }
                                     },
                                     "links": [
                                         {
@@ -322,34 +309,23 @@ class RecipeForm {
                                     ]
                                 },
 
-
-
-                                "columns": {
-                                    "type": "integer",
-                                    "title": __('app.js.columns'),
-                                    "enum": [1, 2],
+                                "subtitle": {
+                                    "type": "string",
+                                    "title": __('app.js.product.subtitle'),
                                     "readonly": disableEdit,
                                     "options": {
-                                        "grid_columns": 2,
+                                        "grid_columns": 6
                                     }
                                 },
-                                "qr": {
+                                "periodicity": {
                                     "type": "string",
-                                    "title": __('app.js.qr_code'),
+                                    "title": __('app.js.product.periodicity'),
                                     "readonly": disableEdit,
                                     "options": {
-                                        "grid_columns": 3,
+                                        "grid_columns": 6
                                     }
                                 },
 
-                                "treatment": {
-                                    "type": "string",
-                                    "title": __('app.js.treatment'),
-                                    // "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 2
-                                    }
-                                },
                                 "show_frequency_icons": {
                                     "type": "boolean",
                                     "format": "checkbox",
@@ -360,40 +336,43 @@ class RecipeForm {
                                         "grid_columns": 6
                                     }
                                 },
-                                "group_title": {
+                                "qr": {
                                     "type": "string",
-                                    "title": __('app.js.group_title'),
+                                    "title": __('app.js.qr_code'),
                                     "readonly": disableEdit,
                                     "options": {
                                         "grid_columns": 6,
                                     }
                                 },
+
+
+
+                                "group_title": {
+                                    "type": "string",
+                                    "title": __('app.js.product.group_title'),
+                                    "readonly": disableEdit,
+                                    "options": {
+                                        "grid_columns": 9,
+                                    }
+                                },
                                 "group_line_color": {
                                     "type": "string",
-                                    "title": __('app.js.group_line_color'),
+                                    "title": __('app.js.product.group_line_color'),
                                     "format": "color",
                                     "readonly": disableEdit,
                                     "options": {
-                                        "grid_columns": 6
+                                        "grid_columns": 3
                                     }
                                 },
                                 "subproducts": {
                                     "type": "array",
                                     "title": __('app.entity.subproducts'),
-                                    "format": "grid",
+                                    "format": "table",
                                     "items": {
                                         "title": __('app.entity.subproduct'),
                                         "type": "object",
-                                        "properties": {
-                                            "active": {
-                                                "type": "boolean",
-                                                "format": "checkbox",
-                                                "default": true,
-                                                "options": {
-                                                    "hidden": !disableEdit
-                                                }
-                                            },
 
+                                        "properties": {
                                             "id": {
                                                 "title": __('app.entity.subproduct'),
                                                 "type": "integer",
@@ -409,20 +388,15 @@ class RecipeForm {
                                                     "select2": select2options,
                                                     "inputAttributes": {
                                                         "required": true
-                                                    }
+                                                    },
+
                                                 }
                                             },
                                             "subproduct_name": {
                                                 "type": "string",
                                                 "title": __('app.js.subproduct_name'),
                                                 "readonly": disableEdit,
-                                                "options": {
-                                                    "grid_columns": 6,
-                                                    /*"inputAttributes": {
-                                                        "required": false
-                                                    }*/
-                                                }
-                                            },
+                                            }
                                         }
                                     },
                                     "options": {
@@ -434,9 +408,19 @@ class RecipeForm {
                                         "disable_array_reorder": disableEdit
                                     }
                                 },
+                                "columns": {
+                                    "type": "integer",
+                                    "title": __('app.js.product.reference_columns'),
+                                    "enum": [1, 2],
+                                    "readonly": disableEdit,
+                                    "options": {
+                                        "grid_columns": 12,
+                                    }
+                                },
                             }
                         },
                         "options": {
+                            
                             "disable_array_add": disableEdit,
                             "disable_array_delete": disableEdit,
                             "disable_array_delete_all_rows": disableEdit,
@@ -454,6 +438,8 @@ class RecipeForm {
                 "disable_array_reorder": disableEdit
             }
         };
+
+    
 
         let p = {};
         p['group' + page] = properties;
@@ -570,7 +556,7 @@ class RecipeForm {
 
             this.products.products.unshift({ id: "", name: __('app.js.common.select_value') });
             this.products.subproducts.unshift({ id: "", name: __('app.js.common.select_value') });
-            
+
             if (this.jsonData != null) {
 
                 // Init JSONEditor callbacks
