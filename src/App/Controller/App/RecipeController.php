@@ -132,7 +132,6 @@ class RecipeController extends BaseController {
             $old = $this->getDAO()->getById($formData['id']);
             $formData['qr_language_id'] = $old['qr_language_id'];
             $formData['main_language_id'] = $old['main_language_id'];
-            $formData['recipe_layout_id'] = $old['recipe_layout_id'];
         }
 
         if (empty($formData['id'])) {
