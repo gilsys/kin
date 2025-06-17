@@ -35,10 +35,10 @@ class RecipeForm {
                     showWarning(__('app.js.common.attention'), __('app.js.recipe.subproduct_already_selected_submit'));
                     return false;
                 }
-                
+
                 console.log("entra");
 
-                
+
 
                 /* TODO Revisar
                 var noSelectedImages = $(form).find('#json-content-form .image-required > input[type="hidden"]').filter(function () {
@@ -139,6 +139,38 @@ class RecipeForm {
             "placeholder": __('app.js.common.select_value')
         };
 
+        var lang = $('[name="main_language_id"]').val() || 'es';
+
+        var iconList = [
+            { id: "", name: __('app.js.common.select_value') }
+        ];
+        for (var i = 1; i <= 8; i++) {
+            iconList.push({ id: i, name: `/app/img/pdf/ico${i}-${lang}.svg` });
+        }
+
+        const select2IconOptions = {
+            language: __('app.js.lang.code'),
+            placeholder: __('app.js.common.select_value'),
+            templateResult: function (data) {
+                console.log(data.id);
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }
+                return $('<span><img class="select2-logo-image" src="' + data.text + '" /></span>');
+            },
+            templateSelection: function (data) {
+                console.log(data.id);
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }
+                return $('<span><img class="select2-logo-image" src="' + data.text + '" /></span>');
+            },
+            escapeMarkup: function (m) {
+                return m;
+            },
+        };
+
+
         var properties = {
             "page": page,
             "type": "array",
@@ -160,18 +192,14 @@ class RecipeForm {
                         "type": "integer",
                         "format": "select2",
                         "enumSource": [{
-                            "source": [
-                                { id: 1, name: "Icono 1" },
-                                { id: 2, name: "Icono 2" },
-                                { id: 3, name: "Icono 3" }
-                            ],
+                            "source": iconList,
                             "title": "enumTitle",
                             "value": "enumValue"
                         }],
                         "readonly": disableEdit,
                         "options": {
-                            "grid_columns": 6,
-                            "select2": select2options,
+                            "grid_columns": 3,
+                            "select2": select2IconOptions,
                             /*"inputAttributes": {
                                 "required": true
                             }*/
@@ -454,6 +482,18 @@ class RecipeForm {
                 mForm.find('#json-content-form-' + page).find('select[name*="[subproducts]"]').val('').change();
             }
 
+            // Agregar atributos data-svg-url a las opciones del select de íconos
+            setTimeout(() => {
+                mForm.find('#json-content-form-' + page + ' select[name$="[icon]"] option').each(function () {
+                    const id = parseInt(this.value);
+                    const icon = iconList.find(i => i.id === id);
+                    if (icon) {
+                        $(this).attr('data-svg-url', icon.svgUrl);
+                    }
+                });
+                mForm.find('#json-content-form-' + page + ' select[name$="[icon]"]').trigger('change.select2');
+            }, 150);
+
             that.jsonEditor[page].on('addRow', editor => {
                 $(editor.container).find('select[name*="[subproducts]"]').val('').change();
             });
@@ -507,13 +547,13 @@ class RecipeForm {
                         $(this).trigger('click');
                     });
                 });
-                
+
                 // TODO rellenar información base de producto, con placeholders o similar
                 $(this).closest('.card').find('.product-thumbnails').remove();
-                $(this).append('<div class="product-thumbnails"><img src="/app/image/logo_es/' + $(this).val()+ '" /><img src="/app/image/photo_es/' + $(this).val()+ '" /></div>');
-                
+                $(this).append('<div class="product-thumbnails"><img src="/app/image/logo_es/' + $(this).val() + '" /><img src="/app/image/photo_es/' + $(this).val() + '" /></div>');
+
             }).addClass('change-init');
-            
+
             // TODO hacer algo similar con el select de categorías
         });
     }
@@ -528,15 +568,15 @@ class RecipeForm {
         $.post('/app/recipe/get_products', params, data => {
             this.products = data;
 
+            this.products.products.unshift({ id: "", name: __('app.js.common.select_value') });
+            this.products.subproducts.unshift({ id: "", name: __('app.js.common.select_value') });
+            
             if (this.jsonData != null) {
-                
+
                 // Init JSONEditor callbacks
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
                         try {
-                            console.log("jseditor");
-                            console.log(jseditor.path);
-                            
                             const pathStr = jseditor.path;
                             const path = pathStr.split('.');
                             const groupIndex = parseInt(path[2]);   // 'group.0' → 0
