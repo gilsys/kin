@@ -245,9 +245,6 @@ form.data-form .json-content-form .card {
     justify-content: space-between;
 }
 
-.json-content-form:not(.disable-edit) [data-schematype="array"] [data-schematype="object"] .card-body{
-    max-width: calc(100% - 160px);
-}
 
 .json-content-form [data-schematype="array"] [data-schematype="object"] .card-body + div,
 .json-content-form .json-editor-btntype-delete span{
@@ -293,12 +290,7 @@ form.data-form .json-content-form .card {
     margin-top: 27px;
 }
 
-.json-content-form [data-schematype="array"] [data-schematype="object"] .card-body,
-form.data-form .json-content-form .card{
-    background-color: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-}
+
 
 .json-content-form [data-schemapath="root"] .card-body{
     padding: 0;
@@ -369,4 +361,113 @@ label.error{
     .app-header .btn-back-wp {
         margin-left: -14px;
     }
+}
+
+
+
+.json-content-form .card > div{
+   /* border: 1px solid red;*/
+}
+
+
+.card-title .level-3 > label{
+    display: none;
+}
+
+
+
+.card-title.level-4 button,
+.card-title.level-6 button{
+    display: none;
+}
+.card-title.level-4 label,
+.card-title.level-6 label{
+    font-size: 30px;
+    color: var(--bs-primary);
+    position: relative;
+    top: 0;
+    left: 0;    
+}
+
+.card-title.level-4,
+.card-title.level-6{
+    height: 30px;
+}
+
+
+
+.json-content-form [data-schematype="array"] .card-title{
+    display: block !important;
+    width: 100px;
+}
+
+
+.json-content-form [data-schemapath^="root.group"] > .card-title{
+    display: none !important;
+}
+
+
+.json-content-form [data-schematype="array"] [data-schematype="object"] .card-body,
+form.data-form .json-content-form .card{
+    /*background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;*/
+
+}
+
+
+.json-content-form:not(.disable-edit) [data-schematype="array"] [data-schematype="object"] .card-body {
+    max-width: calc(100% - 10px);
+    width: 100%;
+}
+
+.json-content-form [data-schematype="array"] [data-schematype="object"] > .card-body {
+    border: 2px solid rgb(0, 58, 120);
+    padding: 30px !important;
+    margin-left: 0px !important;
+    margin-right: 30px !important;
+    margin-bottom: 30px !important;
+    background-color: transparent;
+    background-color: rgba(0,0,0,0.02) !important;
+}
+
+
+.json-content-form .bg-light{
+    background-color: transparent !important;
+}
+
+.json-content-form .level-1 ~ .card-body,
+.json-content-form .level-2 ~ .card-body,
+.json-content-form .level-3 ~ .card-body {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.json-content-form h3 label{
+    position: absolute;
+    top: -22px;
+    left: 100px;
+}
+.json-content-form .btn-group{
+    margin: 0 !important;
+    height: auto;
+}
+
+.json-content-form .level-6 ~ .card-body,
+.json-content-form .level-4 ~ .card-body{
+    border: 0 !important;
+    background: transparent !important;
+    margin-left: 0 !important;
+}
+
+
+.json-content-form [data-schematype="array"] > .card-body{
+    border: 0 !important;
+    background-color: transparent !important;
+    margin-left: 0 !important;
+    margin-top: 30px !important
+}
+.json-content-form .form-check-label{
+    color: var(--bs-gray-800);;
+
 }

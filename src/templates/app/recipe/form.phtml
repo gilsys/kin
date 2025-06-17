@@ -125,37 +125,26 @@
                 <?php endif; ?>
             </div>
 
-            <div class="flex-column" data-kt-stepper-element="content">
-                <div class="card card-custom card-sticky">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h2><?php echo __('app.common.step_page') ?></h2>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="col-form-label required"><?php echo __('app.layout') ?></label>
-                                <div>
-                                    <select name="recipe_layout_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
-                                        <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
-                                        <?php foreach ($data['layouts'] as $layout): ?>
-                                            <option value="<?php echo $layout['id'] ?>">
-                                                <?php echo $layout['name'] ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+            <?php for ($i = 0; $i < 4; $i++): ?>
+                <div class="flex-column" data-kt-stepper-element="content">
+                    <div class="card card-custom card-sticky">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2><?php echo __('app.common.step_page') ?></h2>
                             </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="json-content-form-<?php echo $i ?>" class="json-content-form"></div>
 
-                            <div class="col-12">
-                                <div id="json-content-form" class="json-content-form"></div>
-                                <input type="hidden" name="json_data">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endfor; ?>
+            <input type="hidden" class="json-data" name="json_data">
 
             <div data-kt-stepper-element="content">
                 <div class="card card-custom card-sticky w-100">

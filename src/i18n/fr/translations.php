@@ -298,6 +298,7 @@ return [
     'app.js.common.duplicate' => 'Duplicar',
     'app.js.common.edit' => 'Editar',
     'app.js.common.form_errors' => 'Hi ha errors al formulari, reviseu les dades.',
+    'app.js.common.group' => '',
     'app.js.common.group_bg_color' => '',
     'app.js.common.image' => '',
     'app.js.common.loading' => 'Carregant...',
