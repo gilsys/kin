@@ -471,3 +471,8 @@ form.data-form .json-content-form .card{
     color: var(--bs-gray-800);;
 
 }
+
+.select2-logo-image{
+    width: 100px;
+    height: 100px;
+}
