@@ -4,17 +4,20 @@ namespace App\Service;
 
 use App\Constant\BookletType;
 use App\Constant\FileType;
+use App\Constant\Folders;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
 use App\Dao\FileDAO;
+use App\Dao\ProductDAO;
 use App\Dao\RecipeDAO;
 use App\Dao\RecipeFileDAO;
+use App\Dao\SubProductDAO;
 use App\Util\FileUtils;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
-
+use League\Plates\Template\Folder;
 
 class PdfService extends BaseService {
 
@@ -144,6 +147,54 @@ class PdfService extends BaseService {
         }
     }
 
+    private function processRecipeImages($privateBasePath, $qrLang, $lang, &$array) {
+        foreach ($array as $key => &$value) {
+            if (!empty($value['image'])) {
+                // De "value", obtener la ultima parte del path, correspondiente al nombre del archivo
+                $baseImage = basename($value['image']);
+                $imagePath = $privateBasePath . '/upload/' . $baseImage;
+                $value['image'] = FileUtils::getBase64Image($imagePath);
+            }
+
+            if (!empty($value['product_id'])) {
+                // Obtener toda la información del producto en el idioma de la receta
+                $productDAO = new ProductDAO($this->pdo);
+                $product = $productDAO->getFullById($value['product_id'], $lang);
+
+                if (!empty($value['qr'])) {
+                    $value['qr'] = $this->generateQrCode($value['qr'], '', '');
+                } else {
+                    $qrUrl = $this->params->getParam('KIN.URL');
+                    $value['qr'] = $this->generateQrCode($qrUrl, $qrLang, $product['slug']);
+                }
+
+                // Cargar imagen de disco a base64
+                $logoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/logo_' . $lang . '_' . $product['logo'] . '.' . pathinfo($product['logo_file'], PATHINFO_EXTENSION);
+                $value['logo'] = FileUtils::getBase64Image($logoFilePath);
+
+                $photoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/photo_' . $lang . '_' . $product['photo'] . '.' . pathinfo($product['photo_file'], PATHINFO_EXTENSION);
+                $value['photo'] = FileUtils::getBase64Image($photoFilePath);                
+            }
+            
+            if (!empty($value['icon'])) {
+                $iconFilePath = Folders::getPublic() . '/app/img/receipt/ico' . $value['icon'] . '-' . $lang . '.svg';
+                $value['icon'] = FileUtils::getBase64Image($iconFilePath);    
+            }
+
+            if (!empty($value['subproduct_id'])) {
+                $subproductDAO = new SubProductDAO($this->pdo);
+                $subproduct = $subproductDAO->getFullById($value['subproduct_id'], $lang);
+                $value['name'] = $subproduct['name'];
+                $value['reference'] = $subproduct['reference'];
+                $value['format'] = $subproduct['format'];
+            }
+
+            if (is_array($value)) {
+                $this->processRecipeImages($privateBasePath, $qrLang, $lang, $value);
+            }
+        }
+    }
+
     public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFileCMYK) {
         $recipeDAO = new RecipeDAO($this->pdo);
         $recipe = $recipeDAO->getFullById($recipeId);
@@ -156,15 +207,13 @@ class PdfService extends BaseService {
 
         $dompdf = new Dompdf($options);
 
-        $recipeImages = [];
+        $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], $recipe);
 
-        // TODO
-        foreach ($recipeImages as $recipeImage) {
-            // Cargar imagen de disco a base64
-            //$imagePath = $folderPrivate . '/' . FileType::ProductImage . '/image_' . $recipe['main_language_id'] . '_' . $recipeImage['display_mode'] . '_' . $recipeImage['image_id'] . '.' . pathinfo($recipeImage['file'], PATHINFO_EXTENSION);
-            //$recipeImage['image'] = FileUtils::getBase64Image($imagePath);
-            //$recipeImages[$recipeImage['file_id'] ] = $recipeImage;
-        }
+        // Obtener imagen de producto (2)
+        echo "<pre>";
+        print_r($recipe);
+        echo "</pre>";
+        exit();
 
         $references = [
             ['code' => '193495.6', 'name' => 'PerioKIN Hyaluronic 1% Gel 30 ml'],
@@ -199,7 +248,8 @@ class PdfService extends BaseService {
 
         $recipe['pages'] = [[], []];
 
-        
+print_r($recipe);
+
         $data = ['recipe' => $recipe];
 
         $data['border'] = intval($this->params->getParam('CMYK_BORDER')) . 'px';
@@ -251,42 +301,4 @@ class PdfService extends BaseService {
             $dompdf->stream($outputFile, ["Attachment" => '0']);
         }
     }
-
-
-    /*
-
-    public function recipePdf($recipeId, $save) {
-        $recipeDAO = new RecipeDAO($this->pdo);
-        $recipe = $recipeDAO->getFullById($recipeId);
-
-        $options = new Options();
-        $options->setDpi(300);
-
-        $dompdf = new Dompdf($options);
-
-         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", []);
-        $dompdf->loadHtml($html);
-
-        $dompdf->setPaper('A4', 'landscape');
-
-        // Renderizamos el HTML como PDF
-        $dompdf->render();
-
-        $outputFile = $recipeId . '_' . date('YmdHis') . '.pdf';
-
-        if ($save) {
-            $fileType = FileType::RecipeFile;
-
-            $fileDAO = new FileDAO($this->pdo);
-            $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
-
-            $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
-            $recipeFileDAO->save(['recipe_id' => $recipe['id'], 'file_id' => $fileId]);
-
-            $directory = $this->params->getParam('FOLDER_PRIVATE');
-            FileUtils::saveFile($fileType, $directory, $fileId, 'file', $outputFile, $dompdf->output());
-        } else {
-            $dompdf->stream($outputFile, ["Attachment" => '0']);
-        }
-    }*/
 }

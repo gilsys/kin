@@ -107,6 +107,23 @@ class ProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
+    public function getFullById($id, $language){
+        $sql = 'SELECT
+                subtitle_' . $language . ' as subtitle,
+                periodicity_' . $language . ' as periodicity,
+                slug,
+                logo_' . $language . ' as logo,
+                photo_' . $language . ' as photo,
+                fl.file as logo_file,
+                fp.file as photo_file
+            FROM
+                ' . $this->table . ' p     
+            LEFT JOIN st_file fl on fl.id = p.logo_' . $language . '            
+            LEFT JOIN st_file fp on fp.id = p.photo_' . $language . '            
+            WHERE p.id = :id';
+
+        return $this->fetchRecord($sql, compact('id'));
+    }
 
     public function getByMarketId($marketId, $bookletId = null) {
         $data = compact('marketId');
@@ -127,8 +144,10 @@ class ProductDAO extends BaseDAO {
         return $this->fetchAll($sql, $data);
     }
 
-    public function getProducts($recipeId = null) {
+    public function getProducts($recipeId = null, $full = false) {
         $data = [];
+
+        $fields = $full ? "p.id, p.name, p.subtitle_$full as subtitle, p.periodicity_$full as periodicity" : 'p.id, p.name';
 
         $whereSql = "";
         if (!empty($recipeId)) {
@@ -136,9 +155,9 @@ class ProductDAO extends BaseDAO {
             $data['recipeId'] = $recipeId;
         }
 
-        $sql = "SELECT p.id, p.name
+        $sql = "SELECT " . $fields . "
                 FROM " . $this->table . " p
-                INNER JOIN st_subproduct s ON s.product_id = p.id
+                
                 WHERE p.date_deleted IS NULL" . $whereSql . "
                 GROUP BY p.id
                 ORDER BY p.name ASC";
