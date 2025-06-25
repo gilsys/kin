@@ -90,8 +90,6 @@ class RecipeController extends BaseController {
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
 
-        $data['data']['layouts'] = $recipeLayoutDAO->getForSelect('id', 'name', 'custom_order');
-
         if (!empty($args['id'])) {
             $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
             $data['data']['recipeFiles'] = $recipeFileDAO->getFilesByRecipeId($args['id']);
