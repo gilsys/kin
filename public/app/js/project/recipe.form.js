@@ -129,25 +129,69 @@ class RecipeForm {
             { id: "", name: __('app.js.common.select_value') }
         ];
         for (var i = 1; i <= 8; i++) {
-            iconList.push({ id: i, name: `/app/img/pdf/ico${i}-${lang}.svg` });
+            iconList.push({ id: i, name: `/app/img/receipt/ico${i}-${lang}.svg` });
+        }
+
+        var bannerList = [
+            { id: "", name: __('app.js.common.select_value') }
+        ];
+        for (var i = 1; i <= 2; i++) {
+            bannerList.push({ id: i, name: `/app/img/receipt/banner${i}-${lang}.png` });
         }
 
         const select2IconOptions = {
             language: __('app.js.lang.code'),
             placeholder: __('app.js.common.select_value'),
             templateResult: function (data) {
-                console.log(data.id);
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
                 }
                 return $('<span><img class="select2-logo-image" src="' + data.text + '" /></span>');
             },
             templateSelection: function (data) {
-                console.log(data.id);
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
                 }
                 return $('<span><img class="select2-logo-image" src="' + data.text + '" /></span>');
+            },
+            escapeMarkup: function (m) {
+                return m;
+            },
+        };
+        const select2BannerOptions = {
+            language: __('app.js.lang.code'),
+            placeholder: __('app.js.common.select_value'),
+            templateResult: function (data) {
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }
+                return $('<span><img class="select2-banner-image" src="' + data.text + '" /></span>');
+            },
+            templateSelection: function (data) {
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }
+                return $('<span><img class="select2-banner-image" src="' + data.text + '" /></span>');
+            },
+            escapeMarkup: function (m) {
+                return m;
+            },
+        };
+        const select2ProductOptions = {
+            language: __('app.js.lang.code'),
+            placeholder: __('app.js.common.select_value'),
+            templateResult: function (data) {
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }                
+                
+                return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
+            },
+            templateSelection: function (data) {
+                if (!data.id || data.id == 0) {
+                    return $('<span>' + __('app.js.common.select_value') + '</span>');
+                }                
+                return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             escapeMarkup: function (m) {
                 return m;
@@ -160,272 +204,351 @@ class RecipeForm {
             "type": "array",
             "title": __('app.js.common.group'),
             "format": "grid-strict",
-            "items": 
+            "items":
             {
                 "type": "object",
                 "title": __('app.js.common.group'),
                 "format": "grid-strict",
+                
 
-                "required": [
-                    "group_title",
-                    "products"
-                ],
-                "properties": {                                        
-                    "icon": {
-                        "title": __('app.js.group_icon'),
-                        "type": "integer",
-                        "format": "select2",
-                        "enumSource": [{
-                            "source": iconList,
-                            "title": "enumTitle",
-                            "value": "enumValue"
-                        }],
-                        "readonly": disableEdit,
+                "properties": {
+
+                    "use_image_only": {
+                        "type": "boolean",
+                        "title": __('app.js.recipe.show_banner_only'),
+                        "format": "checkbox",
+                        "default": false,
                         "options": {
-                            "grid_columns": 6,
-                            "select2": select2IconOptions,
-                            
-                            /*"inputAttributes": {
-                                "required": true
-                            }*/
+                            "grid_columns": 12
                         }
                     },
-                    "image": {
-                        "type": "string",
-                        "title": __('app.js.group_icon.image_override'),
-                        "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
-                        "format": "url",
-                        "readonly": disableEdit,
-                        
+
+
+                    "image_block": {
+                        "type": "object",
                         "options": {
-                            "grid_columns": 6,
-                            "upload": {
-                                "title": __('app.js.common.upload_image'),
-                                "auto_upload": true,
-                                "upload_handler": "JSONEditorUploadHandler"
-                            },
-                            "containerAttributes": {
-                                "class": "col-md-12 image-required"
-                            },
-                            /*"inputAttributes": {
-                                "required": true
-                            }*/
-                        },
-                        "links": [
-                            {
-                                "href": "{{self}}",
-                                "mediaType": "image/*",
-                                "class": "uploaded-image"
+                            "dependencies": {
+                                "use_image_only": true
                             }
-                        ]
-                    },
-                    "group_title": {
-                        "title": __('app.js.group_title'),
-                        "type": "string",
-                        "readonly": disableEdit,
-                        "options": {
-                            "grid_columns": 9,
-                            "inputAttributes": {
-                                "required": true
+                        },
+                        "properties":
+                        {
+                            "banner": {
+                                "title": __('app.js.recipe.banner'),
+                                "type": "integer",
+                                "format": "select2",
+                                "enumSource": [{
+                                    "source": bannerList,
+                                    "title": "enumTitle",
+                                    "value": "enumValue"
+                                }],
+                                "readonly": disableEdit,
+                                "options": {
+                                    "grid_columns": 6,
+                                    "select2": select2BannerOptions,
+                                }
                             },
-                            
-                        }
-                    },
-                    "title_bg_color": {
-                        "title": __('app.js.common.title_color'),
-                        "type": "string",
-                        "format": "color",
-                        "readonly": disableEdit,
-                        "options": {
-                            "grid_columns": 3,
-                            
-                            /*"inputAttributes": {
-                                "required": true
-                            }*/
-                        }
-                    },
-                    "group_bg_color": {
-                        "title": __('app.js.common.group_bg_color'),
-                        "type": "string",
-                        "format": "color",
-                        "readonly": disableEdit,
-                        "options": {
-                            "grid_columns": 3,
-                           
-                            /*"inputAttributes": {
-                                "required": true
-                            }*/
-                        }
-                    },
-                    "products": {
-                        "type": "array",
-                        "title": __('app.entity.products'),
-                        "items": {
-                            "type": "object",
-                            "title": __('app.entity.product'),
-                            "format": "grid-strict",
-                            "properties": {
-                                "product": {
-                                    "title": __('app.entity.product'),
-                                    "type": "integer",
-                                    "format": "select2",
-                                    "enumSource": [{
-                                        "source": this.products.products,
-                                        "title": "enumTitle",
-                                        "value": "enumValue"
-                                    }],
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 6,
-                                        "select2": select2options,
-                                        "inputAttributes": {
-                                            "required": true
-                                        }
-                                    }
-                                },
-                                "product_image": {
-                                    "type": "string",
-                                    "title": __('app.js.common.product_image_override'),
-                                    "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
-                                    "format": "url",
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 12,
-                                        "upload": {
-                                            "title": __('app.js.common.upload_image'),
-                                            "auto_upload": true,
-                                            "upload_handler": "JSONEditorUploadHandler"
-                                        },
-                                        "containerAttributes": {
-                                            "class": "col-md-12 image-required"
-                                        }
+                            "image": {
+                                "type": "string",
+                                "title": __('app.js.recipe.banner_override'),
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                "format": "url",
+                                "readonly": disableEdit,
+
+                                "options": {
+                                    "grid_columns": 6,
+                                    "upload": {
+                                        "title": __('app.js.common.upload_image'),
+                                        "auto_upload": true,
+                                        "upload_handler": "JSONEditorUploadHandler"
                                     },
-                                    "links": [
-                                        {
-                                            "href": "{{self}}",
-                                            "mediaType": "image/*",
-                                            "class": "uploaded-image"
-                                        }
-                                    ]
-                                },
-
-                                "subtitle": {
-                                    "type": "string",
-                                    "title": __('app.js.product.subtitle'),
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 6
+                                    "containerAttributes": {
+                                        "class": "col-md-12 image-required"
                                     }
                                 },
-                                "periodicity": {
-                                    "type": "string",
-                                    "title": __('app.js.product.periodicity'),
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 6
+                                "links": [
+                                    {
+                                        "href": "{{self}}",
+                                        "mediaType": "image/*",
+                                        "class": "uploaded-image"
                                     }
-                                },
+                                ]
+                            }
+                        }
+                    },
 
-                                "show_frequency_icons": {
-                                    "type": "boolean",
-                                    "format": "checkbox",
-                                    "title": __('app.js.show_frequency_icons'),
-                                    "default": false,
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 6
+
+
+                    "formdata": {
+                        "format": "grid-strict",
+                        "options": {
+                            "dependencies": {
+                                "use_image_only": false
+                            }
+                        },
+                        "required": [
+                            "group_title",
+                            "products"
+                        ],
+                        "type": "object",
+                        "properties":
+                        {
+                            "icon": {
+                                "title": __('app.js.group_icon'),
+                                "type": "integer",
+                                "format": "select2",
+                                "enumSource": [{
+                                    "source": iconList,
+                                    "title": "enumTitle",
+                                    "value": "enumValue"
+                                }],
+                                "readonly": disableEdit,
+                                "options": {
+                                    "grid_columns": 6,
+                                    "select2": select2IconOptions,
+
+                                    /*"inputAttributes": {
+                                        "required": true
+                                    }*/
+                                }
+                            },
+                            "image": {
+                                "type": "string",
+                                "title": __('app.js.group_icon.image_override'),
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                "format": "url",
+                                "readonly": disableEdit,
+
+                                "options": {
+                                    "grid_columns": 6,
+                                    "upload": {
+                                        "title": __('app.js.common.upload_image'),
+                                        "auto_upload": true,
+                                        "upload_handler": "JSONEditorUploadHandler"
+                                    },
+                                    "containerAttributes": {
+                                        "class": "col-md-12 image-required"
+                                    },
+                                    /*"inputAttributes": {
+                                        "required": true
+                                    }*/
+                                },
+                                "links": [
+                                    {
+                                        "href": "{{self}}",
+                                        "mediaType": "image/*",
+                                        "class": "uploaded-image"
                                     }
-                                },
-                                "qr": {
-                                    "type": "string",
-                                    "title": __('app.js.qr_code'),
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 6,
-                                    }
-                                },
+                                ]
+                            },
+                            "group_title": {
+                                "title": __('app.js.group_title'),
+                                "type": "string",
+                                "readonly": disableEdit,
+                                "options": {
+                                    "grid_columns": 9,
+                                    /*"inputAttributes": {
+                                        "required": true
+                                    },*/
 
+                                }
+                            },
+                            "title_bg_color": {
+                                "title": __('app.js.common.title_color'),
+                                "type": "string",
+                                "format": "color",
+                                "readonly": disableEdit,
+                                "options": {
+                                    "grid_columns": 3,
 
+                                    /*"inputAttributes": {
+                                        "required": true
+                                    }*/
+                                }
+                            },
+                            "group_bg_color": {
+                                "title": __('app.js.common.group_bg_color'),
+                                "type": "string",
+                                "format": "color",
+                                "readonly": disableEdit,
+                                "options": {
+                                    "grid_columns": 3,
 
-                                "group_title": {
-                                    "type": "string",
-                                    "title": __('app.js.product.group_title'),
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 9,
-                                    }
-                                },
-                                "group_line_color": {
-                                    "type": "string",
-                                    "title": __('app.js.product.group_line_color'),
-                                    "format": "color",
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 3
-                                    }
-                                },
-                                "subproducts": {
-                                    "type": "array",
-                                    "title": __('app.entity.subproducts'),
-                                    "format": "table",
-                                    "items": {
-                                        "title": __('app.entity.subproduct'),
-                                        "type": "object",
-
-                                        "properties": {
-                                            "id": {
-                                                "title": __('app.entity.subproduct'),
-                                                "type": "integer",
-                                                "format": "select2",
-                                                "enumSource": [{
-                                                    "source": this.products.subproducts,
-                                                    "title": "enumTitle",
-                                                    "value": "enumValue",
-                                                    "filter": "filterSubproducts"
-                                                }],
-                                                "readonly": disableEdit,
-                                                "options": {
-                                                    "select2": select2options,
-                                                    "inputAttributes": {
-                                                        "required": true
-                                                    },
-
+                                    /*"inputAttributes": {
+                                        "required": true
+                                    }*/
+                                }
+                            },
+                            "products": {
+                                "type": "array",
+                                "title": __('app.entity.products'),
+                                "items": {
+                                    "type": "object",
+                                    "title": __('app.entity.product'),
+                                    "format": "grid-strict",
+                                    "properties": {
+                                        "product_id": {
+                                            "title": __('app.entity.product'),
+                                            "type": "integer",
+                                            "format": "select2",
+                                            "enumSource": [{
+                                                "source": this.products.products,
+                                                "title": "enumTitle",
+                                                "value": "enumValue"
+                                            }],
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6,
+                                                "select2": select2ProductOptions,
+                                                "inputAttributes": {
+                                                    "required": true
+                                                }
+                                            }
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "title": __('app.js.common.product_image_override'),
+                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                            "format": "url",
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 12,
+                                                "upload": {
+                                                    "title": __('app.js.common.upload_image'),
+                                                    "auto_upload": true,
+                                                    "upload_handler": "JSONEditorUploadHandler"
+                                                },
+                                                "containerAttributes": {
+                                                    "class": "col-md-12 image-required"
                                                 }
                                             },
-                                            "subproduct_name": {
-                                                "type": "string",
-                                                "title": __('app.js.subproduct_name'),
-                                                "readonly": disableEdit,
+                                            "links": [
+                                                {
+                                                    "href": "{{self}}",
+                                                    "mediaType": "image/*",
+                                                    "class": "uploaded-image"
+                                                }
+                                            ]
+                                        },
+
+                                        "subtitle": {
+                                            "type": "string",
+                                            "title": __('app.js.product.subtitle'),
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6
                                             }
-                                        }
-                                    },
-                                    "options": {
-                                        "grid_columns": 12,
-                                        "disable_array_add": disableEdit,
-                                        "disable_array_delete": disableEdit,
-                                        "disable_array_delete_all_rows": disableEdit,
-                                        "disable_array_delete_last_row": disableEdit,
-                                        "disable_array_reorder": disableEdit
+                                        },
+                                        "periodicity": {
+                                            "type": "string",
+                                            "title": __('app.js.product.periodicity'),
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6
+                                            }
+                                        },
+
+                                        "show_frequency_icons": {
+                                            "type": "boolean",
+                                            "format": "checkbox",
+                                            "title": __('app.js.show_frequency_icons'),
+                                            "default": false,
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6
+                                            }
+                                        },
+                                        "qr": {
+                                            "type": "string",
+                                            "title": __('app.js.qr_code'),
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6,
+                                            }
+                                        },
+
+
+
+                                        "group_title": {
+                                            "type": "string",
+                                            "title": __('app.js.product.group_title'),
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 9,
+                                            }
+                                        },
+                                        "group_line_color": {
+                                            "type": "string",
+                                            "title": __('app.js.product.group_line_color'),
+                                            "format": "color",
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 3
+                                            }
+                                        },
+                                        "subproducts": {
+                                            "type": "array",
+                                            "title": __('app.entity.subproducts'),
+                                            "format": "table",
+                                            "items": {
+                                                "title": __('app.entity.subproduct'),
+                                                "type": "object",
+
+                                                "properties": {
+                                                    "subproduct_id": {
+                                                        "title": __('app.entity.subproduct'),
+                                                        "type": "integer",
+                                                        "format": "select2",
+                                                        "enumSource": [{
+                                                            "source": this.products.subproducts,
+                                                            "title": "enumTitle",
+                                                            "value": "enumValue",
+                                                            "filter": "filterSubproducts"
+                                                        }],
+                                                        "readonly": disableEdit,
+                                                        "options": {
+                                                            "select2": select2options,
+                                                            "inputAttributes": {
+                                                                "required": true
+                                                            },
+
+                                                        }
+                                                    },
+                                                    "subproduct_name": {
+                                                        "type": "string",
+                                                        "title": __('app.js.subproduct_name'),
+                                                        "readonly": disableEdit,
+                                                    }
+                                                }
+                                            },
+                                            "options": {
+                                                "grid_columns": 12,
+                                                "disable_array_add": disableEdit,
+                                                "disable_array_delete": disableEdit,
+                                                "disable_array_delete_all_rows": disableEdit,
+                                                "disable_array_delete_last_row": disableEdit,
+                                                "disable_array_reorder": disableEdit
+                                            }
+                                        },
+                                        "columns": {
+                                            "type": "integer",
+                                            "title": __('app.js.product.reference_columns'),
+                                            "enum": [1, 2],
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 12,
+                                            }
+                                        },
                                     }
                                 },
-                                "columns": {
-                                    "type": "integer",
-                                    "title": __('app.js.product.reference_columns'),
-                                    "enum": [1, 2],
-                                    "readonly": disableEdit,
-                                    "options": {
-                                        "grid_columns": 12,
-                                    }
-                                },
+                                "options": {
+                                    "disable_array_add": disableEdit,
+                                    "disable_array_delete": disableEdit,
+                                    "disable_array_delete_all_rows": disableEdit,
+                                    "disable_array_delete_last_row": disableEdit,
+                                    "disable_array_reorder": disableEdit
+                                }
                             }
-                        },
-                        "options": {
-                            
-                            "disable_array_add": disableEdit,
-                            "disable_array_delete": disableEdit,
-                            "disable_array_delete_all_rows": disableEdit,
-                            "disable_array_delete_last_row": disableEdit,
-                            "disable_array_reorder": disableEdit
                         }
                     }
                 }
@@ -439,7 +562,7 @@ class RecipeForm {
             }
         };
 
-    
+
 
         let p = {};
         p['group' + page] = properties;
@@ -467,18 +590,6 @@ class RecipeForm {
             } else {
                 mForm.find('#json-content-form-' + page).find('select[name*="[subproducts]"]').val('').change();
             }
-
-            // Agregar atributos data-svg-url a las opciones del select de íconos
-            setTimeout(() => {
-                mForm.find('#json-content-form-' + page + ' select[name$="[icon]"] option').each(function () {
-                    const id = parseInt(this.value);
-                    const icon = iconList.find(i => i.id === id);
-                    if (icon) {
-                        $(this).attr('data-svg-url', icon.svgUrl);
-                    }
-                });
-                mForm.find('#json-content-form-' + page + ' select[name$="[icon]"]').trigger('change.select2');
-            }, 150);
 
             that.jsonEditor[page].on('addRow', editor => {
                 $(editor.container).find('select[name*="[subproducts]"]').val('').change();
@@ -526,21 +637,13 @@ class RecipeForm {
             });
 
             // Al cambiar el producto, eliminar los subproductos seleccionados
-            mForm.find('#json-content-form-' + page + ' select[name*="[product]"]:not(.change-init)').on('change', function (e) {
+            mForm.find('#json-content-form-' + page + ' select[name*="[product_id]"]:not(.change-init)').on('change', function (e) {
                 $(this).closest('.card').find('select[name*="[subproducts]"]').each(function () {
                     $(this).closest('[data-schematype="array"]').find('.json-editor-btn-delete').each(function () {
-                        console.log($(this));
                         $(this).trigger('click');
                     });
                 });
-
-                // TODO rellenar información base de producto, con placeholders o similar
-                $(this).closest('.card').find('.product-thumbnails').remove();
-                $(this).append('<div class="product-thumbnails"><img src="/app/image/logo_es/' + $(this).val() + '" /><img src="/app/image/photo_es/' + $(this).val() + '" /></div>');
-
             }).addClass('change-init');
-
-            // TODO hacer algo similar con el select de categorías
         });
     }
 
@@ -563,14 +666,16 @@ class RecipeForm {
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
                         try {
+                            
                             const pathStr = jseditor.path;
+                            console.log(pathStr);
                             const path = pathStr.split('.');
+                            console.log(path);
                             const groupIndex = parseInt(path[2]);   // 'group.0' → 0
                             const group = path[1];
-                            const productIndex = parseInt(path[4]); // 'products.0' → 0
-                            const productPath = `root.${group}.${groupIndex}.products.${productIndex}.product`;
+                            const productIndex = parseInt(path[5]); // 'products.0' → 0
+                            const productPath = `root.${group}.${groupIndex}.formdata.products.${productIndex}.product_id`;
                             const productEditor = jseditor.jsoneditor.getEditor(productPath);
-
                             return e.item.product_id == productEditor.getValue();
                         } catch (err) {
                             console.warn('Error en filterSubproducts:', err);

@@ -12,6 +12,17 @@ class SubProductDAO extends BaseDAO {
         parent::__construct($connection, 'st_subproduct');
     }
 
+    public function getFullById($id, $language){
+        $sql = 'SELECT
+                JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
+                JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
+                sp.reference
+            FROM
+                ' . $this->table . ' sp            
+            WHERE id = :id';
+        return $this->fetchRecord($sql, compact('id'));
+    }
+
     public function getRemoteDatatable($language) {
         // Columnas a tratar en el datatable
         $columns = [
@@ -91,7 +102,7 @@ class SubProductDAO extends BaseDAO {
             $data['recipeId'] = $recipeId;
         }
 
-        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, s.product_id
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.format, "$.' . $language . '")) AS format, s.product_id
                 FROM ' . $this->table . ' s
                 INNER JOIN st_product p ON p.id = s.product_id
                 WHERE p.date_deleted IS NULL' . $whereSql . '

@@ -185,10 +185,27 @@ class RecipeController extends BaseController {
         $recipeId = !empty($formData['id']) ? $formData['id'] : null;
 
         $productDAO = new ProductDAO($this->get('pdo'));
-        $data['products'] = $productDAO->getProducts($recipeId);
+        $data['products'] = $productDAO->getProducts($recipeId, $this->get('i18n')->getCurrentLang());
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
         $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang(), $recipeId);
+
+        // Iterar los productos y subproductos para montar el html en el campo name
+        $data['products'] = array_map(function ($product) {
+            $product['name'] = '<span class="product-name">' . $product['name'] . '</span>' . 
+                '<span class="product-subtitle">' . $product['subtitle'] . '</span>' .
+                '<span class="product-periodicity">' . $product['periodicity'] . '</span>';
+            return $product;
+        }, $data['products']);
+
+        // Iterar subproductos para montar el html adhoc
+        $data['subproducts'] = array_map(function ($subproduct) {
+            $subproduct['name'] = $subproduct['name'];
+            if(!empty($subproduct['format'])) {
+                $subproduct['name'] .= ' - ' . $subproduct['format'];
+            }
+            return $subproduct;
+        }, $data['subproducts']);
 
         return ResponseUtils::withJson($response, $data);
     }

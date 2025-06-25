@@ -383,15 +383,19 @@ label.error{
 .card-title .level-3 > label{
     display: none;
 }
+h3.level-4 button, 
+h3.level-4 label 
+{
+    display: none !important;
+}
 
 
-
-.card-title.level-4 button,
-.card-title.level-6 button{
+.card-title.level-5 button,
+.card-title.level-7 button{
     display: none;
 }
-.card-title.level-4 label,
-.card-title.level-6 label{
+.card-title.level-5 label,
+.card-title.level-7 label{
     font-size: 24px;
     color: var(--bs-primary);
     position: relative;
@@ -399,8 +403,8 @@ label.error{
     left: 0;    
 }
 
-.card-title.level-4,
-.card-title.level-6{
+.card-title.level-5,
+.card-title.level-7{
     height: 30px;
 }
 
@@ -468,8 +472,8 @@ form.data-form .json-content-form .card{
     height: auto;
 }
 
-.json-content-form .level-6 ~ .card-body,
-.json-content-form .level-4 ~ .card-body{
+.json-content-form .level-5 ~ .card-body,
+.json-content-form .level-7 ~ .card-body{
     border: 0 !important;
     background: transparent !important;
     margin-left: 0 !important;
@@ -482,6 +486,14 @@ form.data-form .json-content-form .card{
     margin-left: 0 !important;
     margin-top: 30px !important
 }
+
+.json-content-form .card-title.level-4 ~ .card-body{
+    background-color: transparent !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;    
+}
+
 .json-content-form .form-check-label{
     color: var(--bs-gray-800);;
 
@@ -489,6 +501,10 @@ form.data-form .json-content-form .card{
 
 .select2-logo-image{
     width: 100px;
+    height: 100px;
+}
+.select2-banner-image{
+    width: auto;
     height: 100px;
 }
 
@@ -499,3 +515,11 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 
 
 
+
+
+.product-select2-info{
+    display: inline-block
+}
+.product-select2-info span{
+    display: block;    
+}
