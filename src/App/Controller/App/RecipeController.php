@@ -190,9 +190,9 @@ class RecipeController extends BaseController {
 
         // Iterar los productos y subproductos para montar el html en el campo name
         $data['products'] = array_map(function ($product) {
-            $product['name'] = '<span class="product-name">' . $product['name'] . '</span>' . 
-                '<span class="product-subtitle">' . $product['subtitle'] . '</span>' .
-                '<span class="product-periodicity">' . $product['periodicity'] . '</span>';
+            $product['name'] = '<div class="product-name">' . $product['name'] . '</div>' . 
+                '<div class="product-subtitle">' . $product['subtitle'] . '</div>' .
+                '<div class="product-periodicity">' . $product['periodicity'] . '</div>';
             return $product;
         }, $data['products']);
 

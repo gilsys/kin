@@ -12,7 +12,10 @@ class SubProductDAO extends BaseDAO {
         parent::__construct($connection, 'st_subproduct');
     }
 
-    public function getFullById($id, $language){
+    public function getFullById($id, $language = null) {
+        if (empty($language)) {
+            return $this->getById($id);
+        }
         $sql = 'SELECT
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
                 JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
@@ -97,7 +100,7 @@ class SubProductDAO extends BaseDAO {
         $data = [];
 
         $whereSql = '';
-        if(!empty($recipeId)) {
+        if (!empty($recipeId)) {
             $whereSql .= ' OR p.id IN (SELECT JSON_UNQUOTE(JSON_EXTRACT(r.json_data, "$.product")) FROM st_recipe r WHERE r.id = :recipeId)';
             $data['recipeId'] = $recipeId;
         }
