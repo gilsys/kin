@@ -523,3 +523,10 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 .product-select2-info span{
     display: block;    
 }
+
+
+
+.json-content-form input[type="file"].form-control ~ div > div > img{
+    display: none;
+    border: 10px solid red;
+}
