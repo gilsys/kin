@@ -183,14 +183,14 @@ class RecipeForm {
             templateResult: function (data) {
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
-                }                
-                
+                }
+
                 return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             templateSelection: function (data) {
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
-                }                
+                }
                 return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             escapeMarkup: function (m) {
@@ -209,7 +209,7 @@ class RecipeForm {
                 "type": "object",
                 "title": __('app.js.common.group'),
                 "format": "grid-strict",
-                
+
 
                 "properties": {
 
@@ -584,6 +584,7 @@ class RecipeForm {
             }
         });
 
+        
         that.jsonEditor[page].on('ready', () => {
             if (firstInit && this.jsonData != null && this.jsonData[page] != null) {
                 that.jsonEditor[page].setValue(this.jsonData[page]);
@@ -666,7 +667,7 @@ class RecipeForm {
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
                         try {
-                            
+
                             const pathStr = jseditor.path;
                             console.log(pathStr);
                             const path = pathStr.split('.');
