@@ -398,7 +398,7 @@ class RecipeForm {
                                             }],
                                             "readonly": disableEdit,
                                             "options": {
-                                                "grid_columns": 6,
+                                                "grid_columns": 12,
                                                 "select2": select2ProductOptions,
                                                 "inputAttributes": {
                                                     "required": true
