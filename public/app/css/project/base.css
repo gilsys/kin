@@ -1326,6 +1326,18 @@ form.data-form .card, .form-extra-card
     pointer-events: none;
 }
 
+.form-readonly .json-content-form .json-editor-btn-add,
+.form-readonly .json-content-form .json-editor-btn-delete,
+.form-readonly .json-content-form .json-editor-btntype-move,
+.form-readonly .json-content-form .json-editor-btn-collapse,
+.form-readonly .json-content-form input[type="file"] + div{
+    display: none !important;
+}
+
+.form-readonly .json-content-form .select2-selection.select2-selection--single.form-control.form-select {
+    --bs-form-select-bg-img: none;
+}
+
 .uppy-ImageCropper {
     pointer-events: none;
 }
