@@ -20,7 +20,7 @@ class RecipeForm {
         var stepper = new KTStepper(mForm.find('#mt-recipe-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: '[data-schematype="object"][style="display: none;"] :input',
+            ignore: '.json-form-hidden :input',
             onkeyup: false,
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
@@ -225,8 +225,8 @@ class RecipeForm {
                     "image_block": {
                         "type": "object",
                         "options": {
-                            "dependencies": {
-                                "use_image_only": true
+                            "containerAttributes": {
+                                "class": "image-block-container"
                             }
                         },
                         "properties":
@@ -280,8 +280,8 @@ class RecipeForm {
                     "formdata": {
                         "format": "grid-strict",
                         "options": {
-                            "dependencies": {
-                                "use_image_only": false
+                            "containerAttributes": {
+                                "class": "formdata-container"
                             }
                         },
                         "type": "object",
@@ -582,7 +582,7 @@ class RecipeForm {
             }
         });
 
-        
+
         that.jsonEditor[page].on('ready', () => {
             if (firstInit && this.jsonData != null && this.jsonData[page] != null) {
                 that.jsonEditor[page].setValue(this.jsonData[page]);
@@ -643,6 +643,12 @@ class RecipeForm {
                     });
                 });
             }).addClass('change-init');
+
+            mForm.find('#json-content-form-' + page + ' [name*="[use_image_only]"]').each(function () {
+                var container = $(this).closest('.je-object__container');
+                container.find('.image-block-container').toggleClass('json-form-hidden', !$(this).prop('checked'));
+                container.find('.formdata-container').toggleClass('json-form-hidden', $(this).prop('checked'));
+            });
         });
     }
 

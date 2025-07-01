@@ -545,3 +545,11 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
     padding-left: .25rem;
     font-weight: 600;
 }
+
+#mt-recipe-form .json-content-form .card-title.level-4.je-object__title {
+    display: none !important;
+}
+
+.json-content-form .json-form-hidden {
+    display: none !important;
+}
