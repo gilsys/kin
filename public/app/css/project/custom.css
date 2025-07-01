@@ -536,3 +536,12 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
     display: none;
     border: 10px solid red;
 }
+
+#mt-recipe-form .json-content-form .card-title.level-7 + .card-body > .table > thead > tr > th:first-child::after {
+    content: "*";
+    position: relative;
+    font-size: inherit;
+    color: var(--bs-danger);
+    padding-left: .25rem;
+    font-weight: 600;
+}
