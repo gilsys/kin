@@ -144,20 +144,19 @@ class ProductDAO extends BaseDAO {
         return $this->fetchAll($sql, $data);
     }
 
-    public function getProducts($recipeId = null, $full = false) {
+    public function getProducts($selectedIds = [], $full = false) {
         $data = [];
 
         $fields = $full ? "p.id, p.name, p.subtitle_$full as subtitle, p.periodicity_$full as periodicity" : 'p.id, p.name';
 
         $whereSql = "";
-        if (!empty($recipeId)) {
-            $whereSql .= " OR p.id IN (SELECT JSON_UNQUOTE(JSON_EXTRACT(r.json_data, '$.product')) FROM st_recipe r WHERE r.id = :recipeId)";
-            $data['recipeId'] = $recipeId;
+        if (!empty($selectedIds)) {
+            $whereSql .= " OR FIND_IN_SET(p.id, :selectedIds)";
+            $data['selectedIds'] = implode(',', $selectedIds);
         }
 
         $sql = "SELECT " . $fields . "
                 FROM " . $this->table . " p
-                
                 WHERE p.date_deleted IS NULL" . $whereSql . "
                 GROUP BY p.id
                 ORDER BY p.name ASC";

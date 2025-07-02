@@ -518,8 +518,38 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 
 
 .product-select2-info{
-    display: inline-block
+    display: inline-block;
 }
-.product-select2-info span{
-    display: block;    
+.select2-banner-image{
+    vertical-align: top !important;
+}
+
+.product-select2-info > div{    
+    display: block;
+    padding-top: 8px;
+}
+
+
+
+
+.json-content-form input[type="file"].form-control ~ div > div > img{
+    display: none;
+    border: 10px solid red;
+}
+
+#mt-recipe-form .json-content-form .card-title.level-7 + .card-body > .table > thead > tr > th:first-child::after {
+    content: "*";
+    position: relative;
+    font-size: inherit;
+    color: var(--bs-danger);
+    padding-left: .25rem;
+    font-weight: 600;
+}
+
+#mt-recipe-form .json-content-form .card-title.level-4.je-object__title {
+    display: none !important;
+}
+
+.json-content-form .json-form-hidden {
+    display: none !important;
 }

@@ -589,6 +589,8 @@ return [
     'app.state.form.update.title' => 'Datos de la provincia',
     'app.state.state_form_header' => 'Datos de la provincia',
     'app.states.title' => 'Provincias',
+    'app.subproduct.status.E' => 'Habilitado',
+    'app.subproduct.status.Z' => 'Borrado',
     'app.task.date_task.short' => 'Realización',
     'app.task_payment_statuses' => 'Estados de pago de tarea',
     'app.task_statuses' => 'Estados de tarea',

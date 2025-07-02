@@ -589,6 +589,8 @@ return [
     'app.state.form.update.title' => 'Dades de la província',
     'app.state.state_form_header' => 'Dades de la província',
     'app.states.title' => 'Províncies',
+    'app.subproduct.status.E' => 'Habilitat',
+    'app.subproduct.status.Z' => 'Esborrat',
     'app.task.date_task.short' => 'Realització',
     'app.task_payment_statuses' => 'Estatus de pagament de tasca',
     'app.task_statuses' => 'Estatus de tasca',

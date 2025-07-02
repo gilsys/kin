@@ -185,30 +185,55 @@ class RecipeController extends BaseController {
         $formData = CommonUtils::getSanitizedData($request);
         $recipeId = !empty($formData['id']) ? $formData['id'] : null;
 
+        // Obtener ids de los productos seleccionados
+        $recipeProductIds = [];
+        $recipeSubProductIds = [];
+        if (!empty($recipeId)) {
+            $data = $this->getDAO()->getSingleField($recipeId, 'json_data');
+            $data = !empty($data) ? json_decode($data, true) : [];
+            $this->processRecipe($data, $recipeProductIds, $recipeSubProductIds);
+        }
+
         $productDAO = new ProductDAO($this->get('pdo'));
-        $data['products'] = $productDAO->getProducts($recipeId, $this->get('i18n')->getCurrentLang());
+        $data['products'] = $productDAO->getProducts($recipeProductIds, $this->get('i18n')->getCurrentLang());
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang(), $recipeId);
+        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang(), $recipeSubProductIds);
 
         // Iterar los productos y subproductos para montar el html en el campo name
         $data['products'] = array_map(function ($product) {
-            $product['name'] = '<span class="product-name">' . $product['name'] . '</span>' . 
-                '<span class="product-subtitle">' . $product['subtitle'] . '</span>' .
-                '<span class="product-periodicity">' . $product['periodicity'] . '</span>';
+            $product['name'] = '<div class="product-name">' . $product['name'] . '</div>' .
+                '<div class="product-subtitle">' . $product['subtitle'] . '</div>' .
+                '<div class="product-periodicity">' . $product['periodicity'] . '</div>';
             return $product;
         }, $data['products']);
 
         // Iterar subproductos para montar el html adhoc
         $data['subproducts'] = array_map(function ($subproduct) {
             $subproduct['name'] = $subproduct['name'];
-            if(!empty($subproduct['format'])) {
+            if (!empty($subproduct['format'])) {
                 $subproduct['name'] .= ' - ' . $subproduct['format'];
             }
             return $subproduct;
         }, $data['subproducts']);
 
         return ResponseUtils::withJson($response, $data);
+    }
+
+    private function processRecipe($array, &$recipeProductIds, &$recipeSubProductIds) {
+        foreach ($array as &$value) {
+            if (!empty($value['product_id'])) {
+                $recipeProductIds[] = $value['product_id'];
+            }
+
+            if (!empty($value['subproduct_id'])) {
+                $recipeSubProductIds[] = $value['subproduct_id'];
+            }
+
+            if (is_array($value)) {
+                $this->processRecipe($value, $recipeProductIds, $recipeSubProductIds);
+            }
+        }
     }
 
     public function pdfPreview(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
