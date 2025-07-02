@@ -663,6 +663,8 @@ return [
     'controller.login.user_not_exists' => 'There is no registered user with the provided username.',
     'error.occurred' => 'An error has occurred.',
     'error.title' => 'Error',
+    'pdf.recipe.next_appointment' => 'Next appointment',
+    'pdf.recipe.patient_name' => 'Patient\'s name',
     'service.auth.insufficient_permissions' => 'Insufficient permissions.',
     'service.auth.token_not_valid' => 'The followed URL is not correct.',
     'service.auth.token_timed_out' => 'The token has expired.',

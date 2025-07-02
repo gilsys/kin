@@ -105,6 +105,9 @@ class RecipeController extends BaseController {
             }
         }
 
+
+       
+
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
 
@@ -145,7 +148,7 @@ class RecipeController extends BaseController {
         if (!empty($args['mode']) && in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
             $this->get('logger')->addInfo("Generate PDF " . static::ENTITY_SINGULAR . " - id: " . $formData['id']);
             $pdfType = $args['mode'] == FormSaveMode::SaveAndGenerateCMYK ? FileType::RecipeFileCMYK : FileType::RecipeFile;
-            $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+            $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'), $this->get('i18n'));
             $pdfService->recipePdf($formData['id'], true, $pdfType);
             LogService::save($this, 'app.log.action.generate_pdf', [ucfirst(__('app.entity.' . static::ENTITY_PLURAL)), $this->getNameForLogs($formData['id'])], $this->getDAO()->getTable(), $formData['id']);
         }
@@ -212,7 +215,7 @@ class RecipeController extends BaseController {
         $this->get('security')->checkRecipeOwner($args['id']);
 
         $this->get('logger')->addInfo("Preview PDF " . static::ENTITY_SINGULAR . " - id: " . $args['id']);
-        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'));
+        $pdfService = new PdfService($this->get('pdo'), $this->get('session'), $this->get('params'), $this->get('renderer'), $this->get('i18n'));
         $pdfService->recipePdf($args['id'], false);
         exit();
     }

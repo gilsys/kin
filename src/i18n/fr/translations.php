@@ -663,6 +663,8 @@ return [
     'controller.login.user_not_exists' => 'No hi ha cap usuari registrat amb l\'usuari indicat.',
     'error.occurred' => 'S\'ha produït un error.',
     'error.title' => 'Error',
+    'pdf.recipe.next_appointment' => 'Prochain rendez-vous',
+    'pdf.recipe.patient_name' => 'Nom du patient',
     'service.auth.insufficient_permissions' => 'Permisos insuficients.',
     'service.auth.token_not_valid' => 'La URL seguida no és correcta.',
     'service.auth.token_timed_out' => 'El token ha caducat.',
