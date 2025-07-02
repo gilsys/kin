@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Constant\App\MenuSection;
-use App\Constant\FileType;
-use App\Constant\StaticListTable;
-use App\Dao\StaticListDAO;
+use App\Constant\SubProductStatus;
 use App\Dao\ProductDAO;
 use App\Dao\SubProductDAO;
-use App\Exception\AuthException;
 use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +38,8 @@ class SubProductController extends BaseController {
         $productDAO = new ProductDAO($this->get('pdo'));
 
         $data['data'] = [
-            'products' => $productDAO->getForSelect('id', 'name', 'id', [$this->get('params')->getParam('EMPTY_PRODUCT')])
+            'products' => $productDAO->getForSelect('id', 'name', 'id', [$this->get('params')->getParam('EMPTY_PRODUCT')]),
+            'subProductStatus' => SubProductStatus::getAll()
         ];
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
@@ -72,5 +70,10 @@ class SubProductController extends BaseController {
         foreach (['name', 'format'] as $jsonField) {
             $formData[$jsonField] = json_encode($formData[$jsonField]);
         }
+    }
+
+    public function deletePreDelete($request, $response, $args, &$formData) {
+        $this->getDAO()->updateSingleField($formData['id'], 'date_deleted', date('Y-m-d H:i:s'));
+        return true;
     }
 }

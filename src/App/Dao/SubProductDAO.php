@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dao;
 
+use App\Constant\SubProductStatus;
 use App\Util\CommonUtils;
 
 class SubProductDAO extends BaseDAO {
@@ -12,7 +13,10 @@ class SubProductDAO extends BaseDAO {
         parent::__construct($connection, 'st_subproduct');
     }
 
-    public function getFullById($id, $language){
+    public function getFullById($id, $language = null) {
+        if (empty($language)) {
+            return $this->getById($id);
+        }
         $sql = 'SELECT
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
                 JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
@@ -47,8 +51,12 @@ class SubProductDAO extends BaseDAO {
                 'formatter' => function ($d, $row) {
                     return CommonUtils::convertDate($d);
                 }
-            ]
+            ],
+            ['db' => 'subproduct_status', 'dt' => 'subproduct_status', 'exact' => true]
         ];
+
+        $showDeleted = !empty($_POST['columns'][8]['search']['value']) && $_POST['columns'][8]['search']['value'] == SubProductStatus::Deleted;
+        $subProductStatusSql = ' AND sp.date_deleted ' . ($showDeleted ? 'IS NOT NULL' : 'IS NULL');
 
         $table = '(
             SELECT
@@ -59,11 +67,12 @@ class SubProductDAO extends BaseDAO {
                 sp.product_id,
                 sp.date_created,
                 sp.date_updated,
-                p.name as product_name
+                p.name as product_name,
+                IF(sp.date_deleted IS NULL, "' . SubProductStatus::Enabled . '", "' . SubProductStatus::Deleted . '") AS subproduct_status
             FROM
                 ' . $this->table . ' sp
                 INNER JOIN st_product p ON sp.product_id = p.id       
-            WHERE p.date_deleted IS NULL     
+            WHERE p.date_deleted IS NULL' . $subProductStatusSql . '     
         ) temp';
 
 
@@ -93,19 +102,19 @@ class SubProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
-    public function getSubProducts($language, $recipeId = null) {
+    public function getSubProducts($language, $selectedIds = []) {
         $data = [];
 
         $whereSql = '';
-        if(!empty($recipeId)) {
-            $whereSql .= ' OR p.id IN (SELECT JSON_UNQUOTE(JSON_EXTRACT(r.json_data, "$.product")) FROM st_recipe r WHERE r.id = :recipeId)';
-            $data['recipeId'] = $recipeId;
+        if (!empty($selectedIds)) {
+            $whereSql .= ' OR FIND_IN_SET(s.id, :selectedIds)';
+            $data['selectedIds'] = implode(',', $selectedIds);
         }
 
         $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.format, "$.' . $language . '")) AS format, s.product_id
                 FROM ' . $this->table . ' s
                 INNER JOIN st_product p ON p.id = s.product_id
-                WHERE p.date_deleted IS NULL' . $whereSql . '
+                WHERE (p.date_deleted IS NULL AND s.date_deleted IS NULL)' . $whereSql . '
                 ORDER BY s.product_id ASC, s.name ASC';
         return $this->fetchAll($sql, $data);
     }

@@ -20,7 +20,7 @@ class RecipeForm {
         var stepper = new KTStepper(mForm.find('#mt-recipe-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: "",
+            ignore: '.json-form-hidden :input',
             onkeyup: false,
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
@@ -86,9 +86,7 @@ class RecipeForm {
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
 
                 if (!userHasProfile(['A'])) {
-                    if (data.editable == '1') {
-                        formReadOnly(mForm.find('[name]:not([type="hidden"]):not([name="name"]):not([name^="root"])').closest('div'));
-                    } else {
+                    if (data.editable != '1') {
                         formReadOnly(mForm);
                     }
                 }
@@ -184,14 +182,14 @@ class RecipeForm {
             templateResult: function (data) {
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
-                }                
-                
+                }
+
                 return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             templateSelection: function (data) {
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
-                }                
+                }
                 return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             escapeMarkup: function (m) {
@@ -210,7 +208,7 @@ class RecipeForm {
                 "type": "object",
                 "title": __('app.js.common.group'),
                 "format": "grid-strict",
-                
+
 
                 "properties": {
 
@@ -228,8 +226,8 @@ class RecipeForm {
                     "image_block": {
                         "type": "object",
                         "options": {
-                            "dependencies": {
-                                "use_image_only": true
+                            "containerAttributes": {
+                                "class": "image-block-container"
                             }
                         },
                         "properties":
@@ -283,14 +281,10 @@ class RecipeForm {
                     "formdata": {
                         "format": "grid-strict",
                         "options": {
-                            "dependencies": {
-                                "use_image_only": false
+                            "containerAttributes": {
+                                "class": "formdata-container"
                             }
                         },
-                        "required": [
-                            "group_title",
-                            "products"
-                        ],
                         "type": "object",
                         "properties":
                         {
@@ -346,11 +340,12 @@ class RecipeForm {
                                 "title": __('app.js.group_title'),
                                 "type": "string",
                                 "readonly": disableEdit,
+                                "required": true,
                                 "options": {
                                     "grid_columns": 9,
-                                    /*"inputAttributes": {
+                                    "inputAttributes": {
                                         "required": true
-                                    },*/
+                                    },
 
                                 }
                             },
@@ -382,6 +377,7 @@ class RecipeForm {
                             },
                             "products": {
                                 "type": "array",
+                                "minItems": 1,
                                 "title": __('app.entity.products'),
                                 "items": {
                                     "type": "object",
@@ -390,7 +386,7 @@ class RecipeForm {
                                     "properties": {
                                         "product_id": {
                                             "title": __('app.entity.product'),
-                                            "type": "integer",
+                                            "type": "string",
                                             "format": "select2",
                                             "enumSource": [{
                                                 "source": this.products.products,
@@ -398,8 +394,9 @@ class RecipeForm {
                                                 "value": "enumValue"
                                             }],
                                             "readonly": disableEdit,
+                                            "required": true,
                                             "options": {
-                                                "grid_columns": 6,
+                                                "grid_columns": 12,
                                                 "select2": select2ProductOptions,
                                                 "inputAttributes": {
                                                     "required": true
@@ -489,6 +486,7 @@ class RecipeForm {
                                         },
                                         "subproducts": {
                                             "type": "array",
+                                            //"minItems": 1,
                                             "title": __('app.entity.subproducts'),
                                             "format": "table",
                                             "items": {
@@ -498,7 +496,7 @@ class RecipeForm {
                                                 "properties": {
                                                     "subproduct_id": {
                                                         "title": __('app.entity.subproduct'),
-                                                        "type": "integer",
+                                                        "type": "string",
                                                         "format": "select2",
                                                         "enumSource": [{
                                                             "source": this.products.subproducts,
@@ -507,12 +505,12 @@ class RecipeForm {
                                                             "filter": "filterSubproducts"
                                                         }],
                                                         "readonly": disableEdit,
+                                                        "required": true,
                                                         "options": {
                                                             "select2": select2options,
                                                             "inputAttributes": {
                                                                 "required": true
                                                             },
-
                                                         }
                                                     },
                                                     "subproduct_name": {
@@ -585,6 +583,7 @@ class RecipeForm {
             }
         });
 
+
         that.jsonEditor[page].on('ready', () => {
             if (firstInit && this.jsonData != null && this.jsonData[page] != null) {
                 that.jsonEditor[page].setValue(this.jsonData[page]);
@@ -645,6 +644,12 @@ class RecipeForm {
                     });
                 });
             }).addClass('change-init');
+
+            mForm.find('#json-content-form-' + page + ' [name*="[use_image_only]"]').each(function () {
+                var container = $(this).closest('.je-object__container');
+                container.find('.image-block-container').toggleClass('json-form-hidden', !$(this).prop('checked'));
+                container.find('.formdata-container').toggleClass('json-form-hidden', $(this).prop('checked'));
+            });
         });
     }
 
@@ -667,11 +672,9 @@ class RecipeForm {
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
                         try {
-                            
+
                             const pathStr = jseditor.path;
-                            console.log(pathStr);
                             const path = pathStr.split('.');
-                            console.log(path);
                             const groupIndex = parseInt(path[2]);   // 'group.0' → 0
                             const group = path[1];
                             const productIndex = parseInt(path[5]); // 'products.0' → 0

@@ -9,7 +9,15 @@
     </select>
 </div>
 
-
+<div class="col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.common.status') ?></label>
+    <select data-placeholder="<?php __ss('app.common.status') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="subproduct_status">
+        <option value=""></option>
+        <?php foreach ($data['subProductStatus'] as $status) : ?>
+            <option value="<?= $status ?>"><?= __('app.subproduct.status.' . $status) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 <?php $this->stop() ?>
 
 
@@ -22,6 +30,7 @@
 <th data-priority="2"><?= __ss('app.format') ?></th>
 <th data-priority="3"><?= __ss('app.reference_code') ?></th>
 <th data-priority="4"><?= __ss('app.common.date_created.short') ?></th>
+<th></th>
 <th></th>
 <th></th>
 <th data-priority="1" class="text-center"></th>

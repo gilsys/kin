@@ -151,6 +151,7 @@ return function (App $app) {
         $app->get('/app/subproduct/form[/{id:[0-9]+}]', [SubProductController::class, 'form']);
         $app->post('/app/subproduct/save/{mode}', [SubProductController::class, 'save']);
         $app->post('/app/subproduct/delete', [SubProductController::class, 'delete']);
+        $app->post('/app/subproduct/restore', [SubProductController::class, 'restore']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
 
     $app->group('', function (RouteCollectorProxy $app) {

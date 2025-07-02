@@ -589,6 +589,8 @@ return [
     'app.state.form.update.title' => 'Province data',
     'app.state.state_form_header' => 'Province data',
     'app.states.title' => 'Provinces',
+    'app.subproduct.status.E' => 'Enabled',
+    'app.subproduct.status.Z' => 'Deleted',
     'app.task.date_task.short' => 'Accomplishment',
     'app.task_payment_statuses' => 'Task payment statuses',
     'app.task_statuses' => 'Task statuses',
