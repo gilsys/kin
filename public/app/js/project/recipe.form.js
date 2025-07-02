@@ -135,9 +135,10 @@ class RecipeForm {
         var bannerList = [
             { id: "", name: __('app.js.common.select_value') }
         ];
-        for (var i = 1; i <= 2; i++) {
-            bannerList.push({ id: i, name: `/app/img/receipt/banner${i}-${lang}.png` });
+        for (var i = 1; i <= 3; i++) {
+            bannerList.push({ id: i, name: `/app/img/receipt/banner${i}-${lang}.jpg` });
         }
+        console.log(bannerList);
 
         const select2IconOptions = {
             language: __('app.js.lang.code'),

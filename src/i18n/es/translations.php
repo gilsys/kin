@@ -663,6 +663,8 @@ return [
     'controller.login.user_not_exists' => 'No existe ningún usuario registrado con el usuario indicado.',
     'error.occurred' => 'Se ha producido un error.',
     'error.title' => 'Error',
+    'pdf.recipe.next_appointment' => 'Próxima visita',
+    'pdf.recipe.patient_name' => 'Nombre del paciente',
     'service.auth.insufficient_permissions' => 'Permisos insuficientes.',
     'service.auth.token_not_valid' => 'La URL seguida no es correcta.',
     'service.auth.token_timed_out' => 'El token ha caducado.',

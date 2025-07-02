@@ -17,6 +17,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Color\Color;
 use League\Plates\Template\Folder;
 
 class PdfService extends BaseService {
@@ -24,15 +25,17 @@ class PdfService extends BaseService {
     private $session;
     private $params;
     private $renderer;
+    protected $i18n;
 
-    public function __construct($pdo = null, $session = null, $params = null, $renderer = null) {
+    public function __construct($pdo = null, $session = null, $params = null, $renderer = null, $i18n = null) {
         parent::__construct($pdo);
         $this->session = $session;
         $this->params = $params;
         $this->renderer = $renderer;
+        $this->i18n = $i18n;
     }
 
-    public function generateQrCode($qrUrl, $lang, $productSlug) {
+    public function generateQrCode($qrUrl, $lang, $productSlug, $qrOptions = []) {
 
         // Si el idioma es español, eliminamos el segmento '{lang}' de la URL
         if ($lang === 'es') {
@@ -44,13 +47,31 @@ class PdfService extends BaseService {
         // Reemplazar {slug} con el slug del producto
         $url = str_replace('{slug}', $productSlug, $url);
 
+        // Valores por defecto
+        $foreground = new Color(0, 0, 0);
+        $background = new Color(255, 255, 255);
+        $writerOptions = [];
+
+        // Si vienen opciones personalizadas
+        if (!empty($qrOptions['foregroundColor'])) {
+            $fc = $qrOptions['foregroundColor'];
+            $foreground = new Color($fc['r'], $fc['g'], $fc['b']);
+        }
+
+        if (!empty($qrOptions['backgroundColor'])) {
+            $bc = $qrOptions['backgroundColor'];
+            $alpha = isset($bc['a']) ? $bc['a'] : 255;
+            $background = new Color($bc['r'], $bc['g'], $bc['b'], $alpha);
+        }
+
         // Generar el código QR en formato JPG
         $qrCode = Builder::create()
             ->writer(new PngWriter())
             ->data($url)
-            // Tamaño QR - Indicar el valor en px dividido por 3, del tamaño del template
             ->size(300)
             ->margin(10)
+            ->backgroundColor($background)
+            ->foregroundColor($foreground)
             ->build();
 
         return 'data:image/png;base64,' . base64_encode($qrCode->getString());
@@ -161,11 +182,25 @@ class PdfService extends BaseService {
                 $productDAO = new ProductDAO($this->pdo);
                 $product = $productDAO->getFullById($value['product_id'], $lang);
 
+                $qrOptions = [
+                    'foregroundColor' => [
+                        'r' => 22,
+                        'g' => 64,
+                        'b' => 112,
+                    ],
+                    'backgroundColor' => [
+                        'r' => 255,
+                        'g' => 255,
+                        'b' => 255,
+                        'a' => 127,
+                    ]
+                ];
+
                 if (!empty($value['qr'])) {
-                    $value['qr'] = $this->generateQrCode($value['qr'], '', '');
+                    $value['qr'] = $this->generateQrCode($value['qr'], '', '', $qrOptions);
                 } else {
                     $qrUrl = $this->params->getParam('KIN.URL');
-                    $value['qr'] = $this->generateQrCode($qrUrl, $qrLang, $product['slug']);
+                    $value['qr'] = $this->generateQrCode($qrUrl, $qrLang, $product['slug'], $qrOptions);
                 }
 
                 // Cargar imagen de disco a base64
@@ -173,12 +208,12 @@ class PdfService extends BaseService {
                 $value['logo'] = FileUtils::getBase64Image($logoFilePath);
 
                 $photoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/photo_' . $lang . '_' . $product['photo'] . '.' . pathinfo($product['photo_file'], PATHINFO_EXTENSION);
-                $value['photo'] = FileUtils::getBase64Image($photoFilePath);                
+                $value['photo'] = FileUtils::getBase64Image($photoFilePath);
             }
-            
+
             if (!empty($value['icon'])) {
                 $iconFilePath = Folders::getPublic() . '/app/img/receipt/ico' . $value['icon'] . '-' . $lang . '.svg';
-                $value['icon'] = FileUtils::getBase64Image($iconFilePath);    
+                $value['icon'] = FileUtils::getBase64Image($iconFilePath);
             }
 
             if (!empty($value['subproduct_id'])) {
@@ -187,6 +222,10 @@ class PdfService extends BaseService {
                 $value['name'] = $subproduct['name'];
                 $value['reference'] = $subproduct['reference'];
                 $value['format'] = $subproduct['format'];
+            }
+            if (!empty($value['banner'])) {
+                $bannerFilePath = Folders::getPublic() . '/app/img/receipt/banner' . $value['banner'] . '-' . $lang . '.png';
+                $value['banner'] = FileUtils::getBase64Image($bannerFilePath);
             }
 
             if (is_array($value)) {
@@ -209,46 +248,33 @@ class PdfService extends BaseService {
 
         $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], $recipe);
 
-        // Obtener imagen de producto (2)
-        echo "<pre>";
-        print_r($recipe);
-        echo "</pre>";
-        exit();
+        // echo "<pre>";
+        // print_r($recipe);
+        // echo "</pre>";
 
-        $references = [
-            ['code' => '193495.6', 'name' => 'PerioKIN Hyaluronic 1% Gel 30 ml'],
-            // ['code' => '155549.6', 'name' => 'KIN Medio'],
-            // ['code' => '318626.1', 'name' => 'KIN Suave'],
-            // ['code' => '318642.1', 'name' => 'KIN Extra-Suave'],
-            // ['code' => '171725.2', 'name' => 'KIN Encías'],
-            // ['code' => '335687.9', 'name' => 'KIN Postquirúrgico'],
-            // ['code' => '335695.4', 'name' => 'KIN Ortodoncia'],
-        ];
-
-        $columnCount = 2;
-        $chunks = array_chunk($references, ceil(count($references) / $columnCount));
-        $recipe['referenceChunks'] = $chunks;
-
-        //TODO: Rutes absolutes, passar idioma i ruta (privada?) correcte
-
-        // Test background
-        $recipe['design'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\recipe.jpg');
 
         // Header assets
-        $recipe['logo-kin'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\logo-kin.svg');
-        $recipe['mas-es'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\mas-ES.svg');
+        $publicPath = Folders::getPublic();
+        $lang = $recipe['main_language_id'];
+        $currentLang = $this->i18n->getCurrentLang();
+        $this->i18n->changeLang($lang);
 
-        // Product assets
-        $recipe['product_localized_icon_es'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\piezas-07.svg');
-        $recipe['product_title'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_product_title.png');
-        $recipe['product_image'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_product.svg');
-        $recipe['product_qr'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_qr.svg');
-        $recipe['product_frequency'] = FileUtils::getBase64Image('Z:\data\www\kin\webroot\public\app\img\dummy_frequency.png');
+        $recipe['logo_kin'] = FileUtils::getBase64Image($publicPath . '/app/img/receipt/logo-kin.svg');
+        $recipe['product_frequency'] = FileUtils::getBase64Image($publicPath .  '/app/img/receipt/frequency.png');
+        $recipe['mas_header'] = FileUtils::getBase64Image($publicPath . '/app/img/receipt/mas-' . $lang . '.svg');
 
+        $recipe['pages'] = [];
 
-        $recipe['pages'] = [[], []];
+        foreach ($recipe['json_data'] as $index => $groups) {
+            $page = intdiv($index, 2);
+            $side = $index % 2 === 0 ? 'left' : 'right';
 
-print_r($recipe);
+            if (!isset($recipe['pages'][$page])) {
+                $recipe['pages'][$page] = ['left' => [], 'right' => []];
+            }
+
+            $recipe['pages'][$page][$side] = $groups;
+        }
 
         $data = ['recipe' => $recipe];
 
@@ -269,6 +295,8 @@ print_r($recipe);
 
         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", $data);
         $dompdf->loadHtml($html);
+
+        $this->i18n->setCurrentLang($currentLang);
 
         $dompdf->setPaper($paper, 'landscape');
 
