@@ -17,6 +17,10 @@ class Folders {
     public static function getPublicUpload() {
         return self::getRoot() . DIRECTORY_SEPARATOR. 'public' . DIRECTORY_SEPARATOR .  'upload';
     }
+
+    public static function getFonts() {
+        return self::getPublic() . DIRECTORY_SEPARATOR .  'app' . DIRECTORY_SEPARATOR .  'fonts';
+    }
     
     public static function getPrivateMedia() {
         return self::getRoot() . DIRECTORY_SEPARATOR. 'var' . DIRECTORY_SEPARATOR .  'media';

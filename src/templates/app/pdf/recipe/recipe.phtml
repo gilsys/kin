@@ -18,8 +18,23 @@
             margin: 0;
         }
 
+        @font-face {
+            font-family: 'AvenirNextCondensed-Regular';
+            src: url(<?php echo $params['SITE.URL'] ?>/app/fonts/avenir-next-condensed-regular.ttf);
+        }
+
+        @font-face {
+            font-family: 'AvenirNextCondensed-Bold';
+            src: url(<?php echo $params['SITE.URL'] ?>/app/fonts/avenir-next-condensed-bold.ttf);
+        }
+
+        @font-face {
+            font-family: 'Montserrat-Bold';
+            src: url(<?php echo $params['SITE.URL'] ?>/app/fonts/montserrat-bold.ttf);
+        }
+
         body {
-            font-family: Poppins, sans-serif;
+            font-family: 'AvenirNextCondensed-Regular', sans-serif;
         }
 
         .type-CMYK .visible-area {
@@ -137,12 +152,13 @@
 
         .container>.col-left>.group-title {
             margin-left: -50px;
-            padding-left: 50px;
+            padding-left: 80px;
             border: 50px;
             border-top-right-radius: 50px;
             border-bottom-right-radius: 50px;
             height: 60px;
             z-index: 4;
+            font-family: AvenirNextCondensed-Regular, 'sans-serif';
         }
 
         .container>.col-left>.group-title img {
@@ -160,14 +176,14 @@
             text-align: left;
             margin-left: 160px;
             padding-top: 6px;
-            bottom: 100px;
+            bottom: 116px;
         }
 
         .container>.col-left>.group-content {
             position: relative;
             left: -50px;
-            padding-left: 180px;
-            width: calc(100% + 30px);
+            padding-left: 200px;
+            width: calc(100% + 50px);
         }
 
         .container>.col-right>.group-title {
@@ -176,7 +192,7 @@
             border-top-left-radius: 50px;
             border-bottom-left-radius: 50px;
             height: 60px;
-            z-index: 1;
+            z-index: 2;
         }
 
         .container>.col-right>.group-title img {
@@ -194,7 +210,7 @@
             text-align: right;
             padding-right: 240px;
             padding-top: 6px;
-            margin-top: -130px;
+            margin-top: -145px;
         }
 
         .container>.col-right>.group-content {
@@ -215,6 +231,7 @@
             margin-bottom: 30px;
             margin-top: -50px;
             padding-top: 50px;
+            font-family: MontserratBold, sans-serif;
         }
 
         .header-top>div {
@@ -308,8 +325,8 @@
         }
 
         .col-right .bottom-dotted-line {
-            width: calc(100% - 40px) !important;
-            margin-left: 40px;
+            width: calc(100% - 50px) !important;
+            margin-left: 50px;
         }
 
         .col-left .bottom-dotted-line {
@@ -364,7 +381,7 @@
             border: 3px solid #164070;
             border-radius: 12px;
             width: 145px;
-            font-size: 19px;
+            font-size: 22px;
             display: inline;
             padding: 7px 5px;
             position: absolute;
@@ -409,6 +426,10 @@
             vertical-align: middle;
         }
 
+         .text-cell {
+            padding-bottom: 16px;
+         }
+
 
         .text-cell .reference {
             font-weight: 700;
@@ -417,12 +438,12 @@
 
         .text-cell .reference-name {
             margin-left: -5px;
-            letter-spacing: 0;
         }
 
         .radio-cell {
-            padding-right: 12px;
+            padding-right: 4px;
             width: 26px;
+            transform: translateX(-3px); 
         }
 
         .radio-circle {
@@ -432,7 +453,6 @@
             border: 2.5px solid #164070;
             border-radius: 50%;
         }
-
 
         .qr-column {
             vertical-align: top;
@@ -486,15 +506,17 @@
 
 
         .group-label {
-            z-index: 3;
+            z-index: 1;
             height: 60px;
+            margin-top: -20px;
+            padding-bottom: 30px !important;
         }
 
 
         .group-label-left {
             margin-left: -50px;
             padding: 0;
-            width: calc(100% + 30px) !important;
+            width: calc(100% + 50px) !important;
         }
 
         .group-label-right {
@@ -503,16 +525,21 @@
             padding: 0;
         }
 
+        .group-label-right .bar {
+            margin-left: 30px;
+        }
+
         .group-label .title {
             font-size: 26px;
             margin-top: 8px;
             color: #164070;
-            font-weight: 700;
             text-transform: uppercase;
+            font-weight: 700;
+            font-family: AvenirNextCondensed-Bold, 'sans-serif';
         }
 
         .group-label-left .title {
-            padding-left: 180px;
+            padding-left: 200px;
             text-align: left;
         }
 
@@ -523,7 +550,7 @@
 
         .group-label-left .bar,
         .group-label-right .bar {
-            height: 8px;
+            height: 4px;
         }
 
         .group-banner {
@@ -536,7 +563,6 @@
             margin-top: 20px;
             margin-bottom: 80px;
         }
-
     </style>
 </head>
 

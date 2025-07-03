@@ -241,10 +241,7 @@ class PdfService extends BaseService {
         $folderPrivate = $this->params->getParam('FOLDER_PRIVATE');
         $qrUrl = $this->params->getParam('KIN.URL');
 
-        $options = new Options();
-        $options->setDpi(300);
-
-        $dompdf = new Dompdf($options);
+        $dompdf = new Dompdf(['enable_remote' => true, 'dpi' => 300]);
 
         $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], $recipe);
 
@@ -294,6 +291,7 @@ class PdfService extends BaseService {
         }
 
         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", $data);
+        
         $dompdf->loadHtml($html);
 
         $this->i18n->setCurrentLang($currentLang);
