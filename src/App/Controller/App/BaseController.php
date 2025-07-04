@@ -244,7 +244,7 @@ abstract class BaseController {
         $fileId = !empty($oldFileId) ? $oldFileId : $fileDAO->getNext();
 
         $directory = $this->get('params')->getParam('FOLDER_PRIVATE');
-        $file = FileUtils::uploadFile($request, $fileType, $directory, $fileId, $formField, false, true, null, false, 'file');
+        $file = FileUtils::uploadFile($request, $fileType, $directory, $fileId, $formField, false, true, null, false);
 
         if (!empty($file)) {
             if (empty($oldFileId)) {

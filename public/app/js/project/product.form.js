@@ -46,6 +46,12 @@ class ProductForm {
                 $('#file-image_fr_3 input[type="file"]').setImageUploaded('/app/image/image_fr_3/' + data.id + addDateUpdatedTimestampParam(data), false);
                 $('#file-image_fr_6 input[type="file"]').setImageUploaded('/app/image/image_fr_6/' + data.id + addDateUpdatedTimestampParam(data), false);
 
+                ['es', 'fr', 'en'].forEach(function (lang) {
+                    if (data['zip_' + lang]) {
+                        $('#zip_' + lang + ' input[type="file"]').setFileUploaded('/app/image/zip_' + lang + '/' + data.id + addDateUpdatedTimestampParam(data), false);
+                    }
+                });
+
                 if (data.id == EMPTY_PRODUCT) {
                     mForm.find('[name="market_ids[]"], [name="slug"]').closest('.row > div').addClass('d-none');
                 }
