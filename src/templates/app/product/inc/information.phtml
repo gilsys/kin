@@ -84,6 +84,17 @@
                     <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_' . $lang . '_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
                 </div>
             </div>
+
+            <?php if ($lang != 'custom'): ?>
+                <div class="row mt-4 border-top pt-4">
+                    <div class="col-12 mt-8">
+                        <h4><?= __('app.product.file_info') ?></h4>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                        <?php $this->insert("inc/common/file_upload", ['id' => 'zip_' . $lang, 'title' => __('app.product.zip'), 'inputName' => 'zip_' . $lang, 'fileType' => 'zip']) ?>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 <?php endforeach; ?>

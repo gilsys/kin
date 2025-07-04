@@ -137,6 +137,10 @@ class ProductController extends BaseController {
         $this->saveFile($request, $formData['id'], 'photo_en', 'photo_en', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'photo_fr', 'photo_fr', FileType::ProductImage);
 
+        $this->saveFile($request, $formData['id'], 'zip_es', 'zip_es', FileType::ProductFile);
+        $this->saveFile($request, $formData['id'], 'zip_en', 'zip_en', FileType::ProductFile);
+        $this->saveFile($request, $formData['id'], 'zip_fr', 'zip_fr', FileType::ProductFile);
+
         if (!$isNew) {
             $this->getDAO()->updateCustomByParentProductId($formData['id']);
         }

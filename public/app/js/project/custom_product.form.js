@@ -35,6 +35,10 @@ class CustomProductForm {
                 mForm.find('#file-image_' + lang + '_6 input[type="file"]').setImageUploaded('/app/image/image_' + lang + '_6/' + data.id + addDateUpdatedTimestampParam(data), false);
 
                 if (lang != 'custom') {
+                    if (data['zip_' + lang]) {
+                        $('#zip_' + lang + ' input[type="file"]').setFileUploaded('/app/image/zip_' + lang + '/' + data.id + addDateUpdatedTimestampParam(data), false);
+                    }
+
                     formReadOnly(mForm.find('#file-image_' + lang + '_2').closest('.card'));
                 }
             });
