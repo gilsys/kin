@@ -16,6 +16,18 @@ class RecipeDatatable {
                 { data: 'name' },
                 { data: 'creator_name', 'visible': userHasProfile(['A']) },
                 {
+                    data: 'market_name',
+                    render: function (data, type, full, meta) {
+                        if(data == null) {
+                            return '';
+                        }
+                        if (type == 'export') {
+                            return full.market_name;
+                        }
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.market_color, 0.1) + '; color: ' + full.market_color + '">' + full.market_name + '</span>';
+                    }
+                },
+                {
                     data: 'main_language',
                     render: function (data, type, full, meta) {
                         if (type == 'export') {
@@ -37,6 +49,7 @@ class RecipeDatatable {
                 // Incluimos campos invisibles, útiles para filtros
                 { data: 'main_language_id', 'visible': false },
                 { data: 'qr_language_id', 'visible': false },
+                { data: 'market_id', 'visible': false },
                 { data: 'creator_user_id', 'visible': false },
                 {
                     data: null,

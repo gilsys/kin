@@ -102,19 +102,38 @@ class SubProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
-    public function getSubProducts($language, $selectedIds = []) {
+    public function getSubProducts($language, $selectedIds = [], $marketId = null, $customCreatorUserId = null) {
         $data = [];
 
-        $whereSql = '';
+        $whereSql = "";
+        if (!empty($marketId)) {
+            $whereSql .= "(p.id IN (SELECT mp.product_id FROM st_market_product mp WHERE mp.market_id = :marketId))";
+            $data['marketId'] = $marketId;
+        }
+
+        if (!empty($customCreatorUserId)) {
+            if (!empty($whereSql)) {
+                $whereSql .= " OR ";
+            }
+
+            $whereSql .= "(p.parent_product_id IS NOT NULL AND p.creator_user_id = :customCreatorUserId)";
+            $data['customCreatorUserId'] = $customCreatorUserId;
+        }
+
+        if (empty($whereSql)) {
+            $whereSql = "1 = 1";
+        }
+
+        $whereSqlSelected = '';
         if (!empty($selectedIds)) {
-            $whereSql .= ' OR FIND_IN_SET(s.id, :selectedIds)';
+            $whereSqlSelected .= ' OR FIND_IN_SET(s.id, :selectedIds)';
             $data['selectedIds'] = implode(',', $selectedIds);
         }
 
-        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.format, "$.' . $language . '")) AS format, s.product_id
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.format, "$.' . $language . '")) AS format, p.id AS product_id
                 FROM ' . $this->table . ' s
-                INNER JOIN st_product p ON p.id = s.product_id
-                WHERE (p.date_deleted IS NULL AND s.date_deleted IS NULL)' . $whereSql . '
+                INNER JOIN st_product p ON (p.parent_product_id IS NULL AND p.id = s.product_id) OR (p.parent_product_id IS NOT NULL AND p.parent_product_id = s.product_id)
+                WHERE ((p.date_deleted IS NULL AND s.date_deleted IS NULL) AND (' . $whereSql . '))' . $whereSqlSelected . '
                 ORDER BY s.product_id ASC, s.name ASC';
         return $this->fetchAll($sql, $data);
     }

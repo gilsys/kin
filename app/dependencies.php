@@ -110,7 +110,7 @@ return function (ContainerBuilder $containerBuilder) {
             return new i18n($settings['translations_path'], $settings['default_lang'][$environemnt], $environemnt, $settings['translations_path_app']);
         },
         'security' => function (ContainerInterface $c) {
-            return new SecurityService($c->get('pdo'), $c->get('session'));
+            return new SecurityService($c->get('pdo'), $c->get('session'), $c->get('params'));
         },
     ]);
 };

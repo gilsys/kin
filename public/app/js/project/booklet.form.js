@@ -127,10 +127,10 @@ class BookletForm {
             }
         });
 
-        mForm.find('.booklet-layouts [data-booklet-layout]').on('click', function() {
+        mForm.find('.booklet-layouts [data-booklet-layout]').on('click', function () {
             var bookletLayouts = $(this).closest('.booklet-layouts');
 
-            if($(this).hasClass('active')) {
+            if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
             } else {
                 bookletLayouts.find('.active').removeClass('active');
@@ -225,9 +225,33 @@ class BookletForm {
 
         container.html(tableHTML);
 
+        function templateSelect2(data) {
+            if (!data.id) {
+                return data.text;
+            }
+
+            var customHtml = '';
+            if (that.products['_' + data.id].is_custom == '1') {
+                customHtml = '<span class="badge badge-primary fw-lighter ms-2">' + __('app.js.product.custom') + '</span>';
+            }
+            return $('<span>' + data.text + customHtml + '</span>');
+        }
+
+        function initSelect2Products(item) {
+            var settings = {
+                language: __('app.js.lang.code'),
+                placeholder: item.attr('data-placeholder'),
+                allowClear: true,
+                templateResult: templateSelect2,
+                templateSelection: templateSelect2
+            }
+
+            item.select2(settings);
+        }
+
         var that = this;
         container.find('select.booklet-product-select').each(function () {
-            initSelect2($(this));
+            initSelect2Products($(this));
 
             $(this).on('select2:selecting', function (e) {
                 var mForm = $('#mt-booklet-form');
@@ -250,7 +274,7 @@ class BookletForm {
 
                 if ($(this).val() != null && $(this).val() != '') {
                     var product = that.products['_' + $(this).val()];
-                    imageContainer.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
+                    imageContainer.css('background-image', 'url("/app/image/image_' + (product.is_custom == '1' ? 'custom' : languageId) + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
                 } else {
                     imageContainer.css('background-image', 'none');
                 }
@@ -279,7 +303,7 @@ class BookletForm {
             });
         });
 
-        container.find('[allow-save-invalid]').each(function() {
+        container.find('[allow-save-invalid]').each(function () {
             $(this).on('change', function () {
                 allowSaveInvalidCheckEmpty($(this));
             });

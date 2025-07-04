@@ -8,6 +8,7 @@ use App\Constant\App\FormSaveMode;
 use App\Constant\App\MenuSection;
 use App\Constant\FileType;
 use App\Constant\StaticListTable;
+use App\Constant\UserProfile;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
 use App\Dao\RecipeDAO;
@@ -84,11 +85,11 @@ class RecipeController extends BaseController {
         // Obtenemos los valores a mostrar en los desplegables
         $languageEntity = StaticListTable::getEntity(StaticListTable::Language);
         $languageDAO = new StaticListDAO($this->get('pdo'), 'st_' . $languageEntity);
-        $recipeLayoutEntity = StaticListTable::getEntity(StaticListTable::RecipeLayout);
-        $recipeLayoutDAO = new StaticListDAO($this->get('pdo'), 'st_' . $recipeLayoutEntity);
+        $marketDAO = new MarketDAO($this->get('pdo'));
 
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
+        $data['data']['markets'] = $marketDAO->getForSelect();
 
         if (!empty($args['id'])) {
             $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
@@ -106,7 +107,7 @@ class RecipeController extends BaseController {
         }
 
 
-       
+
 
         return $this->get('renderer')->render($response, "main.phtml", $data);
     }
@@ -125,20 +126,44 @@ class RecipeController extends BaseController {
     public function savePreSave($request, $response, $args, &$formData) {
         unset($formData['root']);
 
-        if (!$this->get('security')->isAdmin()) {
-            if (empty($formData['id'])) {
-                throw new AuthException();
-            }
-
-            $old = $this->getDAO()->getById($formData['id']);
-            $formData['qr_language_id'] = $old['qr_language_id'];
-            $formData['main_language_id'] = $old['main_language_id'];
+        if (!$this->get('security')->isAdmin() && empty($formData['id'])) {
+            throw new AuthException();
         }
 
         if (empty($formData['id'])) {
             $formData['creator_user_id'] = $this->get('session')['user']['id'];
         } else {
             $this->get('security')->checkRecipeOwner($formData['id']);
+
+            if (!$this->get('security')->isAdmin()) {
+                $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
+            }
+        }
+
+        // Validar productos y referencias seleccionadas
+        $oldRecipeProductIds = [];
+        $oldRecipeSubProductIds = [];
+        if (!empty($formData['id'])) {
+            $data = $this->getDAO()->getSingleField($formData['id'], 'json_data');
+            $data = !empty($data) ? json_decode($data, true) : [];
+            $this->processRecipe($data, $oldRecipeProductIds, $oldRecipeSubProductIds);
+        }
+
+        $newRecipeProductIds = [];
+        $newRecipeSubProductIds = [];
+        $newData = !empty($formData['json_data']) ? json_decode($formData['json_data'], true) : [];
+        $this->processRecipe($newData, $newRecipeProductIds, $newRecipeSubProductIds);
+
+        $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
+
+        $productDAO = new ProductDAO($this->get('pdo'));
+        $productIds = array_column($productDAO->getProducts($oldRecipeProductIds, $formData['main_language_id'], $formData['market_id'], $customCreatorUserId, $oldRecipeSubProductIds), 'id');
+
+        $subProductDAO = new SubProductDAO($this->get('pdo'));
+        $subProductIds = array_column($subProductDAO->getSubProducts($formData['main_language_id'], $oldRecipeSubProductIds, $formData['market_id'], $customCreatorUserId), 'id');
+
+        if (!empty(array_diff($newRecipeProductIds, $productIds)) || !empty(array_diff($newRecipeSubProductIds, $subProductIds))) {
+            throw new AuthException();
         }
     }
 
@@ -185,6 +210,17 @@ class RecipeController extends BaseController {
         $formData = CommonUtils::getSanitizedData($request);
         $recipeId = !empty($formData['id']) ? $formData['id'] : null;
 
+        if ($this->get('session')['user']['user_profile_id'] != UserProfile::Administrator) {
+            if (empty($formData['id'])) {
+                throw new AuthException();
+            }
+            $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
+        }
+
+        if (empty($formData['market_id'])) {
+            throw new AuthException();
+        }
+
         // Obtener ids de los productos seleccionados
         $recipeProductIds = [];
         $recipeSubProductIds = [];
@@ -194,15 +230,23 @@ class RecipeController extends BaseController {
             $this->processRecipe($data, $recipeProductIds, $recipeSubProductIds);
         }
 
+        $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
+        $lang = !empty($formData['main_language_id']) ? $formData['main_language_id'] : $this->get('i18n')->getCurrentLang();
+
         $productDAO = new ProductDAO($this->get('pdo'));
-        $data['products'] = $productDAO->getProducts($recipeProductIds, $this->get('i18n')->getCurrentLang());
+        $data['products'] = $productDAO->getProducts($recipeProductIds, $lang, $formData['market_id'], $customCreatorUserId, $recipeSubProductIds);
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $data['subproducts'] = $subProductDAO->getSubProducts($this->get('i18n')->getCurrentLang(), $recipeSubProductIds);
+        $data['subproducts'] = $subProductDAO->getSubProducts($lang, $recipeSubProductIds, $formData['market_id'], $customCreatorUserId);
 
         // Iterar los productos y subproductos para montar el html en el campo name
         $data['products'] = array_map(function ($product) {
-            $product['name'] = '<div class="product-name">' . $product['name'] . '</div>' .
+            $customHtml = '';
+            if (!empty($product['is_custom'])) {
+                $customHtml = '<span class="badge badge-primary fw-lighter ms-2">' . __('app.js.product.custom') . '</span>';
+            }
+
+            $product['name'] = '<div class="product-name">' . $product['name'] . $customHtml . '</div>' .
                 '<div class="product-subtitle">' . $product['subtitle'] . '</div>' .
                 '<div class="product-periodicity">' . $product['periodicity'] . '</div>';
             return $product;
@@ -289,5 +333,42 @@ class RecipeController extends BaseController {
 
         $this->get('flash')->addMessage('success', __('app.controller.duplicate_ok'));
         return $response->withStatus(302)->withHeader('Location', '/app/' . static::ENTITY_SINGULAR . '/form/' . $newId);
+    }
+
+    public function productImage(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $productDAO = new ProductDAO($this->get('pdo'));
+        $product = $productDAO->getById($args['productId']);
+
+        if (!$this->get('security')->isAdmin()) {
+            if (empty($product['parent_product_id'])) {
+                try {
+                    $this->get('security')->checkProductOwner($product['id'], false);
+                } catch (AuthException $e) {
+                    if (!empty($args['recipeId'])) {
+                        $this->get('security')->checkRecipeOwner($args['recipeId'], true);
+
+                        $recipeProductIds = [];
+                        $recipeSubProductIds = [];
+                        $data = $this->getDAO()->getSingleField($args['recipeId'], 'json_data');
+                        $data = !empty($data) ? json_decode($data, true) : [];
+                        $this->processRecipe($data, $recipeProductIds, $recipeSubProductIds);
+
+                        if (!in_array($product['id'], $recipeProductIds)) {
+                            throw new AuthException();
+                        }
+                    } else {
+                        throw new AuthException();
+                    }
+                }
+            } else {
+                $this->get('security')->checkCustomProductOwner($product['id']);
+            }
+        }
+
+        $fileId = $productDAO->getSingleField($args['productId'], $args['field']);
+        if (empty($fileId)) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+        return parent::getFileById($response, $fileId, $args['field']);
     }
 };

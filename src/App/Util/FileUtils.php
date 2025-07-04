@@ -40,7 +40,7 @@ class FileUtils {
         return !empty($request->getParsedBody()[$param . '_removeemptyimage']);
     }
 
-    public static function uploadFile($request, $subfolderId, $directory, $id, $param, $encrypt = false, $override = true, $uploadedFile = null, $deleteEmptyFiles = false) {
+    public static function uploadFile($request, $subfolderId, $directory, $id, $param, $encrypt = false, $override = true, $uploadedFile = null, $deleteEmptyFiles = false, $hashFileName = false) {
         if (!empty($subfolderId)) {
             $directory = $directory . DIRECTORY_SEPARATOR . $subfolderId;
             if (!file_exists($directory)) {
@@ -61,7 +61,8 @@ class FileUtils {
         }
 
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = self::getLocalFilepath($uploadedFile->getClientFilename(), $directory, $id, $param, $override);
+            $fileNameUpload = $hashFileName ? self::getHashFileName($uploadedFile->getClientFilename()) : $uploadedFile->getClientFilename();
+            $filename = self::getLocalFilepath($fileNameUpload, $directory, $id, $param, $override);
 
             if ($encrypt) {
                 File::encryptFileWithPassword($_FILES[$param]['tmp_name'], $filename, ENCRYPT_IMG_PASSWORD);
@@ -73,7 +74,7 @@ class FileUtils {
                 return basename($filename);
             }
 
-            return $uploadedFile->getClientFilename();
+            return $fileNameUpload;
         }
         return null;
     }
@@ -353,7 +354,7 @@ class FileUtils {
 
     public static function getHashFileName($fileName) {
         $realFileNameInfo = pathinfo($fileName);
-        return md5($realFileNameInfo['basename']) . '.' . $realFileNameInfo['extension'];
+        return md5($realFileNameInfo['basename'] . time()) . '.' . $realFileNameInfo['extension'];
     }
 
     public static function streamJson($response, $json, $fileName, $attachment = true, $prettyPrint = true) {

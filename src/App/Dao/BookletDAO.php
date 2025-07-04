@@ -139,7 +139,8 @@ class BookletDAO extends BaseDAO {
                     f.id as image_id,
                     display_mode,
                     f.file,
-                    p.slug
+                    p.slug,
+                    IF(p.parent_product_id IS NOT NULL, 1, 0) AS is_custom
                 FROM 
                     st_booklet_product bp
                 INNER JOIN 
@@ -149,9 +150,9 @@ class BookletDAO extends BaseDAO {
                 LEFT JOIN 
                     st_file f ON f.id = 
                             CASE 
-                                WHEN bp.display_mode = 2 THEN p.image_" . $lang . "_2
-                                WHEN bp.display_mode = 3 THEN p.image_" . $lang . "_3
-                                WHEN bp.display_mode = 6 THEN p.image_" . $lang . "_6
+                                WHEN bp.display_mode = 2 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_2, p.image_" . $lang . "_2)
+                                WHEN bp.display_mode = 3 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_3, p.image_" . $lang . "_3)
+                                WHEN bp.display_mode = 6 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_6, p.image_" . $lang . "_6)
                             END                    
                 WHERE 
                     bp.booklet_id = :bookletId
