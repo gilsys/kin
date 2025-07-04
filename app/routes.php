@@ -12,6 +12,7 @@ use App\Controller\App\MarketController;
 use App\Controller\App\ProductController;
 use App\Controller\App\SubProductController;
 use App\Controller\App\BookletController;
+use App\Controller\App\CustomProductController;
 use App\Controller\App\PageController;
 use App\Controller\App\ProfileController;
 use App\Controller\App\RecipeController;
@@ -136,12 +137,32 @@ return function (App $app) {
     $app->group('', function (RouteCollectorProxy $app) {
         $app->get('/app/products', [ProductController::class, 'list']);
         $app->post('/app/product/datatable', [ProductController::class, 'datatable']);
-        $app->post('/app/product/{id:[0-9]+}', [ProductController::class, 'load']);
         $app->get('/app/product/form[/{id:[0-9]+}]', [ProductController::class, 'form']);
         $app->post('/app/product/save/{mode}', [ProductController::class, 'save']);
         $app->post('/app/product/delete', [ProductController::class, 'delete']);
         $app->post('/app/product/restore', [ProductController::class, 'restore']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
+
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->post('/app/product/{id:[0-9]+}', [ProductController::class, 'load']);
+    })->add(new ProfileMiddleware())->add('csrf');
+
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
+    })->add(new ProfileMiddleware())->add('csrf');
+
+    // Custom products
+    $app->group('', function (RouteCollectorProxy $app) {
+        $app->get('/app/custom_products', [CustomProductController::class, 'list']);
+        $app->post('/app/custom_product/datatable', [CustomProductController::class, 'datatable']);
+        $app->get('/app/custom_product/select', [CustomProductController::class, 'listSelect']);
+        $app->post('/app/custom_product/datatable/select', [CustomProductController::class, 'datatableSelect']);
+        $app->post('/app/custom_product/{id:[0-9]+}', [CustomProductController::class, 'load']);
+        $app->get('/app/custom_product/form/{parentProductId:[0-9]+}[/{id:[0-9]+}]', [CustomProductController::class, 'form']);
+        $app->post('/app/custom_product/save/{mode}', [CustomProductController::class, 'save']);
+        $app->post('/app/custom_product/delete', [CustomProductController::class, 'delete']);
+        $app->post('/app/custom_product/restore', [CustomProductController::class, 'restore']);
+    })->add(new ProfileMiddleware([UserProfile::User]))->add('csrf');
 
     // Subproducts
     $app->group('', function (RouteCollectorProxy $app) {
@@ -153,10 +174,6 @@ return function (App $app) {
         $app->post('/app/subproduct/delete', [SubProductController::class, 'delete']);
         $app->post('/app/subproduct/restore', [SubProductController::class, 'restore']);
     })->add(new ProfileMiddleware([UserProfile::Administrator]))->add('csrf');
-
-    $app->group('', function (RouteCollectorProxy $app) {
-        $app->get('/app/image/{field}/{id:[0-9]+}', [ProductController::class, 'image']);
-    })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
     // Booklets
     $app->group('', function (RouteCollectorProxy $app) {
@@ -187,5 +204,6 @@ return function (App $app) {
         $app->get('/app/recipe/pdf/file/{id:[0-9]+}', [RecipeController::class, 'pdfFile']);
         $app->post('/app/recipe/pdf/delete/{id:[0-9]+}', [RecipeController::class, 'pdfDelete']);
         $app->post('/app/recipe/duplicate', [RecipeController::class, 'duplicate']);
+        $app->get('/app/recipe/product_image/{field}/{productId:[0-9]+}[/{recipeId:[0-9]+}]', [RecipeController::class, 'productImage']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };

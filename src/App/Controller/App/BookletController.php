@@ -181,8 +181,10 @@ class BookletController extends BaseController {
 
         parent::savePersist($request, $response, $args, $formData);
 
+        $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
+
         $productDAO = new ProductDAO($this->get('pdo'));
-        $productIds = array_column($productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null), 'id');
+        $productIds = array_column($productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null, $customCreatorUserId), 'id');
 
         $bookletProductDAO = new BookletProductDAO($this->get('pdo'));
         $bookletProductDAO->clear($formData['id']);
@@ -251,8 +253,10 @@ class BookletController extends BaseController {
             }
         }
 
+        $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
+
         $productDAO = new ProductDAO($this->get('pdo'));
-        $products = $productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null);
+        $products = $productDAO->getByMarketId($formData['market_id'], !empty($formData['id']) ? $formData['id'] : null, $customCreatorUserId);
 
         return ResponseUtils::withJson($response, $products);
     }

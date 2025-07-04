@@ -1,8 +1,8 @@
 <form
     id="mt-product-form"
     class="d-none data-form"
-    data-js="ProductForm"
-    action="/app/product/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
+    data-js="CustomProductForm"
+    action="/app/custom_product/save/<?php echo \App\Constant\App\FormSaveMode::SaveAndContinue ?>"
     method="post"
     autocomplete="off"
     enctype="multipart/form-data">
@@ -11,7 +11,7 @@
         "inc/common/subheader",
         [
             'entity' => 'product',
-            'btnBack' => '/app/products',
+            'btnBack' => '/app/custom_products',
             'btnSave' => true,
             'menu' => $menu,
             'breadcumb' => $breadcumb
@@ -22,5 +22,9 @@
         <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
     <?php endif; ?>
 
-    <?php $this->insert("product/inc/information", ['data' => $data]) ?>
+    <?php if (!empty($data['parent_product_id'])): ?>
+        <input type="hidden" name="parent_product_id" value="<?php echo $data['parent_product_id'] ?>" />
+    <?php endif; ?>
+
+    <?php $this->insert("product/inc/information", ['data' => $data, 'custom' => true]) ?>
 </form>

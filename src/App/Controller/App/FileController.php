@@ -51,7 +51,7 @@ class FileController extends BaseController {
 
     public function uploadFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         $directory = $this->get('params')->getParam('FOLDER_PRIVATE');
-        $file = FileUtils::uploadFile($request, 'upload', $directory, null, 'file', false, false);
+        $file = FileUtils::uploadFile($request, 'upload', $directory, null, 'file', false, false, null, false, true);
         return ResponseUtils::withJson($response, ['filename' => $file]);
     }
 

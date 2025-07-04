@@ -25,4 +25,12 @@ class BookletProductDAO extends BaseDAO {
         $sql = 'SELECT * FROM `' . $this->getTable() . '` WHERE booklet_id = :bookletId ORDER BY page ASC, custom_order ASC';
         return $this->fetchAll($sql, compact('bookletId'));
     }
+
+    public function checkUserHasProduct($userId, $productId) {
+        $sql = 'SELECT COUNT(1) 
+                FROM `' . $this->getTable() . '` bp
+                INNER JOIN st_booklet b ON b.id = bp.booklet_id AND b.creator_user_id = :userId
+                WHERE bp.product_id = :productId';
+        return !empty($this->fetchOneField($sql, compact('userId', 'productId')));
+    }
 }

@@ -1,14 +1,23 @@
-<label class="col-form-label required"><?php echo $title; ?></label>
+<?php $required = !isset($required) ? true : $required; ?>
+
+<label class="col-form-label <?php if ($required): ?>required<?php endif; ?>"><?= $title; ?></label>
 <div>
-    <div class="image-input image-input-outline" id="<?php echo $id ?>" data-kt-image-input="true">
+    <div class="image-input image-input-outline" id="<?= $id ?>" data-kt-image-input="true">
         <div class="image-input-wrapper w-200px h-200px"></div>
-        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="<?php echo __('app.common.form.select_image') ?>">
+        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="<?= __('app.common.form.select_image') ?>">
             <i class="bi bi-pencil-fill fs-7"></i>
-            <input type="file" name="<?php echo $inputName; ?>" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required />
+            <input type="file" name="<?= $inputName; ?>" accept="image/svg+xml, image/jpeg, image/png" <?php if ($required): ?>required<?php endif; ?> />
         </label>
+        <?php if (!$required): ?>
+            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="<?= __('app.common.form.remove_image') ?>">
+                <i class="bi bi-x fs-2"></i>
+            </span>
+        <?php endif; ?>
     </div>
     <div class="form-text">
-        <?php echo __('app.common.media_formats'); ?><br>
-        <?php echo __('app.common.recommended_dimensions'); ?>: <?php echo $recommendedDimensions; ?>
+        <?= __('app.common.media_formats'); ?><br>
+        <?php if (!empty($recommendedDimensions)): ?>
+            <?= __('app.common.recommended_dimensions'); ?>: <?= $recommendedDimensions; ?>
+        <?php endif; ?>
     </div>
 </div>

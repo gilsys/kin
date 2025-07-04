@@ -21,6 +21,8 @@
         <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
     <?php endif; ?>
 
+    <input type="hidden" class="json-data" name="json_data">
+
     <div class="stepper stepper-pills first" id="mt-recipe-stepper">
         <?php $this->insert("inc/common/stepper_nav", ['steps' => [
             __('app.common.step_info'),
@@ -47,6 +49,29 @@
                                     <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="45" />
                                 </div>
                             </div>
+
+                            <?php if ($_SESSION['user']['user_profile_id'] == App\Constant\UserProfile::Administrator) : ?>
+                                <div class="col-md-6">
+                                    <label class="col-form-label required"><?php echo __('app.entity.market') ?></label>
+                                    <div>
+                                        <select name="market_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>
+                                            <option disabled selected value> <?php echo __('app.common.select_value') ?> </option>
+                                            <?php foreach ($data['markets'] as $market): ?>
+                                                <option value="<?php echo $market['id'] ?>">
+                                                    <?php echo $market['name'] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <div class="col-md-6">
+                                    <label class="col-form-label"><?php echo __('app.entity.market') ?></label>
+                                    <div>
+                                        <input type="text" class="form-control" disabled name="market_name" />
+                                    </div>
+                                </div>
+                            <?php endif ?>
 
                             <div class="col-md-6">
                                 <label class="col-form-label required"><?php echo __('app.visuals_language') ?></label>
@@ -144,7 +169,6 @@
                     </div>
                 </div>
             <?php endfor; ?>
-            <input type="hidden" class="json-data" name="json_data">
 
             <div data-kt-stepper-element="content">
                 <div class="card card-custom card-sticky w-100">

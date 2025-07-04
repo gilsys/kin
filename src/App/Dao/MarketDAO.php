@@ -56,8 +56,8 @@ class MarketDAO extends BaseDAO {
             l1.color as main_language_color,
             l2.name as qr_language,
             l2.color as qr_language_color,
-            (SELECT COUNT(*) FROM st_market_product mp WHERE mp.market_id = m.id AND mp.product_id != (SELECT value FROM st_param WHERE id = "EMPTY_PRODUCT")) as total_products,
-            (SELECT COUNT(*) FROM st_user u WHERE u.market_id = m.id) as total_users,
+            (SELECT COUNT(*) FROM st_market_product mp INNER JOIN st_product p ON p.id = mp.product_id AND p.date_deleted IS NULL WHERE mp.market_id = m.id AND mp.product_id != (SELECT value FROM st_param WHERE id = "EMPTY_PRODUCT")) as total_products,
+            (SELECT COUNT(*) FROM st_user u WHERE u.market_id = m.id AND u.date_deleted IS NULL) as total_users,
             m.date_created,
             m.date_updated,
             m.wp_id
