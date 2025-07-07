@@ -91,10 +91,18 @@ class PdfService extends BaseService {
 
         $pages = [];
 
+        $fileDAO = new FileDAO($this->pdo);
+
         // Cargar imagen de disco a base64
         if ($booklet['booklet_type_id'] != BookletType::Flyer) {
-            $imagePath = $folderPrivate . '/BP/' . $booklet['main_language_id'] . '.jpg';
-            $pages[1] = ['image' => FileUtils::getBase64Image($imagePath)];
+            $coverFile = $fileDAO->getById($booklet['cover_file_id']);
+            if ($coverFile['file_type_id'] == FileType::BookletCoverUpload) {
+                $coverPath = $folderPrivate . '/' . FileType::BookletCoverUpload . '/cover_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
+            } else {
+                $coverPath = $folderPrivate . '/' . FileType::BookletCover . '/cover_' . $booklet['main_language_id'] . '_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
+            }
+
+            $pages[1] = ['image' => FileUtils::getBase64Image($coverPath)];
         }
 
         foreach ($bookletImages as $bookletImage) {
@@ -144,7 +152,6 @@ class PdfService extends BaseService {
         $outputFile = $bookletId . '_' . date('YmdHis') . '.pdf';
 
         if ($save) {
-            $fileDAO = new FileDAO($this->pdo);
             $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
 
             $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
@@ -292,7 +299,7 @@ class PdfService extends BaseService {
         }
 
         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", $data);
-        
+
         $dompdf->loadHtml($html);
 
         $this->i18n->setCurrentLang($currentLang);

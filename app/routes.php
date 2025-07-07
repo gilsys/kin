@@ -188,6 +188,9 @@ return function (App $app) {
         $app->get('/app/booklet/pdf/{id:[0-9]+}', [BookletController::class, 'pdfPreview']);
         $app->get('/app/booklet/pdf/file/{id:[0-9]+}', [BookletController::class, 'pdfFile']);
         $app->post('/app/booklet/pdf/delete/{id:[0-9]+}', [BookletController::class, 'pdfDelete']);
+        $app->get('/app/booklet/cover/{id:[0-9]+}', [BookletController::class, 'coverUploaded']);
+        $app->get('/app/booklet/cover/{id:[0-9]+}/{lang}', [BookletController::class, 'cover']);
+        $app->get('/app/booklet/cover_file/{lang}', [BookletController::class, 'coverFile']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 
 
