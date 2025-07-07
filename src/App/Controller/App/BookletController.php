@@ -13,6 +13,7 @@ use App\Constant\UserProfile;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
 use App\Dao\BookletProductDAO;
+use App\Dao\FileDAO;
 use App\Dao\MarketDAO;
 use App\Dao\ProductDAO;
 use App\Dao\StaticListDAO;
@@ -24,6 +25,7 @@ use App\Util\ResponseUtils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Service\PdfService;
+use App\Util\FileUtils;
 
 class BookletController extends BaseController {
 
@@ -103,11 +105,13 @@ class BookletController extends BaseController {
         $marketDAO = new MarketDAO($this->get('pdo'));
         $bookletLayoutEntity = StaticListTable::getEntity(StaticListTable::BookletLayout);
         $bookletLayoutDAO = new StaticListDAO($this->get('pdo'), 'st_' . $bookletLayoutEntity);
+        $fileDAO = new FileDAO($this->get('pdo'));
 
         $data['data']['type'] = $type;
         $data['data']['markets'] = $marketDAO->getForSelect();
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
+        $data['data']['cover_images'] = $fileDAO->getByFileTypeId(FileType::BookletCover);
 
         $data['data']['layouts'] = $bookletLayoutDAO->getForSelect('id', 'name', 'custom_order');
 
@@ -179,6 +183,14 @@ class BookletController extends BaseController {
         $bookletProducts = !empty($formData['booklet_product']) ? $formData['booklet_product'] : [];
         unset($formData['booklet_product']);
 
+        $coverType = $formData['cover_type'] ?? null;
+        unset($formData['cover_type']);
+
+        $coverFileId = $formData['cover_file_id'] ?? null;
+        unset($formData['cover_file_id']);
+
+        $oldCoverFileId = !empty($formData['id']) ? $this->getDAO()->getSingleField($formData['id'], 'cover_file_id') : null;
+
         parent::savePersist($request, $response, $args, $formData);
 
         $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
@@ -199,6 +211,24 @@ class BookletController extends BaseController {
                 }
 
                 $bookletProductDAO->save(['booklet_id' => $formData['id'], 'product_id' => $productId, 'page' => $page, 'custom_order' => $order, 'display_mode' => $displayMode]);
+            }
+        }
+
+        if (!empty($coverType) && $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id') == BookletType::Booklet) {
+            $fileDAO = new FileDAO($this->get('pdo'));
+            if ($coverType == 'upload') {
+                if (!empty($oldCoverFileId) && $fileDAO->getSingleField($oldCoverFileId, 'file_type_id') == FileType::BookletCover) {
+                    $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', null);
+                }
+
+                $this->saveFile($request, $formData['id'], 'cover', 'cover_file_id', FileType::BookletCoverUpload);
+            } else {
+                if (!empty($oldCoverFileId) && $fileDAO->getSingleField($oldCoverFileId, 'file_type_id') == FileType::BookletCoverUpload) {
+                    $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', null);
+                    $fileDAO->deleteById($oldCoverFileId);
+                }
+
+                $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', $coverFileId);
             }
         }
 
@@ -298,7 +328,7 @@ class BookletController extends BaseController {
         $url = '/app/' . static::ENTITY_PLURAL;
         if (!empty($formData['id'])) {
             $url .= '/' . $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
-        }  else if (!empty($formData['booklet_type_id'])) {
+        } else if (!empty($formData['booklet_type_id'])) {
             $url .= '/' . $formData['booklet_type_id'];
         }
         return $url;
@@ -310,9 +340,45 @@ class BookletController extends BaseController {
             $url .= '/' . $formData['id'];
         } else if (!empty($formData['id'])) {
             $url .= '/' . $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
-        }  else if (!empty($formData['booklet_type_id'])) {
+        } else if (!empty($formData['booklet_type_id'])) {
             $url .= '/' . $formData['booklet_type_id'];
         }
         return $url;
+    }
+
+    public function coverUploaded(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $this->get('security')->checkBookletOwner($args['id']);
+
+        $fileDAO = new FileDAO($this->get('pdo'));
+
+        $fileId = $this->getDAO()->getSingleField($args['id'], 'cover_file_id');
+        if (empty($fileId) || $fileDAO->getSingleField($fileId, 'file_type_id') != FileType::BookletCoverUpload) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+        return parent::getFileById($response, $fileId, 'cover');
+    }
+
+    public function cover(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $fileDAO = new FileDAO($this->get('pdo'));
+        $file = $fileDAO->getById($args['id']);
+
+        if (empty($file) || $file['file_type_id'] != FileType::BookletCover) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+        return parent::getFileById($response, $file['id'], 'cover_' . $args['lang'] . '_small');
+    }
+
+    public function coverFile(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        if (empty($this->get('params')->getParam('BOOKLET_COVER_FILE'))) {
+            throw new \Exception(__('app.error.file_not_found'), 404);
+        }
+
+        $filePath = str_replace('##LANG##', $args['lang'], $this->get('params')->getParam('BOOKLET_COVER_FILE'));
+        $response = FileUtils::streamFileByPath($response, $filePath);
+
+        if (!empty($response)) {
+            return $response;
+        }
+        throw new \Exception(__('app.error.file_not_found'), 404);
     }
 };

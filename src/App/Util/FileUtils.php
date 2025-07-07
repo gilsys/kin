@@ -235,6 +235,33 @@ class FileUtils {
         return $response->withHeader('Content-Type', mime_content_type($path));
     }
 
+    public static function streamFileByPath($response, $path, $attachment = false, $filenameContentDisposition = null) {
+        if (file_exists($path) && is_file($path)) {
+            $fileContent = @file_get_contents($path);
+        } else {
+            $fileContent = FALSE;
+        }
+
+        if ($fileContent === FALSE) {
+            return null;
+        }
+
+        $response->getBody()->write($fileContent);
+
+        $realFileNameInfo = pathinfo($path);
+        $contentDisposition = $attachment ? 'attachment' : 'inline';
+        if (empty($filenameContentDisposition)) {
+            $filenameContentDisposition = basename($path);
+        }
+
+        $response = $response->withHeader('Content-Disposition', $contentDisposition . '; filename="' . $filenameContentDisposition . '"');
+
+        if (in_array($realFileNameInfo['extension'], ['svg', 'svgz'])) {
+            return $response->withHeader('Content-Type', 'image/svg+xml');
+        }
+        return $response->withHeader('Content-Type', mime_content_type($path));
+    }
+
     private static function includeCacheAndHeaders($app, $path, $realFileName, $response) {
 
         $etag = md5_file($path);
