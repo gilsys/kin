@@ -277,7 +277,7 @@ class RecipeForm {
                             "image": {
                                 "type": "string",
                                 "title": __('app.js.recipe.banner_override'),
-                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 1760px x 360px.",
                                 "format": "url",
                                 "readonly": disableEdit,
 
