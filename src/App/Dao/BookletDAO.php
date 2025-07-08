@@ -19,12 +19,15 @@ class BookletDAO extends BaseDAO {
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.name")), 
                     " ", 
                     JSON_UNQUOTE(JSON_EXTRACT(AES_DECRYPT(u.personal_information, "' . AES_KEY . '"), "$.surnames"))
-                ) as creator_name
+                ) as creator_name,
+                f.file_type_id AS cover_file_type_id
                 FROM `' . $this->getTable() . '` b
                 LEFT JOIN
                     st_market m ON b.market_id = m.id
                 INNER JOIN
-                    st_user u ON b.creator_user_id = u.id                
+                    st_user u ON b.creator_user_id = u.id
+                LEFT JOIN
+                    st_file f ON b.cover_file_id = f.id                
                 WHERE b.id = :id';
 
         return $this->fetchRecord($sql, compact('id'));
@@ -139,7 +142,8 @@ class BookletDAO extends BaseDAO {
                     f.id as image_id,
                     display_mode,
                     f.file,
-                    p.slug
+                    p.slug,
+                    IF(p.parent_product_id IS NOT NULL, 1, 0) AS is_custom
                 FROM 
                     st_booklet_product bp
                 INNER JOIN 
@@ -149,9 +153,9 @@ class BookletDAO extends BaseDAO {
                 LEFT JOIN 
                     st_file f ON f.id = 
                             CASE 
-                                WHEN bp.display_mode = 2 THEN p.image_" . $lang . "_2
-                                WHEN bp.display_mode = 3 THEN p.image_" . $lang . "_3
-                                WHEN bp.display_mode = 6 THEN p.image_" . $lang . "_6
+                                WHEN bp.display_mode = 2 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_2, p.image_" . $lang . "_2)
+                                WHEN bp.display_mode = 3 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_3, p.image_" . $lang . "_3)
+                                WHEN bp.display_mode = 6 THEN IF(p.parent_product_id IS NOT NULL, p.image_custom_6, p.image_" . $lang . "_6)
                             END                    
                 WHERE 
                     bp.booklet_id = :bookletId

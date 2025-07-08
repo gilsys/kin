@@ -66,8 +66,21 @@ class BookletForm {
         var stepper = new KTStepper(mForm.find('#mt-booklet-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: "form:not(.data-validate-all) [allow-save-invalid].empty-value",
+            ignore: "form:not(.data-validate-all) [allow-save-invalid].empty-value, .form-disabled-section :input",
             onkeyup: false,
+            rules: {
+                cover_file_id: {
+                    required: true
+                },
+                cover_type: {
+                    required: true
+                },
+            },
+            messages: {
+                cover_file_id: {
+                    required: __('app.js.image_required')
+                }
+            },
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
             },
@@ -112,6 +125,16 @@ class BookletForm {
 
         mForm.find("[name='main_language_id']").on('change', function () {
             mForm.find('select.booklet-product-select').trigger('change.select2');
+
+            if (mForm.find("[name='main_language_id']").val() == null || mForm.find("[name='main_language_id']").val() == '') {
+                return;
+            }
+
+            mForm.find('[name="cover_file_id"]').each(function () {
+                $(this).closest('.image-select').find('label').html('<img src="/app/booklet/cover/' + $(this).val() + '/' + mForm.find("[name='main_language_id']").val() + '?v=' + RESOURCES_VERSION + '" class="rounded">');
+            });
+
+            mForm.find('.cover-source-download').attr('href', '/app/booklet/cover_file' + '/' + $(this).val());  
         });
 
         mForm.find('select.booklet-layout-select').on('change', function () {
@@ -127,10 +150,10 @@ class BookletForm {
             }
         });
 
-        mForm.find('.booklet-layouts [data-booklet-layout]').on('click', function() {
+        mForm.find('.booklet-layouts [data-booklet-layout]').on('click', function () {
             var bookletLayouts = $(this).closest('.booklet-layouts');
 
-            if($(this).hasClass('active')) {
+            if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
             } else {
                 bookletLayouts.find('.active').removeClass('active');
@@ -139,6 +162,12 @@ class BookletForm {
 
             var currentLayout = bookletLayouts.find('.active').length > 0 ? bookletLayouts.find('.active').attr('data-booklet-layout') : '';
             bookletLayouts.parent().find('select.booklet-layout-select').val(currentLayout).change();
+        });
+
+        mForm.find('[name="cover_type"]').on('change', function () {
+            var optionSelected = $('[name="cover_type"]:checked').val() ?? '';
+            mForm.find('.cover-select-container').toggleClass('form-disabled-section', optionSelected != 'select');
+            mForm.find('.cover-upload-container').toggleClass('form-disabled-section', optionSelected != 'upload');
         });
 
         initFileVersionsList(mForm, '/app/booklet/pdf/delete/');
@@ -165,6 +194,19 @@ class BookletForm {
                 mForm.find("[name='page4_booklet_layout_id']").val(data.page4_booklet_layout_id).trigger('change.select2');
 
                 mForm.find("[name='market_id']").val(data.market_id).change();
+
+                if (data.cover_file_id != null) {
+                    var coverType = data.cover_file_type_id == 'BU' ? 'upload' : 'select';
+                    mForm.find('[name="cover_type"][value="' + coverType + '"]').prop('checked', true).change();
+
+                    if (coverType == 'select') {
+                        mForm.find('[name="cover_file_id"][value="' + data.cover_file_id + '"]').prop('checked', true).change();
+                    } else {
+                        mForm.find('#cover-upload input[type="file"]').setImageUploaded('/app/booklet/cover/' + data.id + addDateUpdatedTimestampParam(data), false);
+                    }
+                } else {
+                    mForm.find('[name="cover_type"]').change();
+                }
 
                 if (!userHasProfile(['A'])) {
                     that.getProducts();
@@ -198,6 +240,8 @@ class BookletForm {
             if (!userHasProfile(['A'])) {
                 that.getProducts();
             }
+
+            mForm.find('[name="cover_type"]').change();
         }
     }
 
@@ -225,9 +269,33 @@ class BookletForm {
 
         container.html(tableHTML);
 
+        function templateSelect2(data) {
+            if (!data.id) {
+                return data.text;
+            }
+
+            var customHtml = '';
+            if (that.products['_' + data.id].is_custom == '1') {
+                customHtml = '<span class="badge badge-primary fw-lighter ms-2">' + __('app.js.product.custom') + '</span>';
+            }
+            return $('<span>' + data.text + customHtml + '</span>');
+        }
+
+        function initSelect2Products(item) {
+            var settings = {
+                language: __('app.js.lang.code'),
+                placeholder: item.attr('data-placeholder'),
+                allowClear: true,
+                templateResult: templateSelect2,
+                templateSelection: templateSelect2
+            }
+
+            item.select2(settings);
+        }
+
         var that = this;
         container.find('select.booklet-product-select').each(function () {
-            initSelect2($(this));
+            initSelect2Products($(this));
 
             $(this).on('select2:selecting', function (e) {
                 var mForm = $('#mt-booklet-form');
@@ -250,7 +318,7 @@ class BookletForm {
 
                 if ($(this).val() != null && $(this).val() != '') {
                     var product = that.products['_' + $(this).val()];
-                    imageContainer.css('background-image', 'url("/app/image/image_' + languageId + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
+                    imageContainer.css('background-image', 'url("/app/image/image_' + (product.is_custom == '1' ? 'custom' : languageId) + '_' + $(this).attr('data-display-mode') + '/' + product.id + addDateUpdatedTimestampParam(product) + '")');
                 } else {
                     imageContainer.css('background-image', 'none');
                 }
@@ -279,7 +347,7 @@ class BookletForm {
             });
         });
 
-        container.find('[allow-save-invalid]').each(function() {
+        container.find('[allow-save-invalid]').each(function () {
             $(this).on('change', function () {
                 allowSaveInvalidCheckEmpty($(this));
             });

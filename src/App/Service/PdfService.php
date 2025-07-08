@@ -91,10 +91,18 @@ class PdfService extends BaseService {
 
         $pages = [];
 
+        $fileDAO = new FileDAO($this->pdo);
+
         // Cargar imagen de disco a base64
         if ($booklet['booklet_type_id'] != BookletType::Flyer) {
-            $imagePath = $folderPrivate . '/BP/' . $booklet['main_language_id'] . '.jpg';
-            $pages[1] = ['image' => FileUtils::getBase64Image($imagePath)];
+            $coverFile = $fileDAO->getById($booklet['cover_file_id']);
+            if ($coverFile['file_type_id'] == FileType::BookletCoverUpload) {
+                $coverPath = $folderPrivate . '/' . FileType::BookletCoverUpload . '/cover_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
+            } else {
+                $coverPath = $folderPrivate . '/' . FileType::BookletCover . '/cover_' . $booklet['main_language_id'] . '_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
+            }
+
+            $pages[1] = ['image' => FileUtils::getBase64Image($coverPath)];
         }
 
         foreach ($bookletImages as $bookletImage) {
@@ -103,7 +111,7 @@ class PdfService extends BaseService {
             }
 
             // Cargar imagen de disco a base64
-            $imagePath = $folderPrivate . '/' . FileType::ProductImage . '/image_' . $booklet['main_language_id'] . '_' . $bookletImage['display_mode'] . '_' . $bookletImage['image_id'] . '.' . pathinfo($bookletImage['file'], PATHINFO_EXTENSION);
+            $imagePath = $folderPrivate . '/' . FileType::ProductImage . '/image_' . (!empty($bookletImage['is_custom']) ? 'custom' : $booklet['main_language_id']) . '_' . $bookletImage['display_mode'] . '_' . $bookletImage['image_id'] . '.' . pathinfo($bookletImage['file'], PATHINFO_EXTENSION);
             $bookletImage['image'] = FileUtils::getBase64Image($imagePath);
 
             // Generar el QR code con la URL base, lenguaje y slug del producto en formato base64
@@ -144,7 +152,6 @@ class PdfService extends BaseService {
         $outputFile = $bookletId . '_' . date('YmdHis') . '.pdf';
 
         if ($save) {
-            $fileDAO = new FileDAO($this->pdo);
             $fileId = $fileDAO->save(['file_type_id' => $fileType, 'file' => $outputFile]);
 
             $bookletFileDAO = new BookletFileDAO($this->get('pdo'));
@@ -180,7 +187,8 @@ class PdfService extends BaseService {
             if (!empty($value['product_id'])) {
                 // Obtener toda la información del producto en el idioma de la receta
                 $productDAO = new ProductDAO($this->pdo);
-                $product = $productDAO->getFullById($value['product_id'], $lang);
+                $productLang = !empty($productDAO->getSingleField($value['product_id'], 'parent_product_id')) ? 'custom' : $lang;
+                $product = $productDAO->getFullById($value['product_id'], $productLang);
 
                 $qrOptions = [
                     'foregroundColor' => [
@@ -204,10 +212,10 @@ class PdfService extends BaseService {
                 }
 
                 // Cargar imagen de disco a base64
-                $logoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/logo_' . $lang . '_' . $product['logo'] . '.' . pathinfo($product['logo_file'], PATHINFO_EXTENSION);
+                $logoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/logo_' . $productLang . '_' . $product['logo'] . '.' . pathinfo($product['logo_file'], PATHINFO_EXTENSION);
                 $value['logo'] = FileUtils::getBase64Image($logoFilePath);
 
-                $photoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/photo_' . $lang . '_' . $product['photo'] . '.' . pathinfo($product['photo_file'], PATHINFO_EXTENSION);
+                $photoFilePath = $privateBasePath . '/' . FileType::ProductImage . '/photo_' . $productLang . '_' . $product['photo'] . '.' . pathinfo($product['photo_file'], PATHINFO_EXTENSION);
                 $value['photo'] = FileUtils::getBase64Image($photoFilePath);
             }
 

@@ -1,0 +1,43 @@
+<?php $this->start('filters') ?>
+<?php if (!empty($data['markets'])) : ?>
+    <div class="col-sm-6 col-xl-3">
+        <label class="form-label"><?= __('app.entity.market') ?></label>
+        <select data-placeholder="<?php __ss('app.entity.market') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_ids">
+            <option value=""></option>
+            <?php foreach ($data['markets'] as $market) : ?>
+                <option value="|<?= $market['id'] ?>|"><?= $market['name'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($data['productStatus'])) : ?>
+    <div class="col-sm-6 col-xl-3">
+        <label class="form-label"><?= __('app.common.status') ?></label>
+        <select data-placeholder="<?php __ss('app.common.status') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="product_status">
+            <option value=""></option>
+            <?php foreach ($data['productStatus'] as $status) : ?>
+                <option value="<?= $status ?>"><?= __('app.product.status.' . $status) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php endif; ?>
+<?php $this->stop() ?>
+
+<?php $this->start('columns') ?>
+<!-- Añadimos tantos th como columnas con las que trabajamos en el datatable, si la columna está oculta, dejamos el th vacío -->
+<!-- Data priority corresponde a la prioridad para mostrarse visible o bajo el botón (+) en responsive -->
+<th data-priority="5"><?php echo __('app.common.id') ?></th>
+<th data-priority="1"><?php echo __('app.common.image') ?></th>
+<th data-priority="3"><?= __ss('app.common.name') ?></th>
+<th data-priority="4"><?= __ss('app.entity.markets') ?></th>
+<th data-priority="6"><?= __ss('app.entity.booklets') ?></th>
+<th data-priority="6"><?= __ss('app.entity.subproducts') ?></th>
+<th data-priority="7"><?= __ss('app.common.date_created.short') ?></th>
+<th></th>
+<th></th>
+<th data-priority="1" class="text-center"></th>
+
+<?php $this->stop() ?>
+
+<?php $this->insert('inc/common/datatable', ['entity' => $entity, 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>

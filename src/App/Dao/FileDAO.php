@@ -32,4 +32,12 @@ class FileDAO extends BaseDAO
         }
         parent::deleteById($id, $hasCustomOrder);
     }
+
+    public function getByFileTypeId($fileTypeId) {
+        $sql = "SELECT f.*
+                FROM " . $this->table . " f 
+                WHERE f.file_type_id = :fileTypeId
+                ORDER BY f.id ASC";
+        return $this->fetchAll($sql, compact('fileTypeId'));
+    }
 }

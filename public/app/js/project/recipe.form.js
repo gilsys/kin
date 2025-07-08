@@ -54,6 +54,13 @@ class RecipeForm {
         });
 
         function changeStep(index, stepper) {
+            var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
+            var marketValid = !mForm.find("[name='market_id']").is(':visible') || mForm.find("[name='market_id']").valid();
+
+            if (!languageValid || !marketValid) {
+                return;
+            }
+
             stepper.goTo(index);
         }
 
@@ -67,6 +74,9 @@ class RecipeForm {
             changeStep(stepper.getPreviousStepIndex(), stepper);
         });
 
+        mForm.find("[name='market_id'], [name='main_language_id']").on('change', function () {
+            that.getProducts();
+        });
 
         initFileVersionsList(mForm, '/app/recipe/pdf/delete/');
 
@@ -80,10 +90,12 @@ class RecipeForm {
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
                 that.jsonData = data.json_data;
-                that.getProducts();
 
                 mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
                 mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
+
+                mForm.find("[name='market_name']").val(data.market_name);
+                mForm.find("[name='market_id']").val(data.market_id).change();
 
                 if (!userHasProfile(['A'])) {
                     if (data.editable != '1') {
@@ -94,19 +106,23 @@ class RecipeForm {
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
-            // Valores por defecto en registros nuevos  
-            that.getProducts();
+            // Valores por defecto en registros nuevos
             mForm.removeDisabledOptions();
             AdminUtils.showDelayedAfterLoad();
         }
     }
 
-    initJsonEditor(page) {
+    initJsonEditor(page, reloadData = true) {
         var mForm = $('#mt-recipe-form');
         var that = this;
         var firstInit = that.jsonEditor[page] == null;
 
+        var reloadCurrentData = null;
         if (that.jsonEditor[page] != null) {
+            if (reloadData) {
+                reloadCurrentData = that.jsonEditor[page].getValue();
+            }
+
             that.jsonEditor[page].destroy();
         }
 
@@ -121,22 +137,22 @@ class RecipeForm {
             "placeholder": __('app.js.common.select_value')
         };
 
-        var lang = $('[name="main_language_id"]').val() || 'es';
+        var lang = mForm.find("[name='main_language_id']").val() ?? __('app.js.lang.code');
 
         var iconList = [
             { id: "", name: __('app.js.common.select_value') }
         ];
         for (var i = 1; i <= 8; i++) {
-            iconList.push({ id: i, name: `/app/img/receipt/ico${i}-${lang}.svg` });
+            iconList.push({ id: i, name: `/app/img/receipt/ico${i}-${lang}.svg?v=${RESOURCES_VERSION}` });
         }
 
         var bannerList = [
             { id: "", name: __('app.js.common.select_value') }
         ];
         for (var i = 1; i <= 3; i++) {
-            bannerList.push({ id: i, name: `/app/img/receipt/banner${i}-${lang}.jpg` });
+            bannerList.push({ id: i, name: `/app/img/receipt/banner${i}-${lang}.jpg?v=${RESOURCES_VERSION}` });
         }
-        console.log(bannerList);
+        // console.log(bannerList);
 
         const select2IconOptions = {
             language: __('app.js.lang.code'),
@@ -184,13 +200,24 @@ class RecipeForm {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
                 }
 
-                return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
+                const product = that.products.products.find(p => p.id == data.id);
+                const isCustom = product.is_custom == '1';
+                const langCode = isCustom ? 'custom' : lang;
+                const recipedIdParam = (mForm.find("[name='id']").length > 0 ? '/' + mForm.find("[name='id']").val() : '') + addDateUpdatedTimestampParam(product);
+
+                return $('<div><img class="select2-banner-image me-4" src="/app/recipe/product_image/logo_' + langCode + '/' + data.id + recipedIdParam + '" /><img class="select2-banner-image me-4" src="/app/recipe/product_image/photo_' + langCode + '/' + data.id + recipedIdParam + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             templateSelection: function (data) {
                 if (!data.id || data.id == 0) {
                     return $('<span>' + __('app.js.common.select_value') + '</span>');
                 }
-                return $('<div><img class="select2-banner-image me-4" src="/app/image/logo_' + __('app.js.lang.code') + '/' + data.id + '" /><img class="select2-banner-image me-4" src="/app/image/photo_' + __('app.js.lang.code') + '/' + data.id + '" /><div class="product-select2-info">' + data.text + '</div></div>');
+
+                const product = that.products.products.find(p => p.id == data.id);
+                const isCustom = product.is_custom == '1';
+                const langCode = isCustom ? 'custom' : lang;
+                const recipedIdParam = (mForm.find("[name='id']").length > 0 ? '/' + mForm.find("[name='id']").val() : '') + addDateUpdatedTimestampParam(product);
+
+                return $('<div><img class="select2-banner-image me-4" src="/app/recipe/product_image/logo_' + langCode + '/' + data.id + recipedIdParam + '" /><img class="select2-banner-image me-4" src="/app/recipe/product_image/photo_' + langCode + '/' + data.id + recipedIdParam + '" /><div class="product-select2-info">' + data.text + '</div></div>');
             },
             escapeMarkup: function (m) {
                 return m;
@@ -250,7 +277,7 @@ class RecipeForm {
                             "image": {
                                 "type": "string",
                                 "title": __('app.js.recipe.banner_override'),
-                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 1760px x 360px.",
                                 "format": "url",
                                 "readonly": disableEdit,
 
@@ -587,6 +614,8 @@ class RecipeForm {
         that.jsonEditor[page].on('ready', () => {
             if (firstInit && this.jsonData != null && this.jsonData[page] != null) {
                 that.jsonEditor[page].setValue(this.jsonData[page]);
+            } else if (reloadCurrentData != null) {
+                that.jsonEditor[page].setValue(reloadCurrentData);
             } else {
                 mForm.find('#json-content-form-' + page).find('select[name*="[subproducts]"]').val('').change();
             }
@@ -603,7 +632,7 @@ class RecipeForm {
         });
 
         this.jsonEditor[page].on('change', function () {
-            console.log('JSONEditor change event for page ' + page);
+            // console.log('JSONEditor change event for page ' + page);
 
             mForm.find('select[name*="[subproducts]"]:not(.change-init)').each(function () {
                 $(this).on('select2:selecting', function (e) {
@@ -631,7 +660,9 @@ class RecipeForm {
                     }).get();
 
                     $('.select2-results__option').each(function () {
-                        $(this).toggleClass('selected-other-select', selectedValues.includes($(this).attr('data-select2-id').split('-').pop()));
+                        if ($(this).attr('data-select2-id')) {
+                            $(this).toggleClass('selected-other-select', selectedValues.includes($(this).attr('data-select2-id').split('-').pop()));
+                        }
                     });
                 }, 0);
             });
@@ -656,8 +687,17 @@ class RecipeForm {
     getProducts() {
         var mForm = $('#mt-recipe-form');
 
+        if (
+            (mForm.find("[name='market_id']").length > 0 && (mForm.find("[name='market_id']").val() == null || mForm.find("[name='market_id']").val() == '')) ||
+            (mForm.find("[name='main_language_id']").val() == null || mForm.find("[name='main_language_id']").val() == '')
+        ) {
+            return;
+        }
+
         var params = {
-            'id': mForm.find("[name='id']").val()
+            'id': mForm.find("[name='id']").val(),
+            'market_id': mForm.find("[name='market_id']").length > 0 ? mForm.find("[name='market_id']").val() : null,
+            'main_language_id': mForm.find("[name='main_language_id']").val()
         };
         var that = this;
         $.post('/app/recipe/get_products', params, data => {
