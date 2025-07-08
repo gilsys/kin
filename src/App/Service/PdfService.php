@@ -223,9 +223,11 @@ class PdfService extends BaseService {
                 $value['reference'] = $subproduct['reference'];
                 $value['format'] = $subproduct['format'];
             }
-            if (!empty($value['banner'])) {
-                $bannerFilePath = Folders::getPublic() . '/app/img/receipt/banner' . $value['banner'] . '-' . $lang . '.png';
-                $value['banner'] = FileUtils::getBase64Image($bannerFilePath);
+
+            if (!empty($value['image_block']['banner'])) {
+                $bannerId = $value['image_block']['banner'];
+                $bannerFilePath = Folders::getPublic() . '/app/img/receipt/banner' . $bannerId . '-' . $lang . '.jpg';
+                $value['image_block']['banner'] = FileUtils::getBase64Image($bannerFilePath);
             }
 
             if (is_array($value)) {
@@ -291,7 +293,7 @@ class PdfService extends BaseService {
         }
 
         $html = $this->renderer->fetch("/pdf/recipe/recipe.phtml", $data);
-        
+
         $dompdf->loadHtml($html);
 
         $this->i18n->setCurrentLang($currentLang);
