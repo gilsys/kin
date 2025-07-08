@@ -1,0 +1,23 @@
+<?php $required = !isset($required) ? true : $required; ?>
+
+<label class="col-form-label <?php if ($required): ?>required<?php endif; ?>"><?= $title; ?></label>
+<div>
+    <div class="image-input image-input-outline" id="<?= $id ?>" data-kt-media-input="true" data-kt-image-input-uploaded="/app/img/uploaded<?= $fileType ?>200.svg">
+        <div class="image-input-wrapper w-200px h-200px"></div>
+        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="<?= __('app.common.form.select_file') ?>">
+            <i class="bi bi-pencil-fill fs-7"></i>
+            <input type="file" name="<?= $inputName; ?>" <?php if ($fileType == 'zip'): ?>accept=".zip,application/zip,application/x-zip-compressed" <?php endif; ?> <?php if ($required): ?>required<?php endif; ?> />
+        </label>
+        <?php if (!$required): ?>
+            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="<?= __('app.common.form.remove_file') ?>">
+                <i class="bi bi-x fs-2"></i>
+            </span>
+        <?php endif; ?>
+        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow btn-media-download" data-kt-image-input-action="download" data-bs-toggle="tooltip" title="<?php echo __('app.common.download') ?>">
+            <i class="bi bi-download fs-6"></i>
+        </span>
+    </div>
+    <div class="form-text">
+        <?= __('app.common.media_formats_file') . $fileType; ?>
+    </div>
+</div>

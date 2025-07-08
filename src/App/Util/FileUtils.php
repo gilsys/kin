@@ -40,7 +40,7 @@ class FileUtils {
         return !empty($request->getParsedBody()[$param . '_removeemptyimage']);
     }
 
-    public static function uploadFile($request, $subfolderId, $directory, $id, $param, $encrypt = false, $override = true, $uploadedFile = null, $deleteEmptyFiles = false) {
+    public static function uploadFile($request, $subfolderId, $directory, $id, $param, $encrypt = false, $override = true, $uploadedFile = null, $deleteEmptyFiles = false, $hashFileName = false) {
         if (!empty($subfolderId)) {
             $directory = $directory . DIRECTORY_SEPARATOR . $subfolderId;
             if (!file_exists($directory)) {
@@ -61,7 +61,8 @@ class FileUtils {
         }
 
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = self::getLocalFilepath($uploadedFile->getClientFilename(), $directory, $id, $param, $override);
+            $fileNameUpload = $hashFileName ? self::getHashFileName($uploadedFile->getClientFilename()) : $uploadedFile->getClientFilename();
+            $filename = self::getLocalFilepath($fileNameUpload, $directory, $id, $param, $override);
 
             if ($encrypt) {
                 File::encryptFileWithPassword($_FILES[$param]['tmp_name'], $filename, ENCRYPT_IMG_PASSWORD);
@@ -73,7 +74,7 @@ class FileUtils {
                 return basename($filename);
             }
 
-            return $uploadedFile->getClientFilename();
+            return $fileNameUpload;
         }
         return null;
     }
@@ -234,6 +235,33 @@ class FileUtils {
         return $response->withHeader('Content-Type', mime_content_type($path));
     }
 
+    public static function streamFileByPath($response, $path, $attachment = false, $filenameContentDisposition = null) {
+        if (file_exists($path) && is_file($path)) {
+            $fileContent = @file_get_contents($path);
+        } else {
+            $fileContent = FALSE;
+        }
+
+        if ($fileContent === FALSE) {
+            return null;
+        }
+
+        $response->getBody()->write($fileContent);
+
+        $realFileNameInfo = pathinfo($path);
+        $contentDisposition = $attachment ? 'attachment' : 'inline';
+        if (empty($filenameContentDisposition)) {
+            $filenameContentDisposition = basename($path);
+        }
+
+        $response = $response->withHeader('Content-Disposition', $contentDisposition . '; filename="' . $filenameContentDisposition . '"');
+
+        if (in_array($realFileNameInfo['extension'], ['svg', 'svgz'])) {
+            return $response->withHeader('Content-Type', 'image/svg+xml');
+        }
+        return $response->withHeader('Content-Type', mime_content_type($path));
+    }
+
     private static function includeCacheAndHeaders($app, $path, $realFileName, $response) {
 
         $etag = md5_file($path);
@@ -353,7 +381,7 @@ class FileUtils {
 
     public static function getHashFileName($fileName) {
         $realFileNameInfo = pathinfo($fileName);
-        return md5($realFileNameInfo['basename']) . '.' . $realFileNameInfo['extension'];
+        return md5($realFileNameInfo['basename'] . time()) . '.' . $realFileNameInfo['extension'];
     }
 
     public static function streamJson($response, $json, $fileName, $attachment = true, $prettyPrint = true) {

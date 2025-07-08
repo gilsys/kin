@@ -1,4 +1,14 @@
 <?php $this->start('filters') ?>
+<div class="profile-allow profile-A col-sm-6 col-xl-3">
+    <label class="form-label"><?= __('app.entity.market') ?></label>
+    <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="market_id">
+        <option value=""></option>
+        <?php foreach ($data['markets'] as $market) : ?>
+            <option value="<?= $market['id'] ?>"><?= $market['name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
 <div class="col-sm-6 col-xl-3">
     <label class="form-label"><?= __('app.visuals_language') ?></label>
     <select data-placeholder="<?php __ss('app.common.select_value') ?>" class="form-select form-select-sm datatables-column-search-filter kt-select2" data-col-name="main_language_id">
@@ -39,9 +49,11 @@
 <th data-priority="5"><?php echo __('app.common.id') ?></th>
 <th data-priority="2"><?= __ss('app.common.name') ?></th>
 <th data-priority="6"><?= __ss('app.creator') ?></th>
+<th data-priority="4"><?= __ss('app.entity.market') ?></th>
 <th data-priority="4"><?= __ss('app.visuals_language') ?></th>
 <th data-priority="4"><?= __ss('app.qr_language') ?></th>
 <th data-priority="7"><?= __ss('app.common.date_created.short') ?></th>
+<th></th>
 <th></th>
 <th></th>
 <th></th>

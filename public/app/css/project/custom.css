@@ -553,3 +553,42 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 .json-content-form .json-form-hidden {
     display: none !important;
 }
+
+.image-select input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.image-select img {
+    cursor: pointer;
+    border: 2px solid transparent;
+    max-width: 150px;
+}
+
+.image-select input[type="radio"]:checked + label img {
+    border-color: var(--bs-primary);
+}
+
+.image-select-container > div {
+    gap: 14px;
+    overflow-y: scroll;
+}
+
+.form-disabled-section {
+    display: none;
+}
+
+.form-check-input[type="radio"]:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-link {
+    color: var(--bs-primary) !important;
+}
+
+.btn-link:hover {
+    text-decoration: underline !important;
+    opacity: 1 !important;
+}

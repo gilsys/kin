@@ -1,0 +1,103 @@
+<div class="card card-custom card-sticky">
+    <div class="card-header">
+        <div class="card-title">
+            <h2><?php echo __('app.common.main_information') ?></h2>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                <div>
+                    <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name" maxlength="100" />
+                </div>
+            </div>
+            <?php if (isset($data['markets'])): ?>
+                <div class="col-md-4">
+                    <label class="col-form-label required"><?php echo __('app.entity.markets') ?></label>
+                    <div>
+                        <select name="market_ids[]" required multiple data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2">
+                            <?php foreach ($data['markets'] as $market): ?>
+                                <option value="<?php echo $market['id'] ?>">
+                                    <?php echo $market['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="form-text"><?php echo __('app.common.select_multiple_info') ?></div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="col-md-4">
+                <label class="col-form-label required"><?php echo __('app.slug') ?></label>
+                <?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('app.slug.description')]); ?>
+                <div>
+                    <input type="text" class="form-control" required placeholder="<?php echo __('app.slug') ?>" name="slug" maxlength="200" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php foreach (array_merge((!empty($custom) ? ['custom'] : []), ['es', 'en', 'fr']) as $lang): ?>
+    <div class="card card-custom card-sticky">
+        <div class="card-header">
+            <div class="card-title">
+                <h3><?php echo __('app.language.' . $lang) ?></h3>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <h4><?php echo __('app.product.recipe_info') ?></h4>
+                </div>
+                <div class="col-md-4">
+                    <label class="col-form-label required"><?php echo __('app.product.subtitle') ?></label>
+                    <div>
+                        <input type="text" class="form-control" required placeholder="<?php echo __('app.product.subtitle') ?>" name="subtitle_<?= $lang ?>" maxlength="200" />
+                    </div>
+                    <div>
+                        <label class="col-form-label required"><?php echo __('app.product.periodicity') ?></label>
+                        <div>
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.product.periodicity') ?>" name="periodicity_<?= $lang ?>" maxlength="100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'logo_' . $lang, 'title' => __('app.product.title'), 'inputName' => 'logo_' . $lang, 'recommendedDimensions' => '645px × 100px']) ?>
+                </div>
+                <div class="col-md-4 text-center">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'photo_' . $lang, 'title' => __('app.product.photo'), 'inputName' => 'photo_' . $lang, 'recommendedDimensions' => '400px × 220px']) ?>
+                </div>
+            </div>
+            <div class="row mt-4 border-top pt-4">
+                <div class="col-12 mt-8">
+                    <h4><?= __('app.product.fyler_booklet_info') ?></h4>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_2', 'title' => __('app.product.image_1_2'), 'inputName' => 'image_' . $lang . '_2', 'recommendedDimensions' => $data['recommendedDimensions'][2]]) ?>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_3', 'title' => __('app.product.image_1_3'), 'inputName' => 'image_' . $lang . '_3', 'recommendedDimensions' => $data['recommendedDimensions'][3]]) ?>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                    <?php $this->insert("inc/common/image_upload", ['id' => 'file-image_' . $lang . '_6', 'title' => __('app.product.image_1_6'), 'inputName' => 'image_' . $lang . '_6', 'recommendedDimensions' => $data['recommendedDimensions'][6]]) ?>
+                </div>
+            </div>
+
+            <?php if ($lang != 'custom'): ?>
+                <div class="row mt-4 border-top pt-4">
+                    <div class="col-12 mt-8">
+                        <h4><?= __('app.product.file_info') ?></h4>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 text-center">
+                        <?php $this->insert("inc/common/file_upload", ['id' => 'zip_' . $lang, 'title' => __('app.product.zip'), 'inputName' => 'zip_' . $lang, 'fileType' => 'zip']) ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+<?php if (!empty($data['id'])): ?>
+    <?php $this->insert("inc/common/dates_info") ?>
+<?php endif; ?>

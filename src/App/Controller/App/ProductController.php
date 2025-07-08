@@ -26,12 +26,13 @@ class ProductController extends BaseController {
         return new ProductDAO($this->get('pdo'));
     }
 
-
     public function getNameForLogs($id) {
         return $this->getDAO()->getSingleField($id, 'name');
     }
 
     public function load(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $this->get('security')->checkProductOwner($args['id'], false, false);
+
         $data = $this->getDAO()->getById($args['id']);
         if (empty($data)) {
             throw new AuthException();
@@ -85,13 +86,8 @@ class ProductController extends BaseController {
             throw new AuthException();
         }
 
-        if (!$this->getDAO()->canDeleteProduct($formData['id'])) {
-            $this->getDAO()->updateSingleField($formData['id'], 'date_deleted', date('Y-m-d H:i:s'));
-            return true;
-        }
-
-        $marketProductDAO = new MarketProductDAO($this->get('pdo'));
-        $marketProductDAO->clear($formData['id']);
+        $this->getDAO()->updateSingleField($formData['id'], 'date_deleted', date('Y-m-d H:i:s'));
+        return true;
     }
 
     public function savePreSave($request, $response, $args, &$formData) {
@@ -102,8 +98,14 @@ class ProductController extends BaseController {
     }
 
     public function savePersist($request, $response, $args, &$formData) {
+        $isNew = empty($formData['id']);
+
         $marketIds = !empty($formData['market_ids']) ? $formData['market_ids'] : [];
         unset($formData['market_ids']);
+
+        if ($isNew) {
+            $formData['creator_user_id'] = $this->get('session')['user']['id'];
+        }
 
         parent::savePersist($request, $response, $args, $formData);
 
@@ -134,9 +136,24 @@ class ProductController extends BaseController {
         $this->saveFile($request, $formData['id'], 'photo_es', 'photo_es', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'photo_en', 'photo_en', FileType::ProductImage);
         $this->saveFile($request, $formData['id'], 'photo_fr', 'photo_fr', FileType::ProductImage);
+
+        $this->saveFile($request, $formData['id'], 'zip_es', 'zip_es', FileType::ProductFile);
+        $this->saveFile($request, $formData['id'], 'zip_en', 'zip_en', FileType::ProductFile);
+        $this->saveFile($request, $formData['id'], 'zip_fr', 'zip_fr', FileType::ProductFile);
+
+        if (!$isNew) {
+            $this->getDAO()->updateCustomByParentProductId($formData['id']);
+        }
     }
 
     public function image(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $product = $this->getDAO()->getById($args['id']);
+        if (empty($product['parent_product_id'])) {
+            $this->get('security')->checkProductOwner($product['id'], false, false, true);
+        } else {
+            $this->get('security')->checkCustomProductOwner($product['id']);
+        }
+
         $fileId = $this->getDAO()->getSingleField($args['id'], $args['field']);
         if (empty($fileId)) {
             throw new \Exception(__('app.error.file_not_found'), 404);
