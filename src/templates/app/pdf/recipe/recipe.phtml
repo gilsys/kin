@@ -498,18 +498,14 @@
         }
 
         .product-image img {
-            max-width: 100%;
-            width: auto;
-            height: 220px;
-            display: block;
-            margin: 0 auto;
+            vertical-align: middle;
+            max-height: 100%;
+            height: auto;
         }
 
         .product-image {
-            max-width: 400px;
-            margin: 0 auto;
-            display: inline-block;
-            vertical-align: top;
+            height: 220px;
+            line-height: 220px;
             text-align: center;
         }
 
@@ -692,8 +688,9 @@
                                                     <div class="product-image">
                                                         <?php if (!empty($product['image'])): ?>
                                                             <img src="<?= $product['image'] ?>">
-                                                        <?php else: ?>
+                                                        <?php elseif (!empty($product['photo'])): ?>
                                                             <img src="<?= $product['photo'] ?>">
+                                                        <?php else: ?>
                                                         <?php endif; ?>
                                                     </div>
 
