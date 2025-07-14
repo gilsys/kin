@@ -689,15 +689,12 @@
                                                             </div>
                                                         <?php endif; ?>
                                                     </div>
-
-                                                    <div class="group-block image-column">
-                                                        <div class="product-image">
-                                                            <?php if (!empty($group['formdata']['image'])): ?>
-                                                                <img src="<?= $group['formdata']['image'] ?>">
-                                                            <?php else: ?>
-                                                                <img src="<?= $product['photo'] ?>">
-                                                            <?php endif; ?>
-                                                        </div>
+                                                    <div class="product-image">
+                                                        <?php if (!empty($product['image'])): ?>
+                                                            <img src="<?= $product['image'] ?>">
+                                                        <?php else: ?>
+                                                            <img src="<?= $product['photo'] ?>">
+                                                        <?php endif; ?>
                                                     </div>
 
                                                     <div class="group-block qr-column">
