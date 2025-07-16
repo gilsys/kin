@@ -37,6 +37,8 @@ class CustomProductForm {
                 if (lang != 'custom') {
                     if (data['zip_' + lang]) {
                         $('#zip_' + lang + ' input[type="file"]').setFileUploaded('/app/image/zip_' + lang + '/' + data.id + addDateUpdatedTimestampParam(data), false);
+                    } else {
+                        $('#zip_' + lang + ' input[type="file"]').closest('.row').hide();
                     }
 
                     formReadOnly(mForm.find('#file-image_' + lang + '_2').closest('.card'));
