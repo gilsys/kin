@@ -232,6 +232,18 @@ class PdfService extends BaseService {
                 $value['format'] = $subproduct['format'];
             }
 
+            if (!empty($value['product_id'])) {
+                $productDAO = new ProductDAO($this->pdo);
+                $product = $productDAO->getFullById($value['product_id'], $lang);
+
+                if (empty($value['periodicity'])) {
+                    $value['periodicity'] = $product['periodicity'];
+                }
+                if (empty($value['subtitle'])) {
+                    $value['subtitle'] = $product['subtitle'];
+                }
+            }
+
             if (!empty($value['image_block']['banner'])) {
                 $bannerId = $value['image_block']['banner'];
                 $bannerFilePath = Folders::getPublic() . '/app/img/receipt/banner' . $bannerId . '-' . $lang . '.jpg';

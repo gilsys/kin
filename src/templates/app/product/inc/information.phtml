@@ -52,14 +52,14 @@
                     <h4><?php echo __('app.product.recipe_info') ?></h4>
                 </div>
                 <div class="col-md-4">
-                    <label class="col-form-label required"><?php echo __('app.product.subtitle') ?></label>
+                    <label class="col-form-label"><?php echo __('app.product.subtitle') ?></label>
                     <div>
-                        <input type="text" class="form-control" required placeholder="<?php echo __('app.product.subtitle') ?>" name="subtitle_<?= $lang ?>" maxlength="200" />
+                        <input type="text" class="form-control" placeholder="<?php echo __('app.product.subtitle') ?>" name="subtitle_<?= $lang ?>" maxlength="200" />
                     </div>
                     <div>
-                        <label class="col-form-label required"><?php echo __('app.product.periodicity') ?></label>
+                        <label class="col-form-label"><?php echo __('app.product.periodicity') ?></label>
                         <div>
-                            <input type="text" class="form-control" required placeholder="<?php echo __('app.product.periodicity') ?>" name="periodicity_<?= $lang ?>" maxlength="100" />
+                            <input type="text" class="form-control" placeholder="<?php echo __('app.product.periodicity') ?>" name="periodicity_<?= $lang ?>" maxlength="100" />
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         <h4><?= __('app.product.file_info') ?></h4>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4 text-center">
-                        <?php $this->insert("inc/common/file_upload", ['id' => 'zip_' . $lang, 'title' => __('app.product.zip'), 'inputName' => 'zip_' . $lang, 'fileType' => 'zip']) ?>
+                        <?php $this->insert("inc/common/file_upload", ['id' => 'zip_' . $lang, 'title' => __('app.product.zip'), 'inputName' => 'zip_' . $lang, 'fileType' => 'zip', 'required' => false]) ?>
                     </div>
                 </div>
             <?php endif; ?>
