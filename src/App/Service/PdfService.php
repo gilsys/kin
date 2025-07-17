@@ -227,9 +227,9 @@ class PdfService extends BaseService {
             if (!empty($value['subproduct_id'])) {
                 $subproductDAO = new SubProductDAO($this->pdo);
                 $subproduct = $subproductDAO->getFullById($value['subproduct_id'], $lang);
-                $value['name'] = $subproduct['name'];
-                $value['reference'] = $subproduct['reference'];
-                $value['format'] = $subproduct['format'];
+                
+                $value['name'] = empty($value['subproduct_name']) ? $subproduct['name'] : $value['subproduct_name'];
+                $value['reference'] = empty($value['subproduct_reference']) ? $subproduct['reference'] : $value['subproduct_reference'];
             }
 
             if (!empty($value['product_id'])) {
