@@ -42,12 +42,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="col-form-label required"><?php echo __('app.reference_code') ?></label>
-                    <div>
-                        <input type="text" class="form-control" required placeholder="<?php echo __('app.code') ?>" name="reference" maxlength="45" />
-                    </div>
-                </div>
             </div>
 
         </div>
@@ -63,15 +57,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
+                        <label class="col-form-label required"><?php echo __('app.reference_code') ?></label>
                         <div>
-                            <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name[<?php echo $lang ?>]" maxlength="100" />
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.reference_code') ?>" name="reference[<?php echo $lang ?>]" maxlength="100" />
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label required"><?php echo __('app.format') ?></label>
+                        <label class="col-form-label required"><?php echo __('app.common.name') ?></label>
                         <div>
-                            <input type="text" class="form-control" required placeholder="<?php echo __('app.format') ?>" name="format[<?php echo $lang ?>]" maxlength="100" />
+                            <input type="text" class="form-control" required placeholder="<?php echo __('app.common.name') ?>" name="name[<?php echo $lang ?>]" maxlength="100" />
                         </div>
                     </div>
                 </div>

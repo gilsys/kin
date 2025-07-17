@@ -254,9 +254,8 @@ class RecipeController extends BaseController {
 
         // Iterar subproductos para montar el html adhoc
         $data['subproducts'] = array_map(function ($subproduct) {
-            $subproduct['name'] = $subproduct['name'];
-            if (!empty($subproduct['format'])) {
-                $subproduct['name'] .= ' - ' . $subproduct['format'];
+            if (!empty($subproduct['reference'])) {
+                $subproduct['name'] = $subproduct['reference'] . ' - ' . $subproduct['name'];
             }
             return $subproduct;
         }, $data['subproducts']);

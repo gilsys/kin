@@ -247,7 +247,7 @@ class ProductDAO extends BaseDAO {
     }
 
     public function getForSelect($id = 'id', $name = 'name', $orderBy = 'id', $exclude = null, $deleted = false) {
-        $excludeSql = '';
+        $excludeSql = ' AND parent_product_id IS NULL ';
         $params = [];
         if (!empty($exclude)) {
             $excludeSql .= ' AND NOT FIND_IN_SET(' . $id . ', :excludeIds)';

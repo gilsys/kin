@@ -19,8 +19,7 @@ class SubProductDAO extends BaseDAO {
         }
         $sql = 'SELECT
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
-                JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
-                sp.reference
+                JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . $language . '")) AS reference
             FROM
                 ' . $this->table . ' sp            
             WHERE id = :id';
@@ -32,7 +31,6 @@ class SubProductDAO extends BaseDAO {
         $columns = [
             ['db' => 'id', 'dt' => 'id'],
             ['db' => 'name', 'dt' => 'name'],
-            ['db' => 'format', 'dt' => 'format'],
             ['db' => 'reference', 'dt' => 'reference', 'exact' => true],
             ['db' => 'product_id', 'dt' => 'product_id', 'exact' => true],
             ['db' => 'product_name', 'dt' => 'product_name', 'exact' => true],
@@ -62,8 +60,7 @@ class SubProductDAO extends BaseDAO {
             SELECT
                 sp.id,
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
-                JSON_UNQUOTE(JSON_EXTRACT(sp.format, "$.' . $language . '")) AS format,
-                sp.reference,
+                JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . $language . '")) AS reference,
                 sp.product_id,
                 sp.date_created,
                 sp.date_updated,
@@ -81,12 +78,12 @@ class SubProductDAO extends BaseDAO {
 
     public function getById($id) {
         $record = parent::getById($id);
-        return $this->getJsonFieldsValue($record, ['name', 'format']);
+        return $this->getJsonFieldsValue($record, ['name', 'reference']);
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, format, reference, product_id) '
-            . 'VALUES (:name, :format, :reference, :product_id)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, reference, product_id) '
+            . 'VALUES (:name, :reference, :product_id)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
@@ -94,8 +91,7 @@ class SubProductDAO extends BaseDAO {
 
     public function update($data) {
         $query = 'UPDATE ' . $this->table . ' SET 
-            name = :name,
-            format = :format,
+            name = :name,            
             reference = :reference,
             product_id = :product_id
             WHERE id = :id';
@@ -130,7 +126,7 @@ class SubProductDAO extends BaseDAO {
             $data['selectedIds'] = implode(',', $selectedIds);
         }
 
-        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.format, "$.' . $language . '")) AS format, p.id AS product_id
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.reference, "$.' . $language . '")) AS reference, p.id AS product_id
                 FROM ' . $this->table . ' s
                 INNER JOIN st_product p ON (p.parent_product_id IS NULL AND p.id = s.product_id) OR (p.parent_product_id IS NOT NULL AND p.parent_product_id = s.product_id)
                 WHERE ((p.date_deleted IS NULL AND s.date_deleted IS NULL) AND (' . $whereSql . '))' . $whereSqlSelected . '

@@ -205,7 +205,17 @@ class RecipeForm {
                 const langCode = isCustom ? 'custom' : lang;
                 const recipedIdParam = (mForm.find("[name='id']").length > 0 ? '/' + mForm.find("[name='id']").val() : '') + addDateUpdatedTimestampParam(product);
 
-                return $('<div><img class="select2-banner-image me-4" src="/app/recipe/product_image/logo_' + langCode + '/' + data.id + recipedIdParam + '" /><img class="select2-banner-image me-4" src="/app/recipe/product_image/photo_' + langCode + '/' + data.id + recipedIdParam + '" /><div class="product-select2-info">' + data.text + '</div></div>');
+                return $(`<div class="row"  style="min-width: 800px">
+                            <div class="col-md-12">
+                                <img style="max-width:100px; height: auto; margin-bottom: 12px !important;"  class="select2-banner-image me-4 mb-2" src="/app/recipe/product_image/logo_` + langCode + '/' + data.id + recipedIdParam + `" />
+                            </div>
+                            <div class="col-md-4" style="width: 200px">
+                                <img style="max-width:100px; height: auto"  class="select2-banner-image me-4" src="/app/recipe/product_image/photo_` + langCode + '/' + data.id + recipedIdParam + `" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="product-select2-info">` + data.text + `</div>
+                            </div>
+                        </div>`);
             },
             templateSelection: function (data) {
                 if (!data.id || data.id == 0) {
@@ -217,7 +227,17 @@ class RecipeForm {
                 const langCode = isCustom ? 'custom' : lang;
                 const recipedIdParam = (mForm.find("[name='id']").length > 0 ? '/' + mForm.find("[name='id']").val() : '') + addDateUpdatedTimestampParam(product);
 
-                return $('<div><img class="select2-banner-image me-4" src="/app/recipe/product_image/logo_' + langCode + '/' + data.id + recipedIdParam + '" /><img class="select2-banner-image me-4" src="/app/recipe/product_image/photo_' + langCode + '/' + data.id + recipedIdParam + '" /><div class="product-select2-info">' + data.text + '</div></div>');
+                return $(`<div class="row" style="min-width: 800px">
+                            <div class="col-md-12">
+                                <img style="max-width:100px; height: auto; margin-bottom: 12px  !important;"  class="select2-banner-image me-4" src="/app/recipe/product_image/logo_` + langCode + '/' + data.id + recipedIdParam + `" />
+                            </div>
+                            <div class="col-md-4" style="width: 200px">
+                                <img style="max-width:100px; height: auto"  class="select2-banner-image me-4" src="/app/recipe/product_image/photo_` + langCode + '/' + data.id + recipedIdParam + `" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="product-select2-info">` + data.text + `</div>
+                            </div>
+                        </div>`);
             },
             escapeMarkup: function (m) {
                 return m;
@@ -277,7 +297,7 @@ class RecipeForm {
                             "image": {
                                 "type": "string",
                                 "title": __('app.js.recipe.banner_override'),
-                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 1760px x 360px.",
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 1660px x *.",
                                 "format": "url",
                                 "readonly": disableEdit,
 
@@ -337,10 +357,9 @@ class RecipeForm {
                             "image": {
                                 "type": "string",
                                 "title": __('app.js.group_icon.image_override'),
-                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 130px x 130px.",
                                 "format": "url",
-                                "readonly": disableEdit,
-
+                                "readonly": disableEdit,                                
                                 "options": {
                                     "grid_columns": 6,
                                     "upload": {
@@ -365,6 +384,7 @@ class RecipeForm {
                             },
                             "group_title": {
                                 "title": __('app.js.group_title'),
+                                "description": __('app.js.common.bold_info'),
                                 "type": "string",
                                 "readonly": disableEdit,
                                 "required": true,
@@ -435,6 +455,7 @@ class RecipeForm {
                                             "title": __('app.js.common.product_image_override'),
                                             "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
                                             "format": "url",
+                                            
                                             "readonly": disableEdit,
                                             "options": {
                                                 "grid_columns": 12,
@@ -540,9 +561,14 @@ class RecipeForm {
                                                             },
                                                         }
                                                     },
+                                                    "subproduct_reference": {
+                                                        "type": "string",
+                                                        "title": __('app.js.subproduct_reference_custom'),
+                                                        "readonly": disableEdit,
+                                                    },
                                                     "subproduct_name": {
                                                         "type": "string",
-                                                        "title": __('app.js.subproduct_name'),
+                                                        "title": __('app.js.subproduct_name_custom'),
                                                         "readonly": disableEdit,
                                                     }
                                                 }
@@ -667,8 +693,17 @@ class RecipeForm {
                 }, 0);
             });
 
+            mForm.find('#json-content-form-' + page + ' select[name*="[product_id]"]:not(.change-init)').each(function () {
+                // Text es un string lo interpretamos como html y buscamos el nombre del producto                
+                $(this).closest('.je-object__container').find('h3.level-6 label').text($($($(this).find('option:selected').text())[0]).text());
+            });
+
             // Al cambiar el producto, eliminar los subproductos seleccionados
             mForm.find('#json-content-form-' + page + ' select[name*="[product_id]"]:not(.change-init)').on('change', function (e) {
+                const text = $(this).find('option:selected').text();
+                // Text es un string lo interpretamos como html y buscamos el nombre del producto                
+                $(this).closest('.je-object__container').find('h3.level-6 label').text($($($(this).find('option:selected').text())[0]).text());
+                
                 $(this).closest('.card').find('select[name*="[subproducts]"]').each(function () {
                     $(this).closest('[data-schematype="array"]').find('.json-editor-btn-delete').each(function () {
                         $(this).trigger('click');
@@ -681,6 +716,9 @@ class RecipeForm {
                 container.find('.image-block-container').toggleClass('json-form-hidden', !$(this).prop('checked'));
                 container.find('.formdata-container').toggleClass('json-form-hidden', $(this).prop('checked'));
             });
+
+            
+            
         });
     }
 

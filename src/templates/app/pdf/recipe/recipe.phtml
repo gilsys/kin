@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 
+<?php
+// Creamos una función par sustituir entre asteriscos * por negrita y cerrado
+function _b($text) {
+    return preg_replace('/\*(.*?)\*/', '<strong>$1</strong>', $text);
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -174,6 +181,7 @@
             left: 75px;
             margin-top: -30px;
             width: 130px;
+            height: 130px;
         }
 
         .container>.col-left>.group-title .title {
@@ -315,11 +323,15 @@
             color: #164070;
             margin-top: 20px;
             font-size: 28px;
-            padding-top: 50px;
+            padding-top: 70px;
             margin-top: -30px;
             padding-bottom: 18px;
         }
 
+        .group-content-n{
+            padding-top: 36px !important;
+        }
+        
         .container>.col-left>.group-title,
         .container>.col-right>.group-title {
             margin-top: -2px;
@@ -329,7 +341,7 @@
 
         .bottom-dotted-line {
             border-bottom: 5px dotted #164070;
-            margin-top: -10px;
+            margin-top: 0px;
             z-index: 3;
         }
 
@@ -374,13 +386,20 @@
         }
 
         .product-title-image-container {
+            max-width: 645px;
+            max-height: 100px;
+
             width: 645px;
+            height: 100px;
+
             display: inline-block;
             padding-top: 28px;
         }
 
         .product-title-image-container img {
             max-width: 100%;
+            height: 100%;
+            min-height: 50px;
             max-height: 100px;
             width: auto;
             height: auto;
@@ -435,13 +454,13 @@
         }
 
         .text-cell {
-            line-height: 0.5;
+            line-height: 0.6;
+            padding-left: 16px;
         }
 
 
         .text-cell .reference {
             font-weight: 700;
-            margin-left: 16px;
         }
 
         .text-cell .reference-name {
@@ -562,12 +581,14 @@
             display: block;
             width: 100%;
             max-width: 100%;
-            margin: 20px auto 80px auto;
+            margin: 20px auto 80px -60px;
             text-align: center;
+
         }
 
         .group-banner img {
             width: 100%;
+            max-width: 1660px;
             height: auto;
             display: block;
             text-align: center;
@@ -576,9 +597,6 @@
 </head>
 
 <body class="type-<?php echo $type ?>">
-
-    <img src="<?php echo $recipe['design'] ?>" class="design">
-
     <?php for ($page = array_key_first($recipe['pages']); $page <= array_key_last($recipe['pages']); $page++): ?>
         <div class="page page-<?php echo $page ?>">
             <div class="visible-area">
@@ -627,32 +645,32 @@
                                                 <?php elseif (!empty($group['formdata']['icon'])): ?>
                                                     <img src="<?= $group['formdata']['icon'] ?>">
                                                 <?php endif; ?>
-                                                <div class="title"><?= $group['formdata']['group_title'] ?></div>
+                                                <div class="title"><?= _b($group['formdata']['group_title']) ?></div>
                                             </div>
 
                                             <?php foreach ($group['formdata']['products'] as $idx => $product): ?>
                                                 <?php if (!empty($product['group_title']) && !empty($product['group_line_color'])): ?>
                                                     <div class="group-label group-label-<?= $side ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
                                                         <div>
-                                                            <span class="title"><?= $product['group_title'] ?></span>
+                                                            <span class="title"><?= _b($product['group_title']) ?></span>
                                                             <div class="bar" style="background-color: <?= $product['group_line_color'] ?>"></div>
                                                         </div>
                                                     </div>
                                                 <?php endif; ?>
 
-                                                <div class="group-content" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
+                                                <div class="group-content <?php if (empty($product['group_title']) && $idx > 0): ?>group-content-n<?php endif; ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
                                                     <div class="group-block info-column">
                                                         <div class="product-title">
                                                             <div class="product-title-image-container">
                                                                 <img src="<?= $product['logo'] ?>">
                                                             </div>
                                                             <?php if (!empty($product['periodicity'])): ?>
-                                                                <div class="product-treatment"><?= $product['periodicity'] ?></div>
+                                                                <div class="product-treatment"><?= _b($product['periodicity']) ?></div>
                                                             <?php endif; ?>
                                                         </div>
 
                                                         <div class="product-subtitle">
-                                                            <?= htmlspecialchars($product['subtitle']) ?>
+                                                            <?= _b($product['subtitle']) ?>
                                                         </div>
 
                                                         <?php if (!empty($product['subproducts'])): ?>
@@ -671,10 +689,8 @@
                                                                                 <span class="text-cell">
                                                                                     <span class="reference"><?= $sub['reference'] ?></span>
                                                                                     <span class="reference-name">
-                                                                                        <?php if (!empty($sub['subproduct_name'])): ?>
-                                                                                            <?= $sub['subproduct_name'] ?>
-                                                                                        <?php else: ?>
-                                                                                            <?= $sub['name'] . ' ' . $sub['format'] ?>
+                                                                                        <?php if (!empty($sub['name'])): ?>
+                                                                                            <?= _b($sub['name']) ?>
                                                                                         <?php endif; ?>
                                                                                     </span>
                                                                                 </span>
@@ -706,7 +722,7 @@
                                                     </div>
                                                 </div>
 
-                                                <?php if ($idx < count($group['formdata']['products']) - 1): ?>
+                                                <?php if (empty($product['group_title']) && $idx < count($group['formdata']['products']) - 1): ?>
                                                     <div class="bottom-dotted-line"></div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>

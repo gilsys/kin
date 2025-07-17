@@ -518,7 +518,7 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 
 
 .product-select2-info{
-    display: inline-block;
+    display: inline-block;    
 }
 .select2-banner-image{
     vertical-align: top !important;
@@ -526,7 +526,7 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
 
 .product-select2-info > div{    
     display: block;
-    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 

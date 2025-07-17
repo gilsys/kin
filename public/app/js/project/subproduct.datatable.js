@@ -14,7 +14,6 @@ class SubproductDatatable {
                 { data: 'id', width: 30 },
                 { data: 'name' },
                 { data: 'product_name' },
-                { data: 'format' },
                 { data: 'reference' },
                 { data: 'date_created' },
                 // Incluimos campos invisibles, útiles para filtros   
