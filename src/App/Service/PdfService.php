@@ -256,7 +256,7 @@ class PdfService extends BaseService {
         }
     }
 
-    public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFileCMYK) {
+    public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFile) {
         $recipeDAO = new RecipeDAO($this->pdo);
         $recipe = $recipeDAO->getFullById($recipeId);
         //$recipeImages = $recipeDAO->getRecipeImages($recipeId, $recipe['main_language_id']);
