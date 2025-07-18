@@ -760,20 +760,35 @@ function stepperInvalidFormValidationHandler(validator, stepper) {
 }
 
 function addJsonEditorRemoveUploadBtn(editor, uploadFields = null) {
-    var deleteFileBtn = '<button type="button" class="btn btn-sm btn-reset-upload json-editor-btn- btn-outline-secondary"><i class="fas fa-times-circle"></i></button>';
+    var deleteFileBtn = '<button type="button" class="btn btn-sm btn-reset-upload json-editor-btn- btn-secondary"><i class="fas fa-trash"></i></button>';
+    
     if (uploadFields === null) {
-        uploadFields = $('.form-control-file').closest('[data-schemapath]');
+        uploadFields = $(editor.element).find('[type="file"].form-control').closest('[data-schemapath]').filter(function () {
+            return $(this).find('.btn-reset-upload').length === 0;
+        });
     }
+    
     uploadFields.each(function () {
-        $(this).find('.input-group-append').append(deleteFileBtn);
-    });
-    $('.btn-reset-upload').click(function () {
-        var schemePath = $(this).closest('[data-schemapath]').attr('data-schemapath');
-        editor.getEditor(schemePath).setValue('');
-        editor.getEditor(schemePath).onChange(true);
-        var parent = $(this).closest('[data-schemapath]');
-        parent.find('a.d-inline-block').text('');
-        parent.find('.je-upload-preview').remove();
+        $(this).find('.input-group').append(deleteFileBtn);
+
+        $(this).find('.btn-reset-upload').each(function() {
+            var btnReset = $(this);
+            var noFileInput = btnReset.closest('.input-group').find('input');
+            var noFileText = noFileInput.val();
+            var schemaPath = btnReset.closest('[data-schemapath]').attr('data-schemapath');
+
+            editor.watch(schemaPath, () => {
+                btnReset.toggleClass('d-none', editor.getEditor(schemaPath).getValue() == '');
+            });
+            btnReset.toggleClass('d-none', editor.getEditor(schemaPath).getValue() == '');
+
+            btnReset.on('click', function () {
+                var schemePath = $(this).closest('[data-schemapath]').attr('data-schemapath');
+                editor.getEditor(schemePath).setValue('');
+                noFileInput.val(noFileText);
+                editor.getEditor(schemePath).onChange(true);
+            });
+        });
     });
 }
 
