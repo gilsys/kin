@@ -328,10 +328,10 @@ function _b($text) {
             padding-bottom: 18px;
         }
 
-        .group-content-n{
+        .group-content-n {
             padding-top: 36px !important;
         }
-        
+
         .container>.col-left>.group-title,
         .container>.col-right>.group-title {
             margin-top: -2px;
@@ -375,7 +375,7 @@ function _b($text) {
         }
 
         .product-subtitle {
-            margin-top: 60px;
+            margin-top: 20px;
             margin-bottom: 35px;
             font-size: 36px;
             line-height: 0.8;
@@ -387,20 +387,18 @@ function _b($text) {
 
         .product-title-image-container {
             max-width: 645px;
-            max-height: 100px;
-
+            max-height: 74px;
             width: 645px;
-            height: 100px;
-
             display: inline-block;
-            padding-top: 28px;
+            padding-top: 14px;
         }
 
         .product-title-image-container img {
             max-width: 100%;
             height: 100%;
             min-height: 50px;
-            max-height: 100px;
+            max-height: 74px;
+
             width: auto;
             height: auto;
             display: block;
@@ -409,7 +407,9 @@ function _b($text) {
         .product-treatment {
             border: 3px solid #164070;
             border-radius: 12px;
-            width: 145px;
+            min-width: 145px;
+            padding-left: 10px;
+            padding-right: 10px;
             font-size: 22px;
             display: inline;
             padding-top: 0px;
@@ -519,6 +519,7 @@ function _b($text) {
         .product-image img {
             vertical-align: middle;
             max-height: 100%;
+            max-width: 400px;
             height: auto;
         }
 
@@ -552,6 +553,9 @@ function _b($text) {
         .group-label-right .bar {
             margin-top: -4px;
             margin-left: 30px;
+        }
+        .group-label-left .bar {
+            width: calc(100% - 30px);            
         }
 
         .group-label .title {
@@ -648,17 +652,25 @@ function _b($text) {
                                                 <div class="title"><?= _b($group['formdata']['group_title']) ?></div>
                                             </div>
 
+                                            <?php $lastGroupTitle = ''; ?>
+                                            <?php $idxInGroup = 0; ?>
                                             <?php foreach ($group['formdata']['products'] as $idx => $product): ?>
                                                 <?php if (!empty($product['group_title']) && !empty($product['group_line_color'])): ?>
-                                                    <div class="group-label group-label-<?= $side ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
-                                                        <div>
-                                                            <span class="title"><?= _b($product['group_title']) ?></span>
-                                                            <div class="bar" style="background-color: <?= $product['group_line_color'] ?>"></div>
+                                                    <?php if ($lastGroupTitle != $product['group_title']) : ?>
+                                                        <div class="group-label group-label-<?= $side ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
+                                                            <div>
+                                                                <span class="title"><?= _b($product['group_title']) ?></span>
+                                                                <div class="bar" style="background-color: <?= $product['group_line_color'] ?>"></div>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                        <?php $lastGroupTitle = $product['group_title'] ?>
+                                                        <?php $idxInGroup = 0; ?>
+                                                    <?php else: ?>
+                                                        <?php $idxInGroup++; ?>
+                                                    <?php endif; ?>
                                                 <?php endif; ?>
 
-                                                <div class="group-content <?php if (empty($product['group_title']) && $idx > 0): ?>group-content-n<?php endif; ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
+                                                <div class="group-content <?php if ($idxInGroup > 0 || $idx > 0): ?>group-content-n<?php endif; ?>" style="background-color: <?= $group['formdata']['group_bg_color'] ?>">
                                                     <div class="group-block info-column">
                                                         <div class="product-title">
                                                             <div class="product-title-image-container">
@@ -667,11 +679,12 @@ function _b($text) {
                                                             <?php if (!empty($product['periodicity'])): ?>
                                                                 <div class="product-treatment"><?= _b($product['periodicity']) ?></div>
                                                             <?php endif; ?>
-                                                        </div>
 
+                                                        </div>
                                                         <div class="product-subtitle">
                                                             <?= _b($product['subtitle']) ?>
                                                         </div>
+
 
                                                         <?php if (!empty($product['subproducts'])): ?>
                                                             <div class="group-reference columns">
@@ -722,7 +735,11 @@ function _b($text) {
                                                     </div>
                                                 </div>
 
-                                                <?php if (empty($product['group_title']) && $idx < count($group['formdata']['products']) - 1): ?>
+                                                <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>
+                                                <?php if (
+                                                    !empty($nextProduct) &&
+                                                    (empty($product['group_title']) || $nextProduct['group_title'] == $product['group_title'])
+                                                ): ?>
                                                     <div class="bottom-dotted-line"></div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
