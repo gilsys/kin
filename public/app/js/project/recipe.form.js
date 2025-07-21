@@ -394,7 +394,9 @@ class RecipeForm {
                                     "inputAttributes": {
                                         "required": true
                                     },
-
+                                    "containerAttributes": {
+                                        "class": "required-container"
+                                    },
                                 }
                             },
                             "title_bg_color": {
@@ -444,17 +446,46 @@ class RecipeForm {
                                             "readonly": disableEdit,
                                             "required": true,
                                             "options": {
-                                                "grid_columns": 6,
+                                                "grid_columns": 12,
                                                 "select2": select2ProductOptions,
                                                 "inputAttributes": {
                                                     "required": true
-                                                }
+                                                },
+                                                "containerAttributes": {
+                                                    "class": "required-container"
+                                                },
                                             }
+                                        },
+                                        "logo_override": {
+                                            "type": "string",
+                                            "title": __('app.js.common.product_logo_override'),
+                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 645px × " + __('app.js.common.max') + " 74px.",
+                                            "format": "url",
+                                            
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6,
+                                                "upload": {
+                                                    "title": __('app.js.common.upload_image'),
+                                                    "auto_upload": true,
+                                                    "upload_handler": "JSONEditorUploadHandler"
+                                                },
+                                                "containerAttributes": {
+                                                    "class": "col-md-6 image-required"
+                                                }
+                                            },
+                                            "links": [
+                                                {
+                                                    "href": "{{self}}",
+                                                    "mediaType": "image/*",
+                                                    "class": "uploaded-image"
+                                                }
+                                            ]
                                         },
                                         "image": {
                                             "type": "string",
                                             "title": __('app.js.common.product_image_override'),
-                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 400px × 220px.",
                                             "format": "url",
                                             
                                             "readonly": disableEdit,
@@ -560,6 +591,9 @@ class RecipeForm {
                                                             "inputAttributes": {
                                                                 "required": true
                                                             },
+                                                            "containerAttributes": {
+                                                                "class": "required-container"
+                                                            },
                                                         }
                                                     },
                                                     "subproduct_reference": {
@@ -622,7 +656,7 @@ class RecipeForm {
 
         // Initialize the editor with a JSON schema
         that.jsonEditor[page] = new JSONEditor(mForm.find('#json-content-form-' + page)[0], {
-            required_by_default: false,
+            required_by_default: true,
             display_required_only: false,
             //disable_edit_json: false,
             disable_edit_json: true,

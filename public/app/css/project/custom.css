@@ -592,3 +592,11 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
     text-decoration: underline !important;
     opacity: 1 !important;
 }
+
+.json-content-form .required:after {
+    display: none;
+}
+
+.json-content-form .required-container .required:after {
+    display: inline;
+}

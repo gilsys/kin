@@ -674,7 +674,11 @@ function _b($text) {
                                                     <div class="group-block info-column">
                                                         <div class="product-title">
                                                             <div class="product-title-image-container">
-                                                                <img src="<?= $product['logo'] ?>">
+                                                                <?php if (!empty($product['logo_override'])): ?>
+                                                                    <img src="<?= $product['logo_override'] ?>">
+                                                                <?php elseif (!empty($product['logo'])): ?>
+                                                                    <img src="<?= $product['logo'] ?>">
+                                                                <?php endif; ?>
                                                             </div>
                                                             <?php if (!empty($product['periodicity'])): ?>
                                                                 <div class="product-treatment"><?= _b($product['periodicity']) ?></div>
