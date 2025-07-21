@@ -20,7 +20,7 @@ class RecipeForm {
         var stepper = new KTStepper(mForm.find('#mt-recipe-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: '.json-form-hidden :input',
+            ignore: '.json-form-hidden :input, .je-object__container[style="display: none;"] :input',
             onkeyup: false,
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
