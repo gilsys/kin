@@ -1385,3 +1385,9 @@ form.data-form .card, .form-extra-card
 input[type="color"][readonly="true"] {
     pointer-events: none;
 }
+
+.je-object__container input[type="file"] + div > .input-group {
+    border-top-right-radius: 0.55rem !important;
+    border-bottom-right-radius: 0.55rem !important;
+    overflow: hidden;
+}
