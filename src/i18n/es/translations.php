@@ -594,7 +594,7 @@ return [
     'app.quick.type_client' => '- Busca por cliente -',
     'app.recipe.pdf_versions_info' => '<p>Pulsa "Generar PDF" para generar o previsualizar el recetario.</p><p>Desde este apartado, puedes consultar un histórico y descargar los recetarios generados con anterioridad.</p>',
     'app.reference_code' => 'Código de referencia',
-    'app.save.generate_pdf' => 'Generar PDF',
+    'app.save.generate_pdf' => 'Guardar y generar PDF',
     'app.save.save' => 'Guardar',
     'app.save.save_add' => 'Guardar y añadir nuevo',
     'app.save.save_close' => 'Guardar y volver',

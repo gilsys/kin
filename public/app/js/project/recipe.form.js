@@ -84,6 +84,9 @@ class RecipeForm {
             $.post('/app/recipe/' + id, function (data) {
                 mForm.find("[name='name']").val(data.name);
 
+                // Actualizar el título de la página y la barra de navegación
+                $('#kt_app_toolbar_container h2').text(data.name);
+
                 mForm.find("[name='creator_name']").val(data.creator_name);
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
@@ -785,8 +788,7 @@ class RecipeForm {
                 // Init JSONEditor callbacks
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
-                        try {
-
+                        try {                            
                             const pathStr = jseditor.path;
                             const path = pathStr.split('.');
                             const groupIndex = parseInt(path[2]);   // 'group.0' → 0
