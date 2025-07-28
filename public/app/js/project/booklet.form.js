@@ -183,6 +183,8 @@ class BookletForm {
 
                 mForm.find("[name='name']").val(data.name);
 
+                $('#kt_app_toolbar_container h2').text(data.name);
+
                 mForm.find("[name='market_name']").val(data.market_name);
                 mForm.find("[name='creator_name']").val(data.creator_name);
 

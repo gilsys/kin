@@ -16,6 +16,9 @@ class ProductForm {
             $.post('/app/product/' + id, function (data) {
 
                 mForm.find("[name='name']").val(data.name);
+
+                $('#kt_app_toolbar_container h2').text(data.name);
+
                 mForm.find("[name='market_ids[]']").val(data.market_ids).change();
                 mForm.find("[name='slug']").val(data.slug);
 

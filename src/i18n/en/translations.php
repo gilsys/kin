@@ -594,7 +594,7 @@ return [
     'app.quick.type_client' => '- Search by client -',
     'app.recipe.pdf_versions_info' => '<p>Press "Generate PDF" to create or preview the recipe.</p><p>From this section, you can check the history and download previously generated recipes.</p>',
     'app.reference_code' => 'Reference code',
-    'app.save.generate_pdf' => 'Generate PDF',
+    'app.save.generate_pdf' => 'Save and generate PDF',
     'app.save.save' => 'Save',
     'app.save.save_add' => 'Save and add new',
     'app.save.save_close' => 'Save and return',

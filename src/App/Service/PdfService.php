@@ -330,6 +330,8 @@ class PdfService extends BaseService {
         // Renderizamos el HTML como PDF
         $dompdf->render();
 
+        $this->i18n->changeLang($currentLang);
+
         $outputFile = $recipeId . '_' . date('YmdHis') . '.pdf';
 
         if ($save) {
