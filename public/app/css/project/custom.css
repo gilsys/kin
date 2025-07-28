@@ -592,3 +592,9 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
     text-decoration: underline !important;
     opacity: 1 !important;
 }
+
+
+input[type="file"] ~ div .form-control{
+    background-color: #FFF !important;
+    border: 1px solid var(--bs-gray-300)
+}
