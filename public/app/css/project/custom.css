@@ -593,6 +593,13 @@ h3 > .json-editor-btn-collapse[title="Expand"] ~ label{
     opacity: 1 !important;
 }
 
+.json-content-form .required:after {
+    display: none;
+}
+
+.json-content-form .required-container .required:after {
+    display: inline;
+}
 
 input[type="file"] ~ div .form-control{
     background-color: #FFF !important;

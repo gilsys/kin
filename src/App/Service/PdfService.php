@@ -184,6 +184,13 @@ class PdfService extends BaseService {
                 $value['image'] = FileUtils::getBase64Image($imagePath);
             }
 
+            if (!empty($value['logo_override'])) {
+                // De "value", obtener la ultima parte del path, correspondiente al nombre del archivo
+                $baseLogo = basename($value['logo_override']);
+                $logoPath = $privateBasePath . '/upload/' . $baseLogo;
+                $value['logo_override'] = FileUtils::getBase64Image($logoPath);
+            }
+
             if (!empty($value['product_id'])) {
                 // Obtener toda la información del producto en el idioma de la receta
                 $productDAO = new ProductDAO($this->pdo);
@@ -256,7 +263,7 @@ class PdfService extends BaseService {
         }
     }
 
-    public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFileCMYK) {
+    public function recipePdf($recipeId, $save, $fileType = FileType::RecipeFile) {
         $recipeDAO = new RecipeDAO($this->pdo);
         $recipe = $recipeDAO->getFullById($recipeId);
         //$recipeImages = $recipeDAO->getRecipeImages($recipeId, $recipe['main_language_id']);

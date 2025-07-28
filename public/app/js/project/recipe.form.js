@@ -20,7 +20,7 @@ class RecipeForm {
         var stepper = new KTStepper(mForm.find('#mt-recipe-stepper')[0], { startIndex: startStep });
 
         mForm.validate({
-            ignore: '.json-form-hidden :input',
+            ignore: '.json-form-hidden :input, .je-object__container[style="display: none;"] :input',
             onkeyup: false,
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
@@ -272,6 +272,7 @@ class RecipeForm {
 
                     "image_block": {
                         "type": "object",
+                        "format": "grid-strict",
                         "options": {
                             "containerAttributes": {
                                 "class": "image-block-container"
@@ -291,7 +292,7 @@ class RecipeForm {
                                 "readonly": disableEdit,
                                 "options": {
                                     "grid_columns": 6,
-                                    "select2": select2BannerOptions,
+                                    "select2": select2BannerOptions
                                 }
                             },
                             "image": {
@@ -309,7 +310,7 @@ class RecipeForm {
                                         "upload_handler": "JSONEditorUploadHandler"
                                     },
                                     "containerAttributes": {
-                                        "class": "col-md-12 image-required"
+                                        "class": "col-md-6 image-required"
                                     }
                                 },
                                 "links": [
@@ -368,7 +369,7 @@ class RecipeForm {
                                         "upload_handler": "JSONEditorUploadHandler"
                                     },
                                     "containerAttributes": {
-                                        "class": "col-md-12 image-required"
+                                        "class": "col-md-6 image-required"
                                     },
                                     /*"inputAttributes": {
                                         "required": true
@@ -389,11 +390,13 @@ class RecipeForm {
                                 "readonly": disableEdit,
                                 "required": true,
                                 "options": {
-                                    "grid_columns": 9,
+                                    "grid_columns": 8,
                                     "inputAttributes": {
                                         "required": true
                                     },
-
+                                    "containerAttributes": {
+                                        "class": "required-container"
+                                    },
                                 }
                             },
                             "title_bg_color": {
@@ -402,7 +405,7 @@ class RecipeForm {
                                 "format": "color",
                                 "readonly": disableEdit,
                                 "options": {
-                                    "grid_columns": 3,
+                                    "grid_columns": 2,
 
                                     /*"inputAttributes": {
                                         "required": true
@@ -415,7 +418,7 @@ class RecipeForm {
                                 "format": "color",
                                 "readonly": disableEdit,
                                 "options": {
-                                    "grid_columns": 3,
+                                    "grid_columns": 2,
 
                                     /*"inputAttributes": {
                                         "required": true
@@ -447,25 +450,54 @@ class RecipeForm {
                                                 "select2": select2ProductOptions,
                                                 "inputAttributes": {
                                                     "required": true
-                                                }
+                                                },
+                                                "containerAttributes": {
+                                                    "class": "required-container"
+                                                },
                                             }
                                         },
-                                        "image": {
+                                        "logo_override": {
                                             "type": "string",
-                                            "title": __('app.js.common.product_image_override'),
-                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 2480px x 1754px.",
+                                            "title": __('app.js.common.product_logo_override'),
+                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 645px × " + __('app.js.common.max') + " 74px.",
                                             "format": "url",
                                             
                                             "readonly": disableEdit,
                                             "options": {
-                                                "grid_columns": 12,
+                                                "grid_columns": 6,
                                                 "upload": {
                                                     "title": __('app.js.common.upload_image'),
                                                     "auto_upload": true,
                                                     "upload_handler": "JSONEditorUploadHandler"
                                                 },
                                                 "containerAttributes": {
-                                                    "class": "col-md-12 image-required"
+                                                    "class": "col-md-6 image-required"
+                                                }
+                                            },
+                                            "links": [
+                                                {
+                                                    "href": "{{self}}",
+                                                    "mediaType": "image/*",
+                                                    "class": "uploaded-image"
+                                                }
+                                            ]
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "title": __('app.js.common.product_image_override'),
+                                            "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 400px × 220px.",
+                                            "format": "url",
+                                            
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 6,
+                                                "upload": {
+                                                    "title": __('app.js.common.upload_image'),
+                                                    "auto_upload": true,
+                                                    "upload_handler": "JSONEditorUploadHandler"
+                                                },
+                                                "containerAttributes": {
+                                                    "class": "col-md-6 image-required"
                                                 }
                                             },
                                             "links": [
@@ -482,7 +514,7 @@ class RecipeForm {
                                             "title": __('app.js.product.subtitle'),
                                             "readonly": disableEdit,
                                             "options": {
-                                                "grid_columns": 6
+                                                "grid_columns": 4
                                             }
                                         },
                                         "periodicity": {
@@ -490,7 +522,15 @@ class RecipeForm {
                                             "title": __('app.js.product.periodicity'),
                                             "readonly": disableEdit,
                                             "options": {
-                                                "grid_columns": 6
+                                                "grid_columns": 4
+                                            }
+                                        },
+                                        "qr": {
+                                            "type": "string",
+                                            "title": __('app.js.qr_code'),
+                                            "readonly": disableEdit,
+                                            "options": {
+                                                "grid_columns": 4,
                                             }
                                         },
 
@@ -502,14 +542,6 @@ class RecipeForm {
                                             "readonly": disableEdit,
                                             "options": {
                                                 "grid_columns": 6
-                                            }
-                                        },
-                                        "qr": {
-                                            "type": "string",
-                                            "title": __('app.js.qr_code'),
-                                            "readonly": disableEdit,
-                                            "options": {
-                                                "grid_columns": 6,
                                             }
                                         },
 
@@ -558,6 +590,9 @@ class RecipeForm {
                                                             "select2": select2options,
                                                             "inputAttributes": {
                                                                 "required": true
+                                                            },
+                                                            "containerAttributes": {
+                                                                "class": "required-container"
                                                             },
                                                         }
                                                     },
@@ -621,7 +656,7 @@ class RecipeForm {
 
         // Initialize the editor with a JSON schema
         that.jsonEditor[page] = new JSONEditor(mForm.find('#json-content-form-' + page)[0], {
-            required_by_default: false,
+            required_by_default: true,
             display_required_only: false,
             //disable_edit_json: false,
             disable_edit_json: true,
@@ -655,6 +690,8 @@ class RecipeForm {
                     mForm.find('#json-content-form-' + page).find('select').addClass('readonly-disabled');
                 }, 0);
             }
+
+            addJsonEditorRemoveUploadBtn(this.jsonEditor[page]);
         });
 
         this.jsonEditor[page].on('change', function () {
@@ -717,8 +754,7 @@ class RecipeForm {
                 container.find('.formdata-container').toggleClass('json-form-hidden', $(this).prop('checked'));
             });
 
-            
-            
+            addJsonEditorRemoveUploadBtn(that.jsonEditor[page]);
         });
     }
 
