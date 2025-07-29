@@ -696,7 +696,11 @@ class RecipeForm {
 
             addJsonEditorRemoveUploadBtn(this.jsonEditor[page]);
 
-            // TOODO aquí buscar  mForm.find('#json-content-form-' + page) los botones de nivel 3 y forzar click
+            mForm.find('#json-content-form-' + page).find('.level-3').each(function () {
+                const $toggleBtn = $(this).find('.json-editor-btn-collapse');
+                $toggleBtn.trigger('click');
+            });
+
         });
 
         this.jsonEditor[page].on('change', function () {
