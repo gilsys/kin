@@ -337,7 +337,7 @@ class FileUtils {
     }
 
     public static function getBase64Image($image) {
-        if (file_exists($image)) {
+        if (file_exists($image)) {            
             return 'data:image/' . pathinfo($image, PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($image));
         }
         return null;
