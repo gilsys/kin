@@ -328,9 +328,9 @@ function _b($text) {
             padding-bottom: 18px;
         }
 
-        .group-content-n {
+        /*.group-content-n {
             padding-top: 36px !important;
-        }
+        }*/
 
         .container>.col-left>.group-title,
         .container>.col-right>.group-title {
@@ -739,12 +739,13 @@ function _b($text) {
                                                     </div>
                                                 </div>
 
-                                                <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>
-                                                <?php if (
+                                                <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>               				
+												<?php if ( 
                                                     !empty($nextProduct) &&
-                                                    (empty($product['group_title']) || $nextProduct['group_title'] == $product['group_title'])
-                                                ): ?>
-                                                    <div class="bottom-dotted-line"></div>
+                                                    (empty($product['group_title']) || empty($nextProduct['group_title']) || $nextProduct['group_title'] == $product['group_title'])
+                                                	): ?>
+								
+								                    <div class="bottom-dotted-line"></div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
