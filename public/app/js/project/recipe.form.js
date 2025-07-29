@@ -695,6 +695,8 @@ class RecipeForm {
             }
 
             addJsonEditorRemoveUploadBtn(this.jsonEditor[page]);
+
+            // TOODO aquí buscar  mForm.find('#json-content-form-' + page) los botones de nivel 3 y forzar click
         });
 
         this.jsonEditor[page].on('change', function () {
@@ -703,7 +705,7 @@ class RecipeForm {
             mForm.find('select[name*="[subproducts]"]:not(.change-init)').each(function () {
                 $(this).on('select2:selecting', function (e) {
                     var selectedValue = e.params.args.data.id;
-
+                    
                     var exists = mForm.find('select[name*="[subproducts]"]').filter(function () {
                         return $(this).val() === selectedValue;
                     }).length > 0;
