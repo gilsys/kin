@@ -469,6 +469,7 @@ return [
     'app.js.qr_code' => 'Sobreescribir código QR',
     'app.js.recipe.banner' => 'Imagen banner',
     'app.js.recipe.banner_override' => 'Banner personalizado',
+    'app.js.recipe.group_icon_required' => 'Es obligatorio seleccionar un icono de grupo o subir un icono de grupo personalizado.',
     'app.js.recipe.image_required' => 'Seleccionar una imagen es obligatorio.',
     'app.js.recipe.show_banner_only' => 'Mostrar banner',
     'app.js.recipe.subproduct_already_selected' => 'La referencia ya ha sido seleccionada.',

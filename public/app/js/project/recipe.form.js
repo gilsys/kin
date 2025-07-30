@@ -53,6 +53,24 @@ class RecipeForm {
             }
         });
 
+        $.validator.addMethod("groupIconRequired", function (value, element) {
+            if (value != null && value != '' && value != '0') {
+                return true;
+            }
+
+            var customValue = $(element).closest('.row').find('[data-schemapath$="formdata.image"] input[type="hidden"]').val();
+
+            if (customValue != null && customValue != '') {
+                return true;
+            }
+
+            return false;
+        }, __('app.js.recipe.group_icon_required'));
+
+        $.validator.addClassRules("select-group-icon", {
+            groupIconRequired: true
+        });
+
         function changeStep(index, stepper) {
             var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
             var marketValid = !mForm.find("[name='market_id']").is(':visible') || mForm.find("[name='market_id']").valid();
@@ -352,6 +370,9 @@ class RecipeForm {
                                 "options": {
                                     "grid_columns": 6,
                                     "select2": select2IconOptions,
+                                    "inputAttributes": {
+                                        "class": "form-control form-select select-group-icon"
+                                    }
 
                                     /*"inputAttributes": {
                                         "required": true
@@ -363,7 +384,7 @@ class RecipeForm {
                                 "title": __('app.js.group_icon.image_override'),
                                 "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 130px x 130px.",
                                 "format": "url",
-                                "readonly": disableEdit,                                
+                                "readonly": disableEdit,
                                 "options": {
                                     "grid_columns": 6,
                                     "upload": {
@@ -464,7 +485,7 @@ class RecipeForm {
                                             "title": __('app.js.common.product_logo_override'),
                                             "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 645px × " + __('app.js.common.max') + " 74px.",
                                             "format": "url",
-                                            
+
                                             "readonly": disableEdit,
                                             "options": {
                                                 "grid_columns": 6,
@@ -490,7 +511,7 @@ class RecipeForm {
                                             "title": __('app.js.common.product_image_override'),
                                             "description": __('app.js.common.media_formats') + '. ' + __('app.js.common.recommended_dimensions') + ": 400px × 220px.",
                                             "format": "url",
-                                            
+
                                             "readonly": disableEdit,
                                             "options": {
                                                 "grid_columns": 6,
@@ -709,7 +730,7 @@ class RecipeForm {
             mForm.find('select[name*="[subproducts]"]:not(.change-init)').each(function () {
                 $(this).on('select2:selecting', function (e) {
                     var selectedValue = e.params.args.data.id;
-                    
+
                     var exists = mForm.find('select[name*="[subproducts]"]').filter(function () {
                         return $(this).val() === selectedValue;
                     }).length > 0;
@@ -749,7 +770,7 @@ class RecipeForm {
                 const text = $(this).find('option:selected').text();
                 // Text es un string lo interpretamos como html y buscamos el nombre del producto                
                 $(this).closest('.je-object__container').find('h3.level-6 label').text($($($(this).find('option:selected').text())[0]).text());
-                
+
                 $(this).closest('.card').find('select[name*="[subproducts]"]').each(function () {
                     $(this).closest('[data-schematype="array"]').find('.json-editor-btn-delete').each(function () {
                         $(this).trigger('click');
@@ -794,7 +815,7 @@ class RecipeForm {
                 // Init JSONEditor callbacks
                 window.JSONEditor.defaults.callbacks.template = {
                     "filterSubproducts": (jseditor, e) => {
-                        try {                            
+                        try {
                             const pathStr = jseditor.path;
                             const path = pathStr.split('.');
                             const groupIndex = parseInt(path[2]);   // 'group.0' → 0

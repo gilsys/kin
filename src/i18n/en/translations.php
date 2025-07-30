@@ -469,6 +469,7 @@ return [
     'app.js.qr_code' => 'Override QR code',
     'app.js.recipe.banner' => 'Banner image',
     'app.js.recipe.banner_override' => 'Custom banner',
+    'app.js.recipe.group_icon_required' => 'Select a group icon or upload a custom group icon is required.',
     'app.js.recipe.image_required' => 'Select an image is required.',
     'app.js.recipe.show_banner_only' => 'Use banner',
     'app.js.recipe.subproduct_already_selected' => 'The reference has already been selected.',
