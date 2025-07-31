@@ -742,7 +742,7 @@ function _b($text) {
                                                 <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>               				
 												<?php if ( 
                                                     !empty($nextProduct) &&
-                                                    (empty($product['group_title']) || empty($nextProduct['group_title']) || $nextProduct['group_title'] == $product['group_title'])
+                                                    ((empty($product['group_title']) && $lastGroupTitle == $nextProduct['group_title']) || empty($nextProduct['group_title']) || $nextProduct['group_title'] == $product['group_title'])
                                                 	): ?>
 								
 								                    <div class="bottom-dotted-line"></div>
