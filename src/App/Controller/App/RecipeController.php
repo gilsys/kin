@@ -226,9 +226,9 @@ class RecipeController extends BaseController {
         // Obtener ids de los productos seleccionados
         $recipeProductIds = [];
         $recipeSubProductIds = [];
-        if (!empty($recipeId)) {
-            $data = $this->getDAO()->getSingleField($recipeId, 'json_data');
-            $data = !empty($data) ? json_decode($data, true) : [];
+        $oldRecipe = !empty($recipeId) ? $this->getDAO()->getFullById($recipeId) : null;
+        if (!empty($recipeId) && $formData['market_id'] == $oldRecipe['market_id']) {
+            $data = $oldRecipe['json_data'];
             $this->processRecipe($data, $recipeProductIds, $recipeSubProductIds);
         }
 

@@ -469,6 +469,8 @@ return [
     'app.js.qr_code' => '',
     'app.js.recipe.banner' => '',
     'app.js.recipe.banner_override' => '',
+    'app.js.recipe.change_market' => '',
+    'app.js.recipe.change_market_text' => '',
     'app.js.recipe.group_icon_required' => '',
     'app.js.recipe.image_required' => '',
     'app.js.recipe.show_banner_only' => '',
