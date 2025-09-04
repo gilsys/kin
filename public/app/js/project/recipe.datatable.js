@@ -59,10 +59,10 @@ class RecipeDatatable {
                     width: 150,
                     render: function (data, type, full, meta) {
                         var mRouteEdit = routeEdit + '/' + data.id;
-                        var btnEdit = '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + mRouteEdit + '" title="' + (data.editable == 1 ? __('app.js.common.edit') : __('app.js.common.view')) + '"><i class="fa-regular ' + (data.editable == 1 ? 'fa-pen-to-square' : 'fa-eye') + ' fs-1 pb-1"></i></a>';
+                        var btnEdit = data.editable == 0 ? '' : '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + mRouteEdit + '" title="' + (data.editable == 1 ? __('app.js.common.edit') : __('app.js.common.view')) + '"><i class="fa-regular ' + (data.editable == 1 ? 'fa-pen-to-square' : 'fa-eye') + ' fs-1 pb-1"></i></a>';
                         var btnDelete = data.editable == 1 ? '<a class="btn btn-icon btn-active-light btn-sm p-3" href="javascript:AdminUtils.confirmDelete(\'' + routeDelete + '\', ' + data.id + ')" title="' + __('app.js.common.delete') + '"><i class="fa-regular fa-trash-can fs-1 pb-1"></i></a>' : '';
                         var btnDuplicate = '<a class="btn btn-icon btn-active-light btn-sm p-3" href="javascript:AdminUtils.confirmDuplicate(\'' + routeDuplicate + '\', ' + data.id + ')" title="' + __('app.js.common.duplicate') + '"><i class="fa-regular fa-copy fs-1 pb-1"></i></a>';
-                        var btnDownload = data.last_file_id != null ? '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + routeDownload + '/' + data.last_file_id + '" target="_blank" title="' + __('app.js.common.download_last_pdf') + '"><i class="fa-regular fa-file fs-1 pb-1"></i></a>' : '';
+                        var btnDownload = data.last_file_id != null ? '<a class="btn btn-icon btn-active-light btn-sm p-3" href="' + routeDownload + '/' + data.last_file_id + '" target="_blank" title="' + __('app.js.common.download_last_pdf') + '"><i class="fa-regular fa-eye fs-1 pb-1"></i></a>' : '';
                         return btnEdit + btnDelete + btnDuplicate + btnDownload;
                     }
                 }
