@@ -73,7 +73,7 @@ class RecipeController extends BaseController {
      */
     public function form(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         if (!empty($args['id'])) {
-            $this->get('security')->checkRecipeOwner($args['id'], true);
+            $this->get('security')->checkRecipeOwner($args['id'], false);
         }
 
         if (!$this->get('security')->isAdmin() && empty($args['id'])) {
