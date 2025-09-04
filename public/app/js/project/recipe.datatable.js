@@ -14,7 +14,10 @@ class RecipeDatatable {
                 // Añadimos todas las columnas con las que queremos trabajar
                 { data: 'id', width: 30 },
                 { data: 'name' },
-                { data: 'creator_name', 'visible': userHasProfile(['A']) },
+                { data: 'creator_name', 'visible': userHasProfile(['A']), render: function (data, type, full, meta) {                      
+                        return '<span class="badge fw-lighter" style="background-color: ' + hexToRgbA(full.user_profile_color, 0.1) + '; color: ' + full.user_profile_color + '">' + data + '</span>';
+                    } 
+                },
                 {
                     data: 'market_name',
                     render: function (data, type, full, meta) {

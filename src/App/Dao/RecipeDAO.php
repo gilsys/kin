@@ -85,7 +85,8 @@ class RecipeDAO extends BaseDAO {
                 'formatter' => function ($d, $row) {
                     return CommonUtils::convertDate($d);
                 }
-            ]
+            ],
+            ['db' => 'user_profile_color', 'dt' => 'user_profile_color', 'exact' => true],
 
         ];
 
@@ -116,7 +117,8 @@ class RecipeDAO extends BaseDAO {
                 (SELECT rf.file_id FROM st_recipe_file rf WHERE rf.recipe_id = r.id ORDER BY rf.file_id DESC LIMIT 1) AS last_file_id,
                 m.name as market_name,
                 m.color as market_color,
-                m.id as market_id
+                m.id as market_id,
+                p.color as user_profile_color
             FROM
                 ' . $this->table . ' r
             INNER JOIN
@@ -127,6 +129,8 @@ class RecipeDAO extends BaseDAO {
                 st_language l2 ON r.qr_language_id = l2.id  
             INNER JOIN
                 st_market m ON r.market_id = m.id
+            INNER JOIN 
+                st_user_profile p ON u.user_profile_id = p.id
             WHERE 1 = 1' . $whereSql . '  
         ) temp';
 
