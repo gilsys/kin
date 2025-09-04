@@ -92,7 +92,7 @@ class RecipeForm {
             changeStep(stepper.getPreviousStepIndex(), stepper);
         });
 
-        mForm.find("[name='market_id'], [name='main_language_id']").on('change', function () {
+        mForm.find("[name='market_id'], [name='main_language_id'], [name='international']").on('change', function () {
             that.getProducts();
         });
 
@@ -106,6 +106,8 @@ class RecipeForm {
                 $('#kt_app_toolbar_container h2').text(data.name);
 
                 mForm.find("[name='creator_name']").val(data.creator_name);
+
+                mForm.find("[name='international']").prop('checked', data.international == '1');
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
@@ -801,7 +803,8 @@ class RecipeForm {
         var params = {
             'id': mForm.find("[name='id']").val(),
             'market_id': mForm.find("[name='market_id']").length > 0 ? mForm.find("[name='market_id']").val() : null,
-            'main_language_id': mForm.find("[name='main_language_id']").val()
+            'main_language_id': mForm.find("[name='main_language_id']").val(),
+            'international': mForm.find("[name='international']").prop('checked') ? 1 : 0
         };
         var that = this;
         $.post('/app/recipe/get_products', params, data => {

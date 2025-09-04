@@ -100,6 +100,15 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6">
+                                <label class="col-form-label" for="user_status_id"><?php echo __('app.recipe.international') ?><?php $this->insert('inc/common/tooltip', ['tooltip' => $this->e('app.recipe.international_text')]); ?></label>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-solid form-switch">
+                                        <input class="form-check-input w-45px h-30px" type="checkbox" id="international" name="international" value="1" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

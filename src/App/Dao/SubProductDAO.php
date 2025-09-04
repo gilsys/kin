@@ -13,13 +13,13 @@ class SubProductDAO extends BaseDAO {
         parent::__construct($connection, 'st_subproduct');
     }
 
-    public function getFullById($id, $language = null) {
+    public function getFullById($id, $language = null, $international = null) {
         if (empty($language)) {
             return $this->getById($id);
         }
         $sql = 'SELECT
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
-                JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . $language . '")) AS reference
+                JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . (!is_null($international) ? ($international ? 'en' : 'es') : $language) . '")) AS reference
             FROM
                 ' . $this->table . ' sp            
             WHERE id = :id';
@@ -98,7 +98,7 @@ class SubProductDAO extends BaseDAO {
         $this->query($query, $data);
     }
 
-    public function getSubProducts($language, $selectedIds = [], $marketId = null, $customCreatorUserId = null) {
+    public function getSubProducts($language, $selectedIds = [], $marketId = null, $customCreatorUserId = null, $international = null) {
         $data = [];
 
         $whereSql = "";
@@ -126,7 +126,7 @@ class SubProductDAO extends BaseDAO {
             $data['selectedIds'] = implode(',', $selectedIds);
         }
 
-        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.reference, "$.' . $language . '")) AS reference, p.id AS product_id
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.reference, "$.' . (!is_null($international) ? ($international ? 'en' : 'es') : $language) . '")) AS reference, p.id AS product_id
                 FROM ' . $this->table . ' s
                 INNER JOIN st_product p ON (p.parent_product_id IS NULL AND p.id = s.product_id) OR (p.parent_product_id IS NOT NULL AND p.parent_product_id = s.product_id)
                 WHERE ((p.date_deleted IS NULL AND s.date_deleted IS NULL) AND (' . $whereSql . '))' . $whereSqlSelected . '

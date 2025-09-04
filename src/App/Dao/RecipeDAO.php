@@ -33,8 +33,8 @@ class RecipeDAO extends BaseDAO {
     }
 
     public function save($data) {
-        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, market_id, creator_user_id, json_data) '
-            . 'VALUES (:name, :qr_language_id, :main_language_id, :market_id, :creator_user_id, :json_data)';
+        $query = 'INSERT INTO ' . $this->table . ' (name, qr_language_id, main_language_id, market_id, creator_user_id, json_data, international) '
+            . 'VALUES (:name, :qr_language_id, :main_language_id, :market_id, :creator_user_id, :json_data, :international)';
         $this->query($query, $data);
 
         return $this->getLastInsertId();
@@ -46,7 +46,8 @@ class RecipeDAO extends BaseDAO {
             qr_language_id = :qr_language_id,
             main_language_id = :main_language_id,
             market_id = :market_id,
-            json_data = :json_data
+            json_data = :json_data,
+            international = :international
             WHERE id = :id';
         $this->query($query, $data);
     }
@@ -148,8 +149,8 @@ class RecipeDAO extends BaseDAO {
             $name = $originalName . ' (' . $copyNameText . ' #' . $i . ')';
         }
 
-        $query = 'INSERT INTO ' . $this->table . ' (name, main_language_id, qr_language_id, market_id, creator_user_id, json_data) 
-                SELECT :name, main_language_id, qr_language_id, market_id, :creatorUserId, json_data FROM ' . $this->table . ' WHERE id = :id';
+        $query = 'INSERT INTO ' . $this->table . ' (name, main_language_id, qr_language_id, market_id, creator_user_id, json_data, international) 
+                SELECT :name, main_language_id, qr_language_id, market_id, :creatorUserId, json_data, international FROM ' . $this->table . ' WHERE id = :id';
         $this->query($query, compact('id', 'creatorUserId', 'name'));
         $newId = $this->getLastInsertId();
         return $newId;
