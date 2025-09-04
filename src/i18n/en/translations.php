@@ -469,6 +469,8 @@ return [
     'app.js.qr_code' => 'Override QR code',
     'app.js.recipe.banner' => 'Banner image',
     'app.js.recipe.banner_override' => 'Custom banner',
+    'app.js.recipe.change_market' => 'Change market',
+    'app.js.recipe.change_market_text' => 'Not all products may be available in the new market, unmatched products will be deleted. Do you want to continue?',
     'app.js.recipe.group_icon_required' => 'Select a group icon or upload a custom group icon is required.',
     'app.js.recipe.image_required' => 'Select an image is required.',
     'app.js.recipe.show_banner_only' => 'Use banner',

@@ -92,6 +92,19 @@ class RecipeForm {
             changeStep(stepper.getPreviousStepIndex(), stepper);
         });
 
+        mForm.find("[name='market_id']").on('select2:selecting', function (e) {
+            var oldMarketId = $(this).val() != null && $(this).val() != '' ? $(this).val() : null  ;
+            var newMarketId = e.params.args.data.id;
+            var productSelects = mForm.find('.json-content-form [name$="[product_id]"]');
+
+            if (oldMarketId != null && oldMarketId != newMarketId && productSelects.length > 0) {
+                e.preventDefault();
+                showConfirm(__('app.js.recipe.change_market'), __('app.js.recipe.change_market_text'), 'question', function () {
+                    mForm.find("[name='market_id']").val(newMarketId).change();
+                });
+            }
+        });
+
         mForm.find("[name='market_id'], [name='main_language_id'], [name='international']").on('change', function () {
             that.getProducts();
         });
