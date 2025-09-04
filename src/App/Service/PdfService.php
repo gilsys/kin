@@ -175,7 +175,7 @@ class PdfService extends BaseService {
         }
     }
 
-    private function processRecipeImages($privateBasePath, $qrLang, $lang, &$array) {
+    private function processRecipeImages($privateBasePath, $qrLang, $lang, $international, &$array) {
         foreach ($array as $key => &$value) {
             if (!empty($value['image'])) {
                 // De "value", obtener la ultima parte del path, correspondiente al nombre del archivo
@@ -233,7 +233,7 @@ class PdfService extends BaseService {
 
             if (!empty($value['subproduct_id'])) {
                 $subproductDAO = new SubProductDAO($this->pdo);
-                $subproduct = $subproductDAO->getFullById($value['subproduct_id'], $lang);
+                $subproduct = $subproductDAO->getFullById($value['subproduct_id'], $lang, $international);
                 
                 $value['name'] = empty($value['subproduct_name']) ? $subproduct['name'] : $value['subproduct_name'];
                 $value['reference'] = empty($value['subproduct_reference']) ? $subproduct['reference'] : $value['subproduct_reference'];
@@ -258,7 +258,7 @@ class PdfService extends BaseService {
             }
 
             if (is_array($value)) {
-                $this->processRecipeImages($privateBasePath, $qrLang, $lang, $value);
+                $this->processRecipeImages($privateBasePath, $qrLang, $lang, $international, $value);
             }
         }
     }
@@ -272,7 +272,7 @@ class PdfService extends BaseService {
 
         $dompdf = new Dompdf(['enable_remote' => true, 'dpi' => 300]);
 
-        $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], $recipe);
+        $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], !empty($recipe['international']), $recipe);
 
         // echo "<pre>";
         // print_r($recipe);

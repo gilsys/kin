@@ -593,6 +593,8 @@ return [
     'app.qr_language' => 'QR Language',
     'app.quick.choose_client' => 'Select the client',
     'app.quick.type_client' => '- Search by client -',
+    'app.recipe.international' => 'International',
+    'app.recipe.international_text' => 'The English reference code will be applied for international use, and Spanish otherwise.',
     'app.recipe.pdf_versions_info' => '<p>Press "Generate PDF" to create or preview the recipe.</p><p>From this section, you can check the history and download previously generated recipes.</p>',
     'app.reference_code' => 'Reference code',
     'app.save.generate_pdf' => 'Save and generate PDF',

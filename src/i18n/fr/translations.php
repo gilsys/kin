@@ -593,6 +593,8 @@ return [
     'app.qr_language' => '',
     'app.quick.choose_client' => 'Seleccioneu el client',
     'app.quick.type_client' => '- Cerca per client -',
+    'app.recipe.international' => '',
+    'app.recipe.international_text' => '',
     'app.recipe.pdf_versions_info' => '',
     'app.reference_code' => '',
     'app.save.generate_pdf' => '',

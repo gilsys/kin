@@ -160,7 +160,7 @@ class RecipeController extends BaseController {
         $productIds = array_column($productDAO->getProducts($oldRecipeProductIds, $formData['main_language_id'], $formData['market_id'], $customCreatorUserId, $oldRecipeSubProductIds), 'id');
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $subProductIds = array_column($subProductDAO->getSubProducts($formData['main_language_id'], $oldRecipeSubProductIds, $formData['market_id'], $customCreatorUserId), 'id');
+        $subProductIds = array_column($subProductDAO->getSubProducts($formData['main_language_id'], $oldRecipeSubProductIds, $formData['market_id'], $customCreatorUserId, !empty($formData['international'])), 'id');
 
         if (!empty(array_diff($newRecipeProductIds, $productIds)) || !empty(array_diff($newRecipeSubProductIds, $subProductIds))) {
             throw new AuthException();
@@ -168,6 +168,8 @@ class RecipeController extends BaseController {
     }
 
     public function savePersist($request, $response, $args, &$formData) {
+        $formData['international'] = !empty($formData['international']) ? 1 : 0;
+
         parent::savePersist($request, $response, $args, $formData);
 
         if (!empty($args['mode']) && in_array($args['mode'], [FormSaveMode::SaveAndGenerateCMYK, FormSaveMode::SaveAndGenerate])) {
@@ -232,12 +234,13 @@ class RecipeController extends BaseController {
 
         $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
         $lang = !empty($formData['main_language_id']) ? $formData['main_language_id'] : $this->get('i18n')->getCurrentLang();
+        $international = !empty($formData['international']);
 
         $productDAO = new ProductDAO($this->get('pdo'));
         $data['products'] = $productDAO->getProducts($recipeProductIds, $lang, $formData['market_id'], $customCreatorUserId, $recipeSubProductIds);
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $data['subproducts'] = $subProductDAO->getSubProducts($lang, $recipeSubProductIds, $formData['market_id'], $customCreatorUserId);
+        $data['subproducts'] = $subProductDAO->getSubProducts($lang, $recipeSubProductIds, $formData['market_id'], $customCreatorUserId, $international);
 
         // Iterar los productos y subproductos para montar el html en el campo name
         $data['products'] = array_map(function ($product) {

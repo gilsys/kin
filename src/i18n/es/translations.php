@@ -593,6 +593,8 @@ return [
     'app.qr_language' => 'Idioma QR',
     'app.quick.choose_client' => 'Seleccione el cliente',
     'app.quick.type_client' => '- Busca por cliente -',
+    'app.recipe.international' => 'Internacional',
+    'app.recipe.international_text' => 'Se aplicará el código de referencia inglés para internacional, español en caso contrario.',
     'app.recipe.pdf_versions_info' => '<p>Pulsa "Generar PDF" para generar o previsualizar el recetario.</p><p>Desde este apartado, puedes consultar un histórico y descargar los recetarios generados con anterioridad.</p>',
     'app.reference_code' => 'Código de referencia',
     'app.save.generate_pdf' => 'Guardar y generar PDF',
