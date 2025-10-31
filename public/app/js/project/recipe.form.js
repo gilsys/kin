@@ -22,6 +22,11 @@ class RecipeForm {
         mForm.validate({
             ignore: '.json-form-hidden :input, .je-object__container[style="display: none;"] :input',
             onkeyup: false,
+            rules: {
+                international: {
+                    required: true
+                }
+            },
             invalidHandler: function (event, validator) {
                 stepperInvalidFormValidationHandler(validator, stepper);
             },
@@ -74,8 +79,9 @@ class RecipeForm {
         function changeStep(index, stepper) {
             var languageValid = !mForm.find("[name='main_language_id']").is(':visible') || mForm.find("[name='main_language_id']").valid();
             var marketValid = !mForm.find("[name='market_id']").is(':visible') || mForm.find("[name='market_id']").valid();
+            var internationalValid = !mForm.find("[name='international']").is(':visible') || mForm.find("[name='international']").valid();
 
-            if (!languageValid || !marketValid) {
+            if (!languageValid || !marketValid || !internationalValid) {
                 return;
             }
 
@@ -93,7 +99,7 @@ class RecipeForm {
         });
 
         mForm.find("[name='market_id']").on('select2:selecting', function (e) {
-            var oldMarketId = $(this).val() != null && $(this).val() != '' ? $(this).val() : null  ;
+            var oldMarketId = $(this).val() != null && $(this).val() != '' ? $(this).val() : null;
             var newMarketId = e.params.args.data.id;
             var productSelects = mForm.find('.json-content-form [name$="[product_id]"]');
 
@@ -120,7 +126,7 @@ class RecipeForm {
 
                 mForm.find("[name='creator_name']").val(data.creator_name);
 
-                mForm.find("[name='international']").prop('checked', data.international == '1');
+                mForm.find('[name="international"][value="' + data.international + '"]').prop('checked', true);
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
@@ -142,9 +148,19 @@ class RecipeForm {
                 AdminUtils.showDelayedAfterLoad();
             });
         } else {
-            // Valores por defecto en registros nuevos
-            mForm.removeDisabledOptions();
-            AdminUtils.showDelayedAfterLoad();
+            if (mForm.attr('data-default-market-id') != '') {
+                $.post('/app/market/' + mForm.attr('data-default-market-id'), function (data) {
+                    mForm.find("[name='market_name']").val(data.name);
+                    mForm.find("[name='main_language_id']").val(data.main_language_id).change();
+                    mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+
+                    mForm.removeDisabledOptions();
+                    AdminUtils.showDelayedAfterLoad();
+                });
+            } else {
+                mForm.removeDisabledOptions();
+                AdminUtils.showDelayedAfterLoad();
+            }
         }
     }
 
@@ -808,7 +824,8 @@ class RecipeForm {
 
         if (
             (mForm.find("[name='market_id']").length > 0 && (mForm.find("[name='market_id']").val() == null || mForm.find("[name='market_id']").val() == '')) ||
-            (mForm.find("[name='main_language_id']").val() == null || mForm.find("[name='main_language_id']").val() == '')
+            (mForm.find("[name='main_language_id']").val() == null || mForm.find("[name='main_language_id']").val() == '') ||
+            mForm.find("[name='international']:checked").length == 0
         ) {
             return;
         }
@@ -817,7 +834,7 @@ class RecipeForm {
             'id': mForm.find("[name='id']").val(),
             'market_id': mForm.find("[name='market_id']").length > 0 ? mForm.find("[name='market_id']").val() : null,
             'main_language_id': mForm.find("[name='main_language_id']").val(),
-            'international': mForm.find("[name='international']").prop('checked') ? 1 : 0
+            'international': mForm.find("[name='international']:checked").val()
         };
         var that = this;
         $.post('/app/recipe/get_products', params, data => {

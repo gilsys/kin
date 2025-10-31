@@ -76,10 +76,6 @@ class RecipeController extends BaseController {
             $this->get('security')->checkRecipeOwner($args['id'], false);
         }
 
-        if (!$this->get('security')->isAdmin() && empty($args['id'])) {
-            throw new AuthException();
-        }
-
         $data = $this->prepareForm($args);
 
         // Obtenemos los valores a mostrar en los desplegables
@@ -90,6 +86,13 @@ class RecipeController extends BaseController {
         $data['data']['qr_languages'] = $languageDAO->getForSelect('id', 'name', 'custom_order');
         $data['data']['main_languages'] = array_slice($data['data']['qr_languages'], 0, 3);
         $data['data']['markets'] = $marketDAO->getForSelect();
+
+        // Obtener el market del usuario y el idioma asociado a ese market
+        $marketId = $this->get('session')['user']['market_id'];
+
+        if (!empty($marketId)) {
+            $data['data']['default_market_id'] = $marketId;
+        }
 
         if (!empty($args['id'])) {
             $recipeFileDAO = new RecipeFileDAO($this->get('pdo'));
@@ -126,16 +129,16 @@ class RecipeController extends BaseController {
     public function savePreSave($request, $response, $args, &$formData) {
         unset($formData['root']);
 
-        if (!$this->get('security')->isAdmin() && empty($formData['id'])) {
-            throw new AuthException();
-        }
-
         if (empty($formData['id'])) {
             $formData['creator_user_id'] = $this->get('session')['user']['id'];
         } else {
             $this->get('security')->checkRecipeOwner($formData['id']);
+        }
 
-            if (!$this->get('security')->isAdmin()) {
+        if (!$this->get('security')->isAdmin()) {
+            if (empty($formData['id'])) {
+                $formData['market_id'] = $this->get('session')['user']['market_id'];
+            } else {
                 $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
             }
         }
@@ -160,7 +163,7 @@ class RecipeController extends BaseController {
         $productIds = array_column($productDAO->getProducts($oldRecipeProductIds, $formData['main_language_id'], $formData['market_id'], $customCreatorUserId, $oldRecipeSubProductIds), 'id');
 
         $subProductDAO = new SubProductDAO($this->get('pdo'));
-        $subProductIds = array_column($subProductDAO->getSubProducts($formData['main_language_id'], $oldRecipeSubProductIds, $formData['market_id'], $customCreatorUserId, !empty($formData['international'])), 'id');
+        $subProductIds = array_column($subProductDAO->getSubProducts($formData['main_language_id'], $oldRecipeSubProductIds, $formData['market_id'], $customCreatorUserId, intval($formData['international'])), 'id');
 
         if (!empty(array_diff($newRecipeProductIds, $productIds)) || !empty(array_diff($newRecipeSubProductIds, $subProductIds))) {
             throw new AuthException();
@@ -168,7 +171,7 @@ class RecipeController extends BaseController {
     }
 
     public function savePersist($request, $response, $args, &$formData) {
-        $formData['international'] = !empty($formData['international']) ? 1 : 0;
+        $formData['international'] = intval($formData['international']);
 
         parent::savePersist($request, $response, $args, $formData);
 
@@ -214,9 +217,10 @@ class RecipeController extends BaseController {
 
         if ($this->get('session')['user']['user_profile_id'] != UserProfile::Administrator) {
             if (empty($formData['id'])) {
-                throw new AuthException();
+                $formData['market_id'] = $this->get('session')['user']['market_id'];
+            } else {
+                $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
             }
-            $formData['market_id'] = $this->getDAO()->getSingleField($formData['id'], 'market_id');
         }
 
         if (empty($formData['market_id'])) {
@@ -234,7 +238,7 @@ class RecipeController extends BaseController {
 
         $customCreatorUserId = $this->get('session')['user']['user_profile_id'] == UserProfile::User ? $this->get('session')['user']['id'] : null;
         $lang = !empty($formData['main_language_id']) ? $formData['main_language_id'] : $this->get('i18n')->getCurrentLang();
-        $international = !empty($formData['international']);
+        $international = intval($formData['international']);
 
         $productDAO = new ProductDAO($this->get('pdo'));
         $data['products'] = $productDAO->getProducts($recipeProductIds, $lang, $formData['market_id'], $customCreatorUserId, $recipeSubProductIds);

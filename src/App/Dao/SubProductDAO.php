@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dao;
 
+use App\Constant\International;
 use App\Constant\SubProductStatus;
 use App\Util\CommonUtils;
 
@@ -19,7 +20,7 @@ class SubProductDAO extends BaseDAO {
         }
         $sql = 'SELECT
                 JSON_UNQUOTE(JSON_EXTRACT(sp.name, "$.' . $language . '")) AS name,
-                JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . (!is_null($international) ? ($international ? 'en' : 'es') : $language) . '")) AS reference
+                ' . (!is_null($international) && $international == International::NoCode ? 'null' : 'JSON_UNQUOTE(JSON_EXTRACT(sp.reference, "$.' . (!is_null($international) ? ($international == International::InternationalCode ? 'en' : 'es') : $language) . '"))') . ' AS reference
             FROM
                 ' . $this->table . ' sp            
             WHERE id = :id';
@@ -126,7 +127,8 @@ class SubProductDAO extends BaseDAO {
             $data['selectedIds'] = implode(',', $selectedIds);
         }
 
-        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, JSON_UNQUOTE(JSON_EXTRACT(s.reference, "$.' . (!is_null($international) ? ($international ? 'en' : 'es') : $language) . '")) AS reference, p.id AS product_id
+        $sql = 'SELECT s.id, JSON_UNQUOTE(JSON_EXTRACT(s.name, "$.' . $language . '")) AS name, p.id AS product_id,
+                ' . (!is_null($international) && $international == International::NoCode ? 'null' : 'JSON_UNQUOTE(JSON_EXTRACT(s.reference, "$.' . (!is_null($international) ? ($international == International::InternationalCode ? 'en' : 'es') : $language) . '"))') . ' AS reference
                 FROM ' . $this->table . ' s
                 INNER JOIN st_product p ON (p.parent_product_id IS NULL AND p.id = s.product_id) OR (p.parent_product_id IS NOT NULL AND p.parent_product_id = s.product_id)
                 WHERE ((p.date_deleted IS NULL AND s.date_deleted IS NULL) AND (' . $whereSql . '))' . $whereSqlSelected . '

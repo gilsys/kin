@@ -272,7 +272,7 @@ class PdfService extends BaseService {
 
         $dompdf = new Dompdf(['enable_remote' => true, 'dpi' => 300]);
 
-        $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], !empty($recipe['international']), $recipe);
+        $this->processRecipeImages($folderPrivate, $recipe['qr_language_id'], $recipe['main_language_id'], $recipe['international'], $recipe);
 
         // echo "<pre>";
         // print_r($recipe);
