@@ -61,5 +61,5 @@
 
 <?php $this->stop() ?>
 
-<?php $this->insert("inc/common/subheader", ['entity' => 'recipe', 'btnExport' => true, 'btnAdd' => $_SESSION['user']['user_profile_id'] == \App\Constant\UserProfile::Administrator, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
+<?php $this->insert("inc/common/subheader", ['entity' => 'recipe', 'btnExport' => true, 'btnAdd' => true, 'menu' => $menu, 'breadcumb' => $breadcumb]); ?>
 <?php $this->insert('inc/common/datatable', ['entity' => 'recipe', 'columns' => $this->section('columns'), 'filters' => $this->section('filters')]); ?>
