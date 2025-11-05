@@ -2,6 +2,7 @@ class RecipeForm {
     jsonEditor = [null, null, null, null];
     jsonData = [null, null, null, null];
     products = null;
+    colors = null;
 
     ready() {
         var that = this;
@@ -117,51 +118,57 @@ class RecipeForm {
 
         initFileVersionsList(mForm, '/app/recipe/pdf/delete/');
 
-        if (id.length) {
-            $.post('/app/recipe/' + id, function (data) {
-                mForm.find("[name='name']").val(data.name);
+        $.post('/app/recipe/get_data', data => {
+            this.colors = data.colors;
+            this.colors.unshift({ id: 0, name: __('app.js.common.custom_color') });
+            this.colors.unshift({ id: '', name: __('app.js.common.select_value') });
 
-                // Actualizar el título de la página y la barra de navegación
-                $('#kt_app_toolbar_container h2').text(data.name);
+            if (id.length) {
+                $.post('/app/recipe/' + id, function (data) {
+                    mForm.find("[name='name']").val(data.name);
 
-                mForm.find("[name='creator_name']").val(data.creator_name);
+                    // Actualizar el título de la página y la barra de navegación
+                    $('#kt_app_toolbar_container h2').text(data.name);
 
-                mForm.find('[name="international"][value="' + data.international + '"]').prop('checked', true);
+                    mForm.find("[name='creator_name']").val(data.creator_name);
 
-                mForm.find("[name='main_language_id']").val(data.main_language_id).change();
-                mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+                    mForm.find('[name="international"][value="' + data.international + '"]').prop('checked', true);
 
-                that.jsonData = data.json_data;
-
-                mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
-                mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
-
-                mForm.find("[name='market_name']").val(data.market_name);
-                mForm.find("[name='market_id']").val(data.market_id).change();
-
-                if (!userHasProfile(['A'])) {
-                    if (data.editable != '1') {
-                        formReadOnly(mForm);
-                    }
-                }
-
-                AdminUtils.showDelayedAfterLoad();
-            });
-        } else {
-            if (mForm.attr('data-default-market-id') != '') {
-                $.post('/app/market/' + mForm.attr('data-default-market-id'), function (data) {
-                    mForm.find("[name='market_name']").val(data.name);
                     mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                     mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
-                    mForm.removeDisabledOptions();
+                    that.jsonData = data.json_data;
+
+                    mForm.find(".mt-date-created").val(formatDateWithTime(data.date_created));
+                    mForm.find(".mt-date-updated").val(formatDateWithTime(data.date_updated));
+
+                    mForm.find("[name='market_name']").val(data.market_name);
+                    mForm.find("[name='market_id']").val(data.market_id).change();
+
+                    if (!userHasProfile(['A'])) {
+                        if (data.editable != '1') {
+                            formReadOnly(mForm);
+                        }
+                    }
+
                     AdminUtils.showDelayedAfterLoad();
                 });
             } else {
-                mForm.removeDisabledOptions();
-                AdminUtils.showDelayedAfterLoad();
+                if (mForm.attr('data-default-market-id') != '') {
+                    $.post('/app/market/' + mForm.attr('data-default-market-id'), function (data) {
+                        mForm.find("[name='market_name']").val(data.name);
+                        mForm.find("[name='main_language_id']").val(data.main_language_id).change();
+                        mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+
+                        mForm.removeDisabledOptions();
+                        AdminUtils.showDelayedAfterLoad();
+                    });
+                } else {
+                    mForm.removeDisabledOptions();
+                    AdminUtils.showDelayedAfterLoad();
+                }
             }
-        }
+        });
     }
 
     initJsonEditor(page, reloadData = true) {
@@ -296,6 +303,33 @@ class RecipeForm {
             },
         };
 
+        const colorTemplate = function (data) {
+            if (!data.id || data.id == 0) {
+                return $('<span>' + data.text + '</span>');
+            }
+
+            const color = that.colors.find(c => c.id == data.id);
+
+            return $(`<div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center me-2">
+                                <div class="color-option me-2" style="background-color: ` + color.primary + `;"></div>
+                                <div class="color-option" style="background-color: ` + color.secondary + `;"></div>
+                            </div>
+                            <div>
+                                ` + data.text + `
+                            </div>
+                        </div>`);
+        };
+
+        const select2ColorOptions = {
+            language: __('app.js.lang.code'),
+            placeholder: __('app.js.common.select_value'),
+            templateResult: colorTemplate,
+            templateSelection: colorTemplate,
+            escapeMarkup: function (m) {
+                return m;
+            },
+        };
 
         var properties = {
             "page": page,
@@ -445,7 +479,29 @@ class RecipeForm {
                                 "readonly": disableEdit,
                                 "required": true,
                                 "options": {
-                                    "grid_columns": 8,
+                                    "grid_columns": 4,
+                                    "inputAttributes": {
+                                        "required": true
+                                    },
+                                    "containerAttributes": {
+                                        "class": "required-container"
+                                    },
+                                }
+                            },
+                            "color_id": {
+                                "title": __('app.js.common.color'),
+                                "type": "string",
+                                "format": "select2",
+                                "enumSource": [{
+                                    "source": this.colors,
+                                    "title": "enumTitle",
+                                    "value": "enumValue"
+                                }],
+                                "readonly": disableEdit,
+                                "required": true,
+                                "options": {
+                                    "grid_columns": 4,
+                                    "select2": select2ColorOptions,
                                     "inputAttributes": {
                                         "required": true
                                     },
@@ -461,7 +517,9 @@ class RecipeForm {
                                 "readonly": disableEdit,
                                 "options": {
                                     "grid_columns": 2,
-
+                                    "dependencies": {
+                                        "color_id": '0'
+                                    },
                                     /*"inputAttributes": {
                                         "required": true
                                     }*/
@@ -474,7 +532,9 @@ class RecipeForm {
                                 "readonly": disableEdit,
                                 "options": {
                                     "grid_columns": 2,
-
+                                    "dependencies": {
+                                        "color_id": '0'
+                                    },
                                     /*"inputAttributes": {
                                         "required": true
                                     }*/

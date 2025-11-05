@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dao;
 
+use App\Constant\Color;
 use App\Constant\UserProfile;
 use App\Util\CommonUtils;
 
@@ -29,7 +30,20 @@ class RecipeDAO extends BaseDAO {
                 WHERE r.id = :id';
         $record = $this->fetchRecord($sql, compact('id'));
         $record['json_data'] = !empty($record['json_data']) ? json_decode($record['json_data'], true) : [];
+        $this->processRecipeColor($record['json_data']);
         return $record;
+    }
+
+    private function processRecipeColor(&$array) {
+        foreach ($array as &$value) {
+            if (!empty($value['formdata']) && !empty($value['formdata']['title_bg_color']) && !array_key_exists('color_id', $value['formdata'])) {
+                $value['formdata']['color_id'] = Color::Custom;
+            }
+
+            if (is_array($value)) {
+                $this->processRecipeColor($value);
+            }
+        }
     }
 
     public function save($data) {

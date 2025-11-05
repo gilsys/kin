@@ -206,7 +206,7 @@ class BaseDAO {
     }
 
     public function getAll($orderBy = 'id') {
-        $sql = "SELECT * FROM " . $this->table . " ORDER BY ' . $orderBy . ' ASC";
+        $sql = "SELECT * FROM " . $this->table . " ORDER BY " . $orderBy . " ASC";
         return $this->fetchAll($sql);
     }
 

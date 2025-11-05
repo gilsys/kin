@@ -301,6 +301,7 @@ return [
     'app.js.common.bold_info' => '',
     'app.js.common.cancel' => 'Cancel·lar',
     'app.js.common.color' => '',
+    'app.js.common.custom_color' => '',
     'app.js.common.delete' => 'Esborrar',
     'app.js.common.deny' => 'Denegar',
     'app.js.common.details' => 'Detalls',

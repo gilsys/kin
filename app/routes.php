@@ -208,5 +208,6 @@ return function (App $app) {
         $app->post('/app/recipe/pdf/delete/{id:[0-9]+}', [RecipeController::class, 'pdfDelete']);
         $app->post('/app/recipe/duplicate', [RecipeController::class, 'duplicate']);
         $app->get('/app/recipe/product_image/{field}/{productId:[0-9]+}[/{recipeId:[0-9]+}]', [RecipeController::class, 'productImage']);
+        $app->post('/app/recipe/get_data', [RecipeController::class, 'getData']);
     })->add(new ProfileMiddleware([UserProfile::Administrator, UserProfile::User]))->add('csrf');
 };
