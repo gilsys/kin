@@ -301,6 +301,7 @@ return [
     'app.js.common.bold_info' => 'To make text bold, put it *between asterisks*.',
     'app.js.common.cancel' => 'Cancel',
     'app.js.common.color' => 'Color',
+    'app.js.common.custom_color' => 'Custom color',
     'app.js.common.delete' => 'Delete',
     'app.js.common.deny' => 'Deny',
     'app.js.common.details' => 'Details',

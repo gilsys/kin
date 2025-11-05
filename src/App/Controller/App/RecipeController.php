@@ -377,4 +377,13 @@ class RecipeController extends BaseController {
         }
         return parent::getFileById($response, $fileId, $args['field']);
     }
+
+    public function getData(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+        $colorEntity = StaticListTable::getEntity(StaticListTable::Color);
+        $colorDAO = new StaticListDAO($this->get('pdo'), 'st_' . $colorEntity);
+        $data = [
+            'colors' => $colorDAO->getAll('custom_order')
+        ];
+        return ResponseUtils::withJson($response, $data);
+    }
 };

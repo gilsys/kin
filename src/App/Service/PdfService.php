@@ -5,12 +5,14 @@ namespace App\Service;
 use App\Constant\BookletType;
 use App\Constant\FileType;
 use App\Constant\Folders;
+use App\Constant\StaticListTable;
 use App\Dao\BookletDAO;
 use App\Dao\BookletFileDAO;
 use App\Dao\FileDAO;
 use App\Dao\ProductDAO;
 use App\Dao\RecipeDAO;
 use App\Dao\RecipeFileDAO;
+use App\Dao\StaticListDAO;
 use App\Dao\SubProductDAO;
 use App\Util\FileUtils;
 use Dompdf\Dompdf;
@@ -234,7 +236,7 @@ class PdfService extends BaseService {
             if (!empty($value['subproduct_id'])) {
                 $subproductDAO = new SubProductDAO($this->pdo);
                 $subproduct = $subproductDAO->getFullById($value['subproduct_id'], $lang, $international);
-                
+
                 $value['name'] = empty($value['subproduct_name']) ? $subproduct['name'] : $value['subproduct_name'];
                 $value['reference'] = empty($value['subproduct_reference']) ? $subproduct['reference'] : $value['subproduct_reference'];
             }
@@ -255,6 +257,14 @@ class PdfService extends BaseService {
                 $bannerId = $value['image_block']['banner'];
                 $bannerFilePath = Folders::getPublic() . '/app/img/receipt/banner' . $bannerId . '-' . $lang . '.jpg';
                 $value['image_block']['banner'] = FileUtils::getBase64Image($bannerFilePath);
+            }
+
+            if (!empty($value['formdata']['color_id'])) {
+                $colorEntity = StaticListTable::getEntity(StaticListTable::Color);
+                $colorDAO = new StaticListDAO($this->get('pdo'), 'st_' . $colorEntity);
+                $color = $colorDAO->getById($value['formdata']['color_id']);
+                $value['formdata']['title_bg_color'] = $color['primary'];
+                $value['formdata']['group_bg_color'] = $color['secondary'];
             }
 
             if (is_array($value)) {

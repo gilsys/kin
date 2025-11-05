@@ -301,6 +301,7 @@ return [
     'app.js.common.bold_info' => 'Para indicar negrita pon el texto *entre asteriscos*.',
     'app.js.common.cancel' => 'Cancelar',
     'app.js.common.color' => 'Color',
+    'app.js.common.custom_color' => 'Color personalizado',
     'app.js.common.delete' => 'Borrar',
     'app.js.common.deny' => 'Denegar',
     'app.js.common.details' => 'Detalles',
