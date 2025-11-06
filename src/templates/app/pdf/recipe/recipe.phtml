@@ -282,6 +282,19 @@ function _b($text) {
             top: 80px;
         }
 
+        .header-code {
+            position: absolute;
+            right: -70px;
+            top: 125px;
+            width: 210px;
+            height: 60px;
+            color: white;
+            font-size: 26px;
+            transform: rotate(-90deg);
+            text-align: center;
+            font-family: 'AvenirNext-Regular', sans-serif;
+        }
+
         .patient-row {
             margin-bottom: 10px;
             white-space: nowrap;
@@ -554,8 +567,9 @@ function _b($text) {
             margin-top: -4px;
             margin-left: 30px;
         }
+
         .group-label-left .bar {
-            width: calc(100% - 30px);            
+            width: calc(100% - 30px);
         }
 
         .group-label .title {
@@ -625,6 +639,9 @@ function _b($text) {
                                     <div class="patient-field"></div>
                                 </div>
                             </div>
+                            <?php if (!empty($recipe['code']) && $page == 0): ?>
+                                <div class="header-code"><?= $recipe['code'] ?></div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -739,13 +756,13 @@ function _b($text) {
                                                     </div>
                                                 </div>
 
-                                                <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>               				
-												<?php if ( 
+                                                <?php $nextProduct = $group['formdata']['products'][$idx + 1] ?? null; ?>
+                                                <?php if (
                                                     !empty($nextProduct) &&
                                                     ((empty($product['group_title']) && $lastGroupTitle == $nextProduct['group_title']) || empty($nextProduct['group_title']) || $nextProduct['group_title'] == $product['group_title'])
-                                                	): ?>
-								
-								                    <div class="bottom-dotted-line"></div>
+                                                ): ?>
+
+                                                    <div class="bottom-dotted-line"></div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
