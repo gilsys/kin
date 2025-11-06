@@ -596,6 +596,8 @@ return [
     'app.qr_language' => '',
     'app.quick.choose_client' => 'Seleccioneu el client',
     'app.quick.type_client' => '- Cerca per client -',
+    'app.recipe.code' => '',
+    'app.recipe.code_text' => '',
     'app.recipe.international' => '',
     'app.recipe.international_code' => '',
     'app.recipe.international_code_text' => '',

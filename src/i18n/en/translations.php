@@ -596,6 +596,8 @@ return [
     'app.qr_language' => 'QR Language',
     'app.quick.choose_client' => 'Select the client',
     'app.quick.type_client' => '- Search by client -',
+    'app.recipe.code' => 'Internal code',
+    'app.recipe.code_text' => 'Code displayed on the right side of the first page header.',
     'app.recipe.international' => 'International',
     'app.recipe.international_code' => 'International code',
     'app.recipe.international_code_text' => 'The English reference code will be applied.',

@@ -134,6 +134,8 @@ class RecipeForm {
 
                     mForm.find('[name="international"][value="' + data.international + '"]').prop('checked', true);
 
+                    mForm.find("[name='code']").val(data.code);
+
                     mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                     mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
