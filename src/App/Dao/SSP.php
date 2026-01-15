@@ -176,7 +176,7 @@ class SSP {
                     // Allow exact search
                     $strCompare = isset($column['exact']) ? $str : '%' . $str . '%';
                     $binding = self::bind($bindings, $strCompare, \PDO::PARAM_STR);
-                    $globalSearch[] = "`" . $column['db'] . "` LIKE " . $binding;
+                    $globalSearch[] = "CONVERT(`" . $column['db'] . "` USING utf8mb4) COLLATE utf8mb4_unicode_ci LIKE " . $binding;
                 }
             }
         }
