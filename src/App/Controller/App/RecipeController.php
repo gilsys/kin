@@ -172,6 +172,7 @@ class RecipeController extends BaseController {
 
     public function savePersist($request, $response, $args, &$formData) {
         $formData['international'] = intval($formData['international']);
+        $formData['qr_language_id'] = !empty($formData['qr_language_id']) ? $formData['qr_language_id'] : null;
 
         parent::savePersist($request, $response, $args, $formData);
 

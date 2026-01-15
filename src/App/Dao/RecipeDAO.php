@@ -141,7 +141,7 @@ class RecipeDAO extends BaseDAO {
                 st_user u ON r.creator_user_id = u.id
             INNER JOIN
                 st_language l1 ON r.main_language_id = l1.id  
-            INNER JOIN
+            LEFT JOIN
                 st_language l2 ON r.qr_language_id = l2.id  
             INNER JOIN
                 st_market m ON r.market_id = m.id

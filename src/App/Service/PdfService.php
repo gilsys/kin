@@ -216,8 +216,12 @@ class PdfService extends BaseService {
                 if (!empty($value['qr'])) {
                     $value['qr'] = $this->generateQrCode($value['qr'], '', '', $qrOptions);
                 } else {
-                    $qrUrl = $this->params->getParam('KIN.URL');
-                    $value['qr'] = $this->generateQrCode($qrUrl, $qrLang, $product['slug'], $qrOptions);
+                    if (empty($qrLang)) {
+                        $value['qr'] = null;
+                    } else {
+                        $qrUrl = $this->params->getParam('KIN.URL');
+                        $value['qr'] = $this->generateQrCode($qrUrl, $qrLang, $product['slug'], $qrOptions);
+                    }
                 }
 
                 // Cargar imagen de disco a base64

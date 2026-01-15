@@ -116,6 +116,10 @@ class RecipeForm {
             that.getProducts();
         });
 
+        mForm.find("#show_qr").on('change', function () {
+            mForm.find("[name='qr_language_id']").prop('disabled', !$(this).prop('checked')).closest('.row > div').toggleClass('d-none', !$(this).prop('checked'));
+        });
+
         initFileVersionsList(mForm, '/app/recipe/pdf/delete/');
 
         $.post('/app/recipe/get_data', data => {
@@ -137,6 +141,8 @@ class RecipeForm {
                     mForm.find("[name='code']").val(data.code);
 
                     mForm.find("[name='main_language_id']").val(data.main_language_id).change();
+
+                    mForm.find('#show_qr').prop('checked', data.qr_language_id != null).change();
                     mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
                     that.jsonData = data.json_data;
@@ -160,12 +166,14 @@ class RecipeForm {
                     $.post('/app/market/' + mForm.attr('data-default-market-id'), function (data) {
                         mForm.find("[name='market_name']").val(data.name);
                         mForm.find("[name='main_language_id']").val(data.main_language_id).change();
+                        mForm.find('#show_qr').prop('checked', true).change();
                         mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
 
                         mForm.removeDisabledOptions();
                         AdminUtils.showDelayedAfterLoad();
                     });
                 } else {
+                    mForm.find('#show_qr').prop('checked', true).change();
                     mForm.removeDisabledOptions();
                     AdminUtils.showDelayedAfterLoad();
                 }

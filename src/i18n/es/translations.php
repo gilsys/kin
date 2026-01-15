@@ -167,6 +167,7 @@ return [
     'app.common.select_value' => '- Selecciona un valor -',
     'app.common.send' => 'Enviar',
     'app.common.show_all' => 'Ver todos',
+    'app.common.show_qr' => 'Mostrar QR',
     'app.common.start' => 'Inicio',
     'app.common.state' => 'Estado',
     'app.common.status' => 'Estado',
