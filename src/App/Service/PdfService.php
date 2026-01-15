@@ -309,6 +309,11 @@ class PdfService extends BaseService {
             $page = intdiv($index, 2);
             $side = $index % 2 === 0 ? 'left' : 'right';
 
+            // Si no es la primera página y no tiene datos no se muestra
+            if ($page > 0 && (empty($groups) || (count($groups) == 1 && empty(array_values($groups)[0])))) {
+                continue;
+            }
+
             if (!isset($recipe['pages'][$page])) {
                 $recipe['pages'][$page] = ['left' => [], 'right' => []];
             }
