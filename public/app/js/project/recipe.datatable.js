@@ -42,6 +42,9 @@ class RecipeDatatable {
                 {
                     data: 'qr_language',
                     render: function (data, type, full, meta) {
+                        if(data == null) {
+                            return '-';
+                        }
                         if (type == 'export') {
                             return __(full.qr_language);
                         }

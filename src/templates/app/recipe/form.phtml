@@ -88,7 +88,15 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="show_qr"><?php echo __('app.common.show_qr') ?></label>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-solid form-switch">
+                                        <input class="form-check-input w-45px h-30px" type="checkbox" id="show_qr" value="1" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <label class="col-form-label required"><?php echo __('app.qr_language') ?></label>
                                 <div>
                                     <select name="qr_language_id" data-control="select2" data-placeholder="<?php echo __('app.common.select_value') ?>" class="form-select kt-select2" required>

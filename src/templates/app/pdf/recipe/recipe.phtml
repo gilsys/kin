@@ -511,6 +511,20 @@ function _b($text) {
             left: 10px;
         }
 
+        .product-qr .no-product-qr {
+            width: 160px;
+            max-width: 100%;
+            position: relative;
+            top: -12px;
+            left: 10px;
+            display: inline-block;
+        }
+
+        .product-qr .no-product-qr > span {
+            display: block;
+            padding-top: 100%; 
+        }
+
         .product-frequency {
             height: 70px;
         }
@@ -746,7 +760,11 @@ function _b($text) {
 
                                                     <div class="group-block qr-column">
                                                         <div class="product-qr">
-                                                            <img src="<?= $product['qr'] ?>">
+                                                            <?php if (!empty($product['qr'])): ?>
+                                                                <img src="<?= $product['qr'] ?>">
+                                                            <?php else: ?>
+                                                                <div class="no-product-qr"><span></span></div>
+                                                            <?php endif; ?>
                                                         </div>
                                                         <div class="product-frequency">
                                                             <?php if (!empty($product['show_frequency_icons'])): ?>
