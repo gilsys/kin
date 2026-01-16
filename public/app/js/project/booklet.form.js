@@ -75,6 +75,9 @@ class BookletForm {
                 cover_type: {
                     required: true
                 },
+                'page_type[2]': {
+                    required: true
+                }
             },
             messages: {
                 cover_file_id: {
@@ -134,7 +137,7 @@ class BookletForm {
                 $(this).closest('.image-select').find('label').html('<img src="/app/booklet/cover/' + $(this).val() + '/' + mForm.find("[name='main_language_id']").val() + '?v=' + RESOURCES_VERSION + '" class="rounded">');
             });
 
-            mForm.find('.cover-source-download').attr('href', '/app/booklet/cover_file' + '/' + $(this).val());  
+            mForm.find('.cover-source-download').attr('href', '/app/booklet/cover_file' + '/' + $(this).val());
         });
 
         mForm.find('select.booklet-layout-select').on('change', function () {
@@ -170,6 +173,12 @@ class BookletForm {
             mForm.find('.cover-upload-container').toggleClass('form-disabled-section', optionSelected != 'upload');
         });
 
+        mForm.find('[name^="page_type"]').on('change', function () {
+            var optionSelected = $(this).closest('.form-item').find('[name^="page_type"]:checked').val() ?? '';
+            $(this).closest('[data-booklet-page').find('.page-cover-container').toggleClass('form-disabled-section', optionSelected != 'cover');
+            $(this).closest('[data-booklet-page').find('.page-products-container').toggleClass('form-disabled-section', optionSelected != 'products');
+        });
+
         initFileVersionsList(mForm, '/app/booklet/pdf/delete/');
 
         if (id.length) {
@@ -190,6 +199,16 @@ class BookletForm {
 
                 mForm.find("[name='main_language_id']").val(data.main_language_id).change();
                 mForm.find("[name='qr_language_id']").val(data.qr_language_id).change();
+
+                if (mForm.find("[name='page_type[2]']").length > 0) {
+                    if (data.page2_booklet_layout_id) {
+                        mForm.find("[name='page_type[2]'][value='products']").prop('checked', true).change();
+                    } else if(data.cover_file_id) {
+                        mForm.find("[name='page_type[2]'][value='cover']").prop('checked', true).change();
+                    } else {
+                        mForm.find("[name='page_type[2]']").change();
+                    }
+                }
 
                 mForm.find("[name='page2_booklet_layout_id']").val(data.page2_booklet_layout_id).trigger('change.select2');
                 mForm.find("[name='page3_booklet_layout_id']").val(data.page3_booklet_layout_id).trigger('change.select2');
@@ -244,6 +263,7 @@ class BookletForm {
             }
 
             mForm.find('[name="cover_type"]').change();
+            mForm.find('[name^="page_type"]').change();
         }
     }
 

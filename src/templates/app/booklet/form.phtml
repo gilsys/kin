@@ -14,6 +14,7 @@
             'entity' => 'booklet',
             'btnBack' => '/app/booklets',
             'btnSave' => true,
+            'btnSaveAndGenerate' => true,
             'menu' => $menu,
             'breadcumb' => $breadcumb
         ]
@@ -171,52 +172,18 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="form-item">
-                                    <div class="d-flex align-items-center mt-3 radio-list">
-                                        <label class="form-check form-check-custom form-check-inline me-10">
-                                            <input class="form-check-input" name="cover_type" type="radio" value="select" allow-save-invalid>
-                                            <span class="fw-semibold ps-3 fs-6"><?= __('app.booklet.cover_select') ?></span>
-                                        </label>
-                                        <label class="form-check form-check-custom form-check-inline">
-                                            <input class="form-check-input" name="cover_type" type="radio" value="upload" allow-save-invalid>
-                                            <span class="fw-semibold ps-3 fs-6"><?= __('app.booklet.cover_upload') ?></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="cover-select-container pb-4">
-                                <div class="image-select-container form-item">
-                                    <div class="d-flex flex-wrap align-content-around mt-2 mh-400px">
-                                        <?php foreach ($data['cover_images'] as $i => $image): ?>
-                                            <div class="image-select radio-list">
-                                                <input type="radio"
-                                                    name="cover_file_id"
-                                                    id="<?= 'cover_img_' . $i ?>"
-                                                    value="<?= $image['id'] ?>">
-                                                <label for="<?= 'cover_img_' . $i ?>"></label>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="cover-upload-container pb-4">
-                                <?php $this->insert("inc/common/image_upload", ['id' => 'cover-upload', 'title' => __('app.common.cover'), 'inputName' => 'cover', 'recommendedDimensions' => '2550px x 3613px']) ?>
-                            </div>
-
-                            <?php if (!empty($params['BOOKLET_COVER_FILE'])): ?>
-                                <div class="pb-4">
-                                    <a href="" class="btn btn-link cover-source-download" target="_blank"><?= __('app.booklet.cover_file_download') ?></a>
-                                </div>
-                            <?php endif; ?>
+                            <?php $this->insert("booklet/inc/cover", ['coverImages' => $data['cover_images'], 'coverFile' => !empty($params['BOOKLET_COVER_FILE'])]) ?>
                         </div>
                     </div>
                 </div>
             <?php endif; ?>
 
-            <?php $this->insert("booklet/inc/page", ['pageNum' => 2, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>
+            <?php $this->insert("booklet/inc/page", [
+                'pageNum' => 2,
+                'layouts' => $data['layouts'],
+                'type' => $data['type'],
+                'cover' => $data['type'] == App\Constant\BookletType::Flyer ? ['coverImages' => $data['cover_images'], 'coverFile' => !empty($params['BOOKLET_COVER_FILE'])] : null
+            ]) ?>
             <?php $this->insert("booklet/inc/page", ['pageNum' => 3, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>
             <?php if ($data['type'] != App\Constant\BookletType::Flyer): ?>
                 <?php $this->insert("booklet/inc/page", ['pageNum' => 4, 'layouts' => $data['layouts'], 'type' => $data['type']]) ?>

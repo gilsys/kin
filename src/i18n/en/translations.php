@@ -6,6 +6,8 @@ return [
     'app.booklet.cover_file_download' => 'Download source design',
     'app.booklet.cover_select' => 'Select cover',
     'app.booklet.cover_upload' => 'Upload cover',
+    'app.booklet.page_type_cover' => 'Cover',
+    'app.booklet.page_type_products' => 'Products',
     'app.booklet.pdf_versions_info' => '<p>Press "Generate PDF" to create or preview the booklet.</p><p>From this section, you can check the history and download previously generated booklets.</p>',
     'app.code' => 'Code',
     'app.common.CMYK' => 'PRINT',

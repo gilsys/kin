@@ -6,7 +6,27 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
+            <?php if (!empty($cover)): ?>
+                <div class="row mb-2">
+                    <div class="form-item">
+                        <div class="d-flex align-items-center mt-3 radio-list">
+                            <label class="form-check form-check-custom form-check-inline me-10">
+                                <input class="form-check-input" name="page_type[<?= $pageNum ?>]" type="radio" value="cover"  allow-save-invalid>
+                                <span class="fw-semibold ps-3 fs-6"><?= __('app.booklet.page_type_cover') ?></span>
+                            </label>
+                            <label class="form-check form-check-custom form-check-inline">
+                                <input class="form-check-input" name="page_type[<?= $pageNum ?>]" type="radio" value="products"  allow-save-invalid>
+                                <span class="fw-semibold ps-3 fs-6"><?= __('app.booklet.page_type_products') ?></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-cover-container">
+                    <?php $this->insert("booklet/inc/cover", $cover) ?>
+                </div>
+            <?php endif; ?>
+            <div class="row page-products-container">
                 <div class="col-12">
                     <label class="col-form-label required allow-save-invalid"><?php echo __('app.layout_select') ?></label>
                     <div>

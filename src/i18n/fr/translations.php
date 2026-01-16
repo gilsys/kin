@@ -6,6 +6,8 @@ return [
     'app.booklet.cover_file_download' => '',
     'app.booklet.cover_select' => '',
     'app.booklet.cover_upload' => '',
+    'app.booklet.page_type_cover' => '',
+    'app.booklet.page_type_products' => '',
     'app.booklet.pdf_versions_info' => '',
     'app.code' => '',
     'app.common.CMYK' => '',

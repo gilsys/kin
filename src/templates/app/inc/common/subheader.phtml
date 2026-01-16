@@ -4,6 +4,11 @@
         <i class="ki-outline ki-left fs-2"></i><?php echo __('app.common.exit') ?>
     </a>
 <?php endif; ?>
+<?php if (!empty($btnSaveAndGenerate)) : ?>
+    <a data-validate-all="1" href="javascript:;" data-submit-mode="<?php echo \App\Constant\App\FormSaveMode::SaveAndPreview ?>" class="btn btn-secondary">
+        <?php echo __('app.save.save_preview_pdf') ?>
+    </a>
+<?php endif; ?>
 <?php if (!empty($btnSave)) : ?>
     <?php $this->insert("inc/common/button_save"); ?>
 <?php endif; ?>
