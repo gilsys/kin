@@ -96,7 +96,7 @@ class PdfService extends BaseService {
         $fileDAO = new FileDAO($this->pdo);
 
         // Cargar imagen de disco a base64
-        if ($booklet['booklet_type_id'] != BookletType::Flyer) {
+        if (!empty($booklet['cover_file_id'])) {
             $coverFile = $fileDAO->getById($booklet['cover_file_id']);
             if ($coverFile['file_type_id'] == FileType::BookletCoverUpload) {
                 $coverPath = $folderPrivate . '/' . FileType::BookletCoverUpload . '/cover_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
@@ -104,7 +104,8 @@ class PdfService extends BaseService {
                 $coverPath = $folderPrivate . '/' . FileType::BookletCover . '/cover_' . $booklet['main_language_id'] . '_' . $coverFile['id'] . '.' . pathinfo($coverFile['file'], PATHINFO_EXTENSION);
             }
 
-            $pages[1] = ['image' => FileUtils::getBase64Image($coverPath)];
+            $coverPageNum = $booklet['booklet_type_id'] == BookletType::Booklet ? 1 : 2;
+            $pages[$coverPageNum] = ['image' => FileUtils::getBase64Image($coverPath)];
         }
 
         foreach ($bookletImages as $bookletImage) {

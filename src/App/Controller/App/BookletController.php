@@ -177,9 +177,27 @@ class BookletController extends BaseController {
         $formData['page3_booklet_layout_id'] = !empty($formData['page3_booklet_layout_id']) ? $formData['page3_booklet_layout_id'] : null;
         $formData['page4_booklet_layout_id'] = !empty($formData['page4_booklet_layout_id']) ? $formData['page4_booklet_layout_id'] : null;
         $formData['market_id'] = !empty($formData['market_id']) ? $formData['market_id'] : null;
+
+        $bookletTypeId = empty($formData['id']) ? $formData['booklet_type_id'] : $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id');
+        if ($bookletTypeId == BookletType::Flyer) {
+            $page2Type = $formData['page_type'][2] ?? null;
+            if (empty($page2Type) || $page2Type == 'cover') {
+                $formData['page2_booklet_layout_id'] = null;
+                if (isset($formData['booklet_product'][2])) {
+                    unset($formData['booklet_product'][2]);
+                }
+            }
+
+            if (empty($page2Type) || $page2Type == 'products') {
+                $formData['cover_type'] = null;
+                $formData['cover_file_id'] = null;
+            }
+        }
     }
 
     public function savePersist($request, $response, $args, &$formData) {
+        unset($formData['page_type']);
+
         $bookletProducts = !empty($formData['booklet_product']) ? $formData['booklet_product'] : [];
         unset($formData['booklet_product']);
 
@@ -214,8 +232,8 @@ class BookletController extends BaseController {
             }
         }
 
-        if (!empty($coverType) && $this->getDAO()->getSingleField($formData['id'], 'booklet_type_id') == BookletType::Booklet) {
-            $fileDAO = new FileDAO($this->get('pdo'));
+        $fileDAO = new FileDAO($this->get('pdo'));
+        if (!empty($coverType)) {
             if ($coverType == 'upload') {
                 if (!empty($oldCoverFileId) && $fileDAO->getSingleField($oldCoverFileId, 'file_type_id') == FileType::BookletCover) {
                     $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', null);
@@ -229,6 +247,11 @@ class BookletController extends BaseController {
                 }
 
                 $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', $coverFileId);
+            }
+        } else if ($this->getDAO()->getSingleField($formData['id'], 'booklet_type_id') == BookletType::Flyer && !empty($oldCoverFileId)) {
+            $this->getDAO()->updateSingleField($formData['id'], 'cover_file_id', null);
+            if ($fileDAO->getSingleField($oldCoverFileId, 'file_type_id') == FileType::BookletCoverUpload) {
+                $fileDAO->deleteById($oldCoverFileId);
             }
         }
 

@@ -6,6 +6,8 @@ return [
     'app.booklet.cover_file_download' => 'Descargar diseño fuente',
     'app.booklet.cover_select' => 'Seleccionar portada',
     'app.booklet.cover_upload' => 'Subir portada',
+    'app.booklet.page_type_cover' => 'Portada',
+    'app.booklet.page_type_products' => 'Productos',
     'app.booklet.pdf_versions_info' => '<p>Pulsa "Generar PDF" para generar o previsualizar el folleto.</p><p>Desde este apartado, puedes consultar un histórico y descargar los folletos generados con anterioridad.</p>',
     'app.code' => 'Código',
     'app.common.CMYK' => 'PRINT',
